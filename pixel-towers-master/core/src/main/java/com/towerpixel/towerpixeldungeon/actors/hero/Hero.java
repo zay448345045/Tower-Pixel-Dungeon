@@ -676,7 +676,8 @@ public class Hero extends Char {
 		}
 
 		speed = AscensionChallenge.modifyHeroSpeed(speed);
-		
+
+		speed *= 10f
 		return speed;
 		
 	}
@@ -1033,7 +1034,7 @@ public class Hero extends Char {
 				} else {
 
 					if (waitOrPickup) {
-						spendAndNextConstant(TIME_TO_REST);
+						spendAndNextConstant(0f);
 					}
 
 					//allow the hero to move between levels even if they can't collect the item

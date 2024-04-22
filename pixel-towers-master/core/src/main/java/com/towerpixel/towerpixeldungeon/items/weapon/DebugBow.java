@@ -170,7 +170,7 @@ public class DebugBow extends Weapon {
 
     @Override
     public boolean isUpgradable() {
-        return false;
+        return true;
     }
 
     public DebugArrow knockArrow = new DebugArrow();
