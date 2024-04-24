@@ -71,7 +71,9 @@ public class BrokenSeal extends Item {
 	}
 
 	public int maxShield( int armTier, int armLvl ){
-		return armTier + armLvl + Dungeon.hero.pointsInTalent(Talent.IRON_WILL);
+		int shield = armTier + armLvl;
+		shield *= Dungeon.hero.pointsInTalent(Talent.IRON_WILL);
+		return shield;
 	}
 
 	@Override
@@ -215,7 +217,7 @@ public class BrokenSeal extends Item {
 		public synchronized int maxShield() {
 			//metamorphed iron will logic
 			if (((Hero)target).heroClass != HeroClass.WARRIOR && ((Hero) target).hasTalent(Talent.IRON_WILL)){
-				return ((Hero) target).pointsInTalent(Talent.IRON_WILL);
+				return 5*((Hero) target).pointsInTalent(Talent.IRON_WILL);
 			}
 
 			if (armor != null && armor.isEquipped((Hero)target) && armor.checkSeal() != null) {

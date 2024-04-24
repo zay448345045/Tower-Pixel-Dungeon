@@ -215,9 +215,9 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		if (hero.heroClass == HeroClass.DUELIST
-				&& hero.hasTalent(Talent.AGGRESSIVE_BARRIER)
-				&& (hero.HP / (float)hero.HT) < 0.20f*(1+hero.pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
-			Buff.affect(hero, Barrier.class).setShield(3);
+				&& hero.hasTalent(Talent.AGGRESSIVE_BLOOD)
+				&& (hero.HP / (float)hero.HT) < 0.20f*(1+hero.pointsInTalent(Talent.AGGRESSIVE_BLOOD))){
+			hero.HP = Math.max(hero.HP + 5 , hero.HT);
 		}
 
 		if (hero.buff(Talent.CombinedLethalityAbilityTracker.class) != null

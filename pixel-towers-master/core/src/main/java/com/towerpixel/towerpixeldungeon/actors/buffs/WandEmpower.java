@@ -42,10 +42,6 @@ public class WandEmpower extends Buff {
 		icon.hardlight(1, 1, 0);
 	}
 
-	@Override
-	public float iconFadePercent() {
-		return Math.max(0, (3-left) / 3f);
-	}
 
 	@Override
 	public String iconTextDisplay() {
@@ -54,7 +50,7 @@ public class WandEmpower extends Buff {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", dmgBoost, left);
+		return Messages.get(this, "desc", dmgBoost);
 	}
 
 	public int dmgBoost;

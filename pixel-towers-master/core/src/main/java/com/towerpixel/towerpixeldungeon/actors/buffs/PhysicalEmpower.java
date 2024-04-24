@@ -57,7 +57,7 @@ public class PhysicalEmpower extends Buff {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", dmgBoost, left);
+		return Messages.get(this, "desc", dmgBoost);
 	}
 
 	public int dmgBoost;
