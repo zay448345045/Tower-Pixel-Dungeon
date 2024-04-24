@@ -466,7 +466,7 @@ public class Arena16 extends Arena {
 
     @Override
     public void doStuffEndwave(int wave) {
-        int goldAdd = 1000;
+        int goldAdd = 10000;
         Dungeon.gold+=goldAdd;
         GLog.w(Messages.get(Arena.class, "goldaddendwave", goldAdd));
         super.doStuffEndwave(wave);

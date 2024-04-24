@@ -677,7 +677,7 @@ public class Hero extends Char {
 
 		speed = AscensionChallenge.modifyHeroSpeed(speed);
 
-		speed *= 10f
+		speed *= 10f;
 		return speed;
 		
 	}

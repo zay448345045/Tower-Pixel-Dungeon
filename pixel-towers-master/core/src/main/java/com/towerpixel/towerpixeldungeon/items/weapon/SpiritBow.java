@@ -183,17 +183,17 @@ public class SpiritBow extends Weapon {
 	
 	@Override
 	public int min(int lvl) {
-		int dmg = 1 + Dungeon.hero.lvl/7
+		int dmg = (1 + Dungeon.hero.lvl/7
 				+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
-				+ (curseInfusionBonus ? 1 + Dungeon.hero.lvl/30 : 0);
+				+ (curseInfusionBonus ? 1 + Dungeon.hero.lvl/30 : 0))*5;
 		return Math.max(0, dmg);
 	}
 	
 	@Override
 	public int max(int lvl) {
-		int dmg = 5 + (int)(Dungeon.hero.lvl/5f)
+		int dmg = (5 + (int)(Dungeon.hero.lvl/5f)
 				+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
-				+ (curseInfusionBonus ? 2 + Dungeon.hero.lvl/15 : 0);
+				+ (curseInfusionBonus ? 2 + Dungeon.hero.lvl/15 : 0))*7;
 		return Math.max(0, dmg);
 	}
 
@@ -261,6 +261,7 @@ public class SpiritBow extends Weapon {
 			// +33% speed to +50% speed, depending on talent points
 			speed += ((8 + ((Hero)owner).pointsInTalent(Talent.GROWING_POWER)) / 24f);
 		}
+		speed/=10f;
 		return speed;
 	}
 

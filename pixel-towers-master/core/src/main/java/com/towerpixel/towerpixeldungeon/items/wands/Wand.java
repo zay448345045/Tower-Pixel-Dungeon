@@ -451,9 +451,7 @@ public abstract class Wand extends Item {
 		curCharges += n;
 		
 		//10% chance to be cursed
-		if (Random.Float() < 0.3f) {
-			cursed = true;
-		}
+
 
 		return this;
 	}

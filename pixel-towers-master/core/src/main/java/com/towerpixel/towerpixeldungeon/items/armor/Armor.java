@@ -548,7 +548,6 @@ public class Armor extends EquipableItem {
 		float effectRoll = Random.Float();
 		if (effectRoll < 0.10f) {
 			inscribe(Glyph.randomCurse());
-			cursed = true;
 		} else if (effectRoll >= 0.85f){
 			inscribe();
 		}

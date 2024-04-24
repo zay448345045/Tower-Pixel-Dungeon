@@ -233,8 +233,6 @@ public enum HeroClass {
 		new PotionOfPurity().collect();
 		new PotionOfShielding().collect();
 		new ScrollOfRage().identify().collect();
-		DebugBow bow = new DebugBow();
-		bow.identify().collect();
 	}
 
 	private static void initMage( Hero hero ) {
@@ -263,8 +261,6 @@ public enum HeroClass {
 		new StoneOfIntuition().collect();
 		new ScrollOfAntiMagic().collect();
 		new ScrollOfRecharging().collect();
-		DebugBow bow = new DebugBow();
-		bow.identify().collect();
 
 	}
 
@@ -296,8 +292,6 @@ public enum HeroClass {
 		new StoneOfBlink().collect();
 		new Flashbang().collect();
 		new PotionOfSnapFreeze().collect();
-		DebugBow bow = new DebugBow();
-		bow.identify().collect();
 	}
 
 	private static void initHuntress( Hero hero ) {
@@ -321,8 +315,6 @@ public enum HeroClass {
 		new Sungrass.Seed().collect();
 		new Swiftthistle.Seed().collect();
 		new Earthroot.Seed().collect();
-		DebugBow bow = new DebugBow();
-		bow.identify().collect();
 	}
 
 	private static void initDuelist( Hero hero ) {
@@ -347,8 +339,6 @@ public enum HeroClass {
 		new ScrollOfMirrorImage().identify().collect();
 		new ScrollOfPrismaticImage().collect();
 		new ScrollOfSirensSong().collect();
-		DebugBow bow = new DebugBow();
-		bow.identify().collect();
 
 	}
 	private static void initFix(Hero hero){

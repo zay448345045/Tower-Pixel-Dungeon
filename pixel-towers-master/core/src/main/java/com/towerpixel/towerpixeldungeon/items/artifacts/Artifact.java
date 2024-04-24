@@ -183,9 +183,7 @@ public class Artifact extends KindofMisc {
 		//always +0
 		
 		//10% chance to be cursed
-		if (Random.Float() < 0.1f) {
-			cursed = true;
-		}
+
 		return this;
 	}
 

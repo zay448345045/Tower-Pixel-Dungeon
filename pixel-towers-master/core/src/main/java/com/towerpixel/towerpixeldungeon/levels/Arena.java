@@ -119,7 +119,7 @@ public class Arena extends Level {
         viewDistance = 15;
 
     }
-    public int startGold = 500;
+    public int startGold = 50000;
     public int startLvl = 6;
 
     /**

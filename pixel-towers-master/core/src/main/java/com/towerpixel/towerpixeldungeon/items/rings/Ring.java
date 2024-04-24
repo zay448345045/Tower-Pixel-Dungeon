@@ -229,9 +229,7 @@ public class Ring extends KindofMisc {
 		level(n);
 		
 		//10% chance to be cursed
-		if (Random.Float() < 0.1f) {
-			cursed = true;
-		}
+
 		
 		return this;
 	}
