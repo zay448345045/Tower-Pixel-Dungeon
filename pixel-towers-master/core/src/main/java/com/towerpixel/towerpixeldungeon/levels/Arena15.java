@@ -130,6 +130,7 @@ public class Arena15 extends Arena{
     }
     @Override
     public void doStuffEndwave(int wave) {
+        Dungeon.hero.HP = Dungeon.hero.HT;
         int goldAdd = 10000;
         Dungeon.gold+=goldAdd;
         updateQuickslot();

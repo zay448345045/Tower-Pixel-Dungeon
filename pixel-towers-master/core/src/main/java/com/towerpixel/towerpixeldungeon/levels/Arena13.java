@@ -370,11 +370,6 @@ public class Arena13 extends Arena{
     }
 
     @Override
-    public void doStuffEndwave(int wave) {;
-        super.doStuffEndwave(wave);
-    }
-
-    @Override
     public String tileName( int tile ) {
         switch (tile) {
             case Terrain.GRASS:

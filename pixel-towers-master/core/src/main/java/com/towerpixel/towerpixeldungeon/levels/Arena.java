@@ -582,7 +582,9 @@ public class Arena extends Level {
     }
 
     public void doStuffStartwave(int wave){}/// does something in the beginning of each wave, overriden in arenas that need it.
-    public void doStuffEndwave(int wave){}/// does something in the end of each wave
+    public void doStuffEndwave(int wave){
+        Dungeon.hero.HP = Dungeon.hero.HT;
+    }/// does something in the end of each wave
     public void addDestinations(){}//for stuff placing around the map
     public Mob chooseMob(int wave){ //Chooses a mob to spawn on a wave;
         Mob mob = new Rat();

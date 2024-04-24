@@ -261,7 +261,7 @@ public class SpiritBow extends Weapon {
 			// +33% speed to +50% speed, depending on talent points
 			speed += ((8 + ((Hero)owner).pointsInTalent(Talent.GROWING_POWER)) / 24f);
 		}
-		speed/=10f;
+		speed *= 10f;
 		return speed;
 	}
 

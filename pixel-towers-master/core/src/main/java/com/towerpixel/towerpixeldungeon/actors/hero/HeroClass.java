@@ -216,6 +216,7 @@ public enum HeroClass {
 		hero.critMult = 1.3f;
 		hero.STR = 14;
 		hero.attackSkill = 9;
+		gold = 1000;
 
 		Item i = new MailArmor().identify();
 		hero.belongings.armor = (MailArmor)i;
@@ -237,6 +238,7 @@ public enum HeroClass {
 
 	private static void initMage( Hero hero ) {
 		hero.STR = 12;
+		gold = 1000;
 
 		Item i = new LeatherArmor().identify();
 		hero.belongings.armor = (LeatherArmor)i;
@@ -268,7 +270,7 @@ public enum HeroClass {
 
 		hero.defenseSkill = 6;
 		hero.STR = 13;
-		gold = 100;
+		gold = 2000;
 		updateQuickslot();
 
 		Item i = new LeatherArmor().identify();
@@ -297,6 +299,7 @@ public enum HeroClass {
 	private static void initHuntress( Hero hero ) {
 		hero.STR = 11;
 		hero.attackSkill = 11;
+		gold = 1000;
 
 		Item i = new ClothArmor().identify();
 		hero.belongings.armor = (ClothArmor)i;
@@ -320,7 +323,7 @@ public enum HeroClass {
 	private static void initDuelist( Hero hero ) {
 		hero.STR = 13;
 		hero.critChance = 0.15f;
-
+		gold = 1000;
 		Item i = new LeatherArmor().identify();
 		hero.belongings.armor = (LeatherArmor)i;
 

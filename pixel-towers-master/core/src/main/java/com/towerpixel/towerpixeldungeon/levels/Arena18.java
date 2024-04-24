@@ -549,6 +549,7 @@ public class Arena18 extends Arena {
 
     @Override
     public void doStuffEndwave(int wave) {
+        Dungeon.hero.HP = Dungeon.hero.HT;
         int goldAdd = 6000;
         Dungeon.gold += goldAdd;
         GLog.w(Messages.get(Arena.class, "goldaddendwave", goldAdd));

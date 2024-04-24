@@ -365,10 +365,6 @@ public class Arena5 extends Arena{
         }
     }
 
-    @Override
-    public void doStuffEndwave(int wave) {
-        super.doStuffEndwave(wave);
-    }
 
     private static class Sink extends Emitter {
 

@@ -82,7 +82,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 	public float    ACC = 1f;	// Accuracy modifier
 	public float	DLY	= 1f;	// Speed modifier
-	public int      RCH = 1;    // Reach modifier (only applies to melee hits)
+	public int      RCH = 2;    // Reach modifier (only applies to melee hits)
 
 	public enum Augment {
 		SPEED   (0.7f, 0.6667f),
@@ -225,7 +225,7 @@ abstract public class Weapon extends KindOfWeapon {
 				delay *= Math.pow( 1.2, encumbrance );
 			}
 		}
-
+		delay *= 5;
 		return delay;
 	}
 
