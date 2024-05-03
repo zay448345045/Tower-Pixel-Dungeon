@@ -21,6 +21,8 @@
 
 package com.towerpixel.towerpixeldungeon.items.weapon;
 
+import static com.towerpixel.towerpixeldungeon.Dungeon.hero;
+
 import com.towerpixel.towerpixeldungeon.Assets;
 import com.towerpixel.towerpixeldungeon.Dungeon;
 import com.towerpixel.towerpixeldungeon.actors.Actor;
@@ -63,11 +65,11 @@ public class SpiritBow extends Weapon {
 		rarity = 6;
 		defaultAction = AC_SHOOT;
 		usesTargeting = true;
-		
 		unique = true;
 		bones = false;
 	}
-	
+
+	public static int bowusedtimes = 0;
 	public boolean sniperSpecial = false;
 	public float sniperSpecialBonusDamage = 0f;
 	
@@ -132,7 +134,9 @@ public class SpiritBow extends Weapon {
 
 		return super.proc(attacker, defender, damage);
 	}
-
+	private int usedtimes(){
+		return bowusedtimes;
+	}
 	@Override
 	public String info() {
 		String info = desc();
@@ -140,12 +144,15 @@ public class SpiritBow extends Weapon {
 		info += "\n\n" + Messages.get( SpiritBow.class, "stats",
 				Math.round(augment.damageFactor(min())),
 				Math.round(augment.damageFactor(max())),
-				STRReq());
+				STRReq(),
+				usedtimes(),
+				Math.round(100*(this.critChance+ hero.critChance())),
+				(Math.round(100*(this.critMult*hero.critMult())))-100);
 		
-		if (STRReq() > Dungeon.hero.STR()) {
+		if (STRReq() > hero.STR()) {
 			info += " " + Messages.get(Weapon.class, "too_heavy");
-		} else if (Dungeon.hero.STR() > STRReq()){
-			info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
+		} else if (hero.STR() > STRReq()){
+			info += " " + Messages.get(Weapon.class, "excess_str", hero.STR() - STRReq());
 		}
 		
 		switch (augment) {
@@ -163,7 +170,7 @@ public class SpiritBow extends Weapon {
 			info += " " + Messages.get(enchantment, "desc");
 		}
 		
-		if (cursed && isEquipped( Dungeon.hero )) {
+		if (cursed && isEquipped( hero )) {
 			info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
 		} else if (cursedKnown && cursed) {
 			info += "\n\n" + Messages.get(Weapon.class, "cursed");
@@ -172,7 +179,6 @@ public class SpiritBow extends Weapon {
 		}
 		
 		info += "\n\n" + Messages.get(MissileWeapon.class, "distance");
-		
 		return info;
 	}
 	
@@ -183,17 +189,19 @@ public class SpiritBow extends Weapon {
 	
 	@Override
 	public int min(int lvl) {
-		int dmg = (1 + Dungeon.hero.lvl/7
-				+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
-				+ (curseInfusionBonus ? 1 + Dungeon.hero.lvl/30 : 0))*5;
+		int dmg = (1 + hero.lvl/7
+				+ RingOfSharpshooting.levelDamageBonus(hero)
+				+ (curseInfusionBonus ? 1 + hero.lvl/30 : 0))*3
+				+ bowusedtimes/20;
 		return Math.max(0, dmg);
 	}
 	
 	@Override
 	public int max(int lvl) {
-		int dmg = (5 + (int)(Dungeon.hero.lvl/5f)
-				+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
-				+ (curseInfusionBonus ? 2 + Dungeon.hero.lvl/15 : 0))*7;
+		int dmg = (5 + (int)(hero.lvl/5f)
+				+ RingOfSharpshooting.levelDamageBonus(hero)
+				+ (curseInfusionBonus ? 2 + hero.lvl/15 : 0))*5
+				+ bowusedtimes/10;
 		return Math.max(0, dmg);
 	}
 
@@ -261,14 +269,15 @@ public class SpiritBow extends Weapon {
 			// +33% speed to +50% speed, depending on talent points
 			speed += ((8 + ((Hero)owner).pointsInTalent(Talent.GROWING_POWER)) / 24f);
 		}
-		speed *= 10f;
+		speed *= 2f;
 		return speed;
 	}
 
 	@Override
 	public int level() {
-		int level = Dungeon.hero == null ? 0 : Dungeon.hero.lvl/5;
+		int level = hero == null ? 0 : hero.lvl/5;
 		if (curseInfusionBonus) level += 1 + level/6;
+		level += Math.floor(bowusedtimes/100);
 		return level;
 	}
 
@@ -297,7 +306,7 @@ public class SpiritBow extends Weapon {
 
 		@Override
 		public Emitter emitter() {
-			if (Dungeon.hero.buff(NaturesPower.naturesPowerTracker.class) != null && !sniperSpecial){
+			if (hero.buff(NaturesPower.naturesPowerTracker.class) != null && !sniperSpecial){
 				Emitter e = new Emitter();
 				e.pos(5, 5);
 				e.fillTarget = false;
@@ -338,12 +347,13 @@ public class SpiritBow extends Weapon {
 		}
 		
 		@Override
-		public int STRReq(int lvl) {
-			return SpiritBow.this.STRReq();
+		public int STRReq() {
+			return hero.STR;
 		}
 
 		@Override
 		protected void onThrow( int cell ) {
+			bowusedtimes++;
 			Char enemy = Actor.findChar( cell );
 			if (enemy == null || enemy == curUser) {
 				parent = null;

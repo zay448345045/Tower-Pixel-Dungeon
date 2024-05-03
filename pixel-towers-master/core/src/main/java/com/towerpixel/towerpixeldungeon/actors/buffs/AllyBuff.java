@@ -22,6 +22,7 @@
 package com.towerpixel.towerpixeldungeon.actors.buffs;
 
 import com.towerpixel.towerpixeldungeon.Badges;
+import com.towerpixel.towerpixeldungeon.Dungeon;
 import com.towerpixel.towerpixeldungeon.Statistics;
 import com.towerpixel.towerpixeldungeon.actors.Char;
 import com.towerpixel.towerpixeldungeon.actors.hero.Hero;
@@ -61,7 +62,7 @@ public abstract class AllyBuff extends Buff{
 
 			AscensionChallenge.processEnemyKill(enemy);
 
-			int exp = hero.lvl <= enemy.maxLvl ? enemy.EXP : 0;
+			int exp = Math.max(enemy.EXP, Dungeon.depth);
 			if (exp > 0) {
 				hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", exp));
 			}

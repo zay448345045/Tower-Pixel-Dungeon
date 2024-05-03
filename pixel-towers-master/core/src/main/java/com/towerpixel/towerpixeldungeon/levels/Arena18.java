@@ -422,6 +422,8 @@ public class Arena18 extends Arena {
     @Override
     public void initNpcs() {
         hero.lvl = startLvl;
+        hero.critChance += 0.035f * (startLvl-1);
+        hero.critMult += 0.05f * (startLvl-1);
         hero.updateHT(true);
         Dungeon.gold += startGold;
         updateQuickslot();
@@ -549,7 +551,6 @@ public class Arena18 extends Arena {
 
     @Override
     public void doStuffEndwave(int wave) {
-        Dungeon.hero.HP = Dungeon.hero.HT;
         int goldAdd = 6000;
         Dungeon.gold += goldAdd;
         GLog.w(Messages.get(Arena.class, "goldaddendwave", goldAdd));

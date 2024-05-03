@@ -61,7 +61,7 @@ public class Arena13 extends Arena{
         startGold = 0;
         startLvl = 11;
 
-        maxWaves = 1;
+        maxWaves = 2;
 
         amuletCell = 9 + WIDTH*25;
         exitCell = amuletCell;
@@ -227,16 +227,12 @@ public class Arena13 extends Arena{
     @Override
     public void initNpcs() {
         hero.lvl = startLvl;
+        hero.critChance += 0.035f * (startLvl-1);
+        hero.critMult += 0.05f * (startLvl-1);
         hero.updateHT(true);
         Dungeon.gold += startGold;
         updateQuickslot();
-        towerShopKeeper.pos = towerShopKeeperCell;
-        normalShopKeeper.pos = normalShopKeeperCell;
         level = this;
-        GameScene.add(towerShopKeeper);
-        this.occupyCell(towerShopKeeper);
-        GameScene.add(normalShopKeeper);
-        this.occupyCell(normalShopKeeper);
         Buff.affect(hero, WaveCooldownBuff.class, 2000);
         exitCell = 0;
         Dungeon.level.map[amuletCell] = Terrain.EMPTY;
@@ -363,6 +359,7 @@ public class Arena13 extends Arena{
         this.drop(new SpawnerCannon(), Random.element(candidates));
         this.drop(new SpawnerCannon(), Random.element(candidates));
         this.drop(new SpawnerCannon(), Random.element(candidates));
+        this.drop(Generator.random(Generator.Category.WEP_T8),Random.element(candidates));
 
         candidates.clear();
 

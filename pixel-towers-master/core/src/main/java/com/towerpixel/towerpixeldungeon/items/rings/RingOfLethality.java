@@ -21,12 +21,12 @@ public class RingOfLethality extends Ring {
         if (getBuffedBonus(target, RingOfLethality.Lethality.class)==0) {
             return 0; // because the ranking system is additional, the main value must be equal to 0 (without a ring equipped)
         }
-        else return 0.05f + 0.03f*getBuffedBonus(target, RingOfLethality.Lethality.class);
+        else return 0.1f + 0.08f*getBuffedBonus(target, RingOfLethality.Lethality.class);
     }
     public static float critMultAdd( Char target ){
         if (getBuffedBonus(target, RingOfLethality.Lethality.class)==0) {
             return 0; // because the ranking system is additional, the main value must be equal to 0 (without a ring equipped)
-        } else return 0.2f + 0.1f*getBuffedBonus(target, RingOfLethality.Lethality.class);
+        } else return 0.15f + 0.2f*getBuffedBonus(target, RingOfLethality.Lethality.class);
     }
 
     public class Lethality extends Ring.RingBuff {

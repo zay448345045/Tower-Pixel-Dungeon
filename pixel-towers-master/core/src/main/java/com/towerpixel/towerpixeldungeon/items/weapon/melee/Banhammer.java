@@ -1,6 +1,7 @@
 package com.towerpixel.towerpixeldungeon.items.weapon.melee;
 
 import com.towerpixel.towerpixeldungeon.Assets;
+import com.towerpixel.towerpixeldungeon.Dungeon;
 import com.towerpixel.towerpixeldungeon.actors.Char;
 import com.towerpixel.towerpixeldungeon.actors.buffs.Buff;
 import com.towerpixel.towerpixeldungeon.actors.buffs.Cripple;
@@ -17,22 +18,23 @@ public class Banhammer extends MeleeWeapon {
         hitSound = Assets.Sounds.HIT_CRUSH;
         hitSoundPitch = 0.8f;
         ACC = 1.5f;
-        DLY = 2f;
+        DLY = 1f;
         tier = 8;
         rarity = 4;
     }
 
     @Override
     public int min(int lvl) {
-        return 10 * (tier + 1) +    //90 + 18/lvl
-                2* lvl * (tier + 1);
+        return lvl;
     }
     @Override
     public int max(int lvl) {
-        return 15 * (tier + 1) +    //135 + 36/lvl
-                4 * lvl * (tier + 1);
+        return lvl;
     }
-
+    @Override
+    public int STRReq(int lvl) {
+        return Dungeon.hero.STR;
+    }
     @Override
     public String targetingPrompt() {
         return Messages.get(this, "prompt");

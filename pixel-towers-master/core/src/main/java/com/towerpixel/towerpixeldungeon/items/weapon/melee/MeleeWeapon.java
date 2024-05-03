@@ -60,6 +60,9 @@ import java.util.ArrayList;
 public class MeleeWeapon extends Weapon {
 
 	public static String AC_ABILITY = "ABILITY";
+	public boolean isFist(){
+		return false;
+	}
 
 	@Override
 	public void activate(Char ch) {
@@ -217,7 +220,7 @@ public class MeleeWeapon extends Weapon {
 		if (hero.heroClass == HeroClass.DUELIST
 				&& hero.hasTalent(Talent.AGGRESSIVE_BLOOD)
 				&& (hero.HP / (float)hero.HT) < 0.20f*(1+hero.pointsInTalent(Talent.AGGRESSIVE_BLOOD))){
-			hero.HP = Math.max(hero.HP + 5 , hero.HT);
+			hero.HP = Math.min(hero.HP + 5 , hero.HT);
 		}
 
 		if (hero.buff(Talent.CombinedLethalityAbilityTracker.class) != null
@@ -331,7 +334,7 @@ public class MeleeWeapon extends Weapon {
 		
 		return damage;
 	}
-	
+
 	@Override
 	public String info() {
 

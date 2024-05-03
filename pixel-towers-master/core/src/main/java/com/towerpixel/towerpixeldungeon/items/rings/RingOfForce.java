@@ -27,6 +27,7 @@ import com.towerpixel.towerpixeldungeon.actors.buffs.Buff;
 import com.towerpixel.towerpixeldungeon.actors.buffs.MonkEnergy;
 import com.towerpixel.towerpixeldungeon.actors.hero.Hero;
 import com.towerpixel.towerpixeldungeon.actors.hero.HeroClass;
+import com.towerpixel.towerpixeldungeon.items.weapon.melee.FistAttack;
 import com.towerpixel.towerpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.towerpixel.towerpixeldungeon.messages.Messages;
 import com.towerpixel.towerpixeldungeon.sprites.ItemSpriteSheet;

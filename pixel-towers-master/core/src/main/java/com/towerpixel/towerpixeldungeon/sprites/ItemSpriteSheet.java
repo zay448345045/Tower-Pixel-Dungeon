@@ -195,13 +195,14 @@ public class ItemSpriteSheet {
 
 	private static final int WEP_TIER1      =                               xy(1, 6);   //16 slots
 	public static final int WORN_SHORTSWORD = WEP_TIER1+0;
-	public static final int CUDGEL          = WEP_TIER1+1;
+	public static final int FIST_ATTACK          = WEP_TIER1+1;
 	public static final int GLOVES          = WEP_TIER1+2;
 	public static final int RAPIER          = WEP_TIER1+3;
 	public static final int DAGGER          = WEP_TIER1+4;
 	public static final int MAGES_STAFF     = WEP_TIER1+5;
 	static{
 		assignItemRect(WORN_SHORTSWORD, 13, 13);
+		assignItemRect(FIST_ATTACK,		16, 11);
 		assignItemRect(GLOVES,          12, 16);
 		assignItemRect(RAPIER,          13, 14);
 		assignItemRect(DAGGER,          12, 13);

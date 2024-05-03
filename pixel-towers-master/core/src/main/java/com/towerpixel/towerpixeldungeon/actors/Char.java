@@ -22,6 +22,8 @@
 package com.towerpixel.towerpixeldungeon.actors;
 
 import static com.towerpixel.towerpixeldungeon.Dungeon.hero;
+import static com.towerpixel.towerpixeldungeon.items.rings.RingOfFuror.attackDamageMultiplier;
+import static com.towerpixel.towerpixeldungeon.items.weapon.melee.FistAttack.fistusedtimes;
 
 import com.towerpixel.towerpixeldungeon.Assets;
 import com.towerpixel.towerpixeldungeon.Badges;
@@ -92,6 +94,7 @@ import com.towerpixel.towerpixeldungeon.items.armor.glyphs.Viscosity;
 import com.towerpixel.towerpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.towerpixel.towerpixeldungeon.items.potions.exotic.PotionOfCleansing;
 import com.towerpixel.towerpixeldungeon.items.rings.RingOfElements;
+import com.towerpixel.towerpixeldungeon.items.rings.RingOfFuror;
 import com.towerpixel.towerpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.towerpixel.towerpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.towerpixel.towerpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
@@ -107,6 +110,7 @@ import com.towerpixel.towerpixeldungeon.items.weapon.enchantments.Grim;
 import com.towerpixel.towerpixeldungeon.items.weapon.enchantments.Kinetic;
 import com.towerpixel.towerpixeldungeon.items.weapon.enchantments.Pure;
 import com.towerpixel.towerpixeldungeon.items.weapon.enchantments.Shocking;
+import com.towerpixel.towerpixeldungeon.items.weapon.melee.FistAttack;
 import com.towerpixel.towerpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.towerpixel.towerpixeldungeon.items.weapon.missiles.darts.ShockingDart;
 import com.towerpixel.towerpixeldungeon.levels.Terrain;
@@ -394,9 +398,18 @@ public abstract class Char extends Actor {
 			} else {
 				dmg = damageRoll();
 			}
-
+			if (hero.belongings.weapon instanceof FistAttack) {
+				FistAttack.fistusedtimes++;
+				if (FistAttack.fistusedtimes >=60 + hero.belongings.weapon.level()
+					&& hero.belongings.weapon.level()<10){
+					hero.belongings.weapon.upgrade();
+					fistusedtimes = 0;
+				}
+			}
 			dmg = Math.round(dmg*dmgMulti);
-
+			if (buff( RingOfFuror.Furor.class ) != null) {
+				dmg *= attackDamageMultiplier(this);
+			}
 			Berserk berserk = buff(Berserk.class);
 			if (berserk != null) dmg = berserk.damageFactor(dmg);
 

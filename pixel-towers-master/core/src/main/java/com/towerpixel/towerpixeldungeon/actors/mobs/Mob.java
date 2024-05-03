@@ -21,6 +21,7 @@
 
 package com.towerpixel.towerpixeldungeon.actors.mobs;
 
+import static com.towerpixel.towerpixeldungeon.Dungeon.depth;
 import static com.towerpixel.towerpixeldungeon.items.Item.updateQuickslot;
 
 import com.towerpixel.towerpixeldungeon.Assets;
@@ -853,7 +854,7 @@ public abstract class Mob extends Char {
 
 				AscensionChallenge.processEnemyKill(this);
 
-				int exp = Dungeon.hero.lvl <= maxLvl ? EXP : 0;
+				int exp = Math.max(EXP , depth)/2;
 				if (exp > 0) {
 					Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "exp", exp));
 				}
@@ -938,8 +939,6 @@ public abstract class Mob extends Char {
 	}
 
 	public void rollToDropLoot(){
-		if (Dungeon.hero.lvl > maxLvl + 2) return;
-
 		MasterThievesArmband.StolenTracker stolen = buff(MasterThievesArmband.StolenTracker.class);
 		if (stolen == null || !stolen.itemWasStolen()) {
 			if (Random.Float() < lootChance()) {

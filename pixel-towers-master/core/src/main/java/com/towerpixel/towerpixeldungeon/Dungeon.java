@@ -31,6 +31,7 @@ import com.towerpixel.towerpixeldungeon.actors.buffs.MagicalSight;
 import com.towerpixel.towerpixeldungeon.actors.buffs.MindVision;
 import com.towerpixel.towerpixeldungeon.actors.buffs.RevealedArea;
 import com.towerpixel.towerpixeldungeon.actors.hero.Hero;
+import com.towerpixel.towerpixeldungeon.actors.hero.HeroClass;
 import com.towerpixel.towerpixeldungeon.actors.hero.Talent;
 import com.towerpixel.towerpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.towerpixel.towerpixeldungeon.actors.mobs.Mob;
@@ -48,6 +49,9 @@ import com.towerpixel.towerpixeldungeon.items.rings.Ring;
 import com.towerpixel.towerpixeldungeon.items.scrolls.Scroll;
 import com.towerpixel.towerpixeldungeon.items.wands.WandOfRegrowth;
 import com.towerpixel.towerpixeldungeon.items.wands.WandOfWarding;
+import com.towerpixel.towerpixeldungeon.items.weapon.SpiritBow;
+import com.towerpixel.towerpixeldungeon.items.weapon.melee.CurvedKnife;
+import com.towerpixel.towerpixeldungeon.items.weapon.melee.FistAttack;
 import com.towerpixel.towerpixeldungeon.journal.Notes;
 import com.towerpixel.towerpixeldungeon.levels.*;
 import com.towerpixel.towerpixeldungeon.levels.DeadEndLevel;
@@ -304,8 +308,8 @@ public class Dungeon {
 				case 24: level = new Arena24(); break;
 				case 25: level = new Arena25(); break;
 				case 26: level = new LastLevel();break;//Will still be the last level, where you can put the amulet to the Dungeons seal;
-				//case 31: level = new ArenaEndless();
-				//case 32: level = new ArenaAgainstRatKing();WHAT IS THIS??? SEE IN THE NEXT UPDATES
+				case 27: level = new ArenaEndless();break;
+				//case 32: level = new ArenaAgainstRatKing();//WHAT IS THIS??? SEE IN THE NEXT UPDATES
 				//case 666: level = new ArenaFix();
 				default:
 					level = new DeadEndLevel();
@@ -501,6 +505,12 @@ public class Dungeon {
 	private static final String QUESTS		= "quests";
 	private static final String BADGES		= "badges";
 
+	private static final String CRITCHANCE		= "critchance";
+	private static final String BOWUSEDTIMES		= "bowusedtimes";
+	private static final String CRITMULTI		= "critmulti";
+	private static final String FISTUSEDTIMES		= "fistusedtimes";
+	private static final String SACTIMES		= "sactimes";
+
 	
 	public static void saveGame( int save ) {
 		try {
@@ -517,9 +527,15 @@ public class Dungeon {
 			bundle.put( HERO, hero );
 			bundle.put( DEPTH, depth );
 			bundle.put( BRANCH, branch );
-
+			bundle.put(CRITCHANCE,hero.critChance);
+			bundle.put(CRITMULTI,hero.critMult);
+			if (hero.heroClass == HeroClass.HUNTRESS){
+				bundle.put(BOWUSEDTIMES, SpiritBow.bowusedtimes);
+			}
+			bundle.put(FISTUSEDTIMES, FistAttack.fistusedtimes);
 			bundle.put( GOLD, gold );
 			bundle.put( ENERGY, energy );
+			bundle.put( SACTIMES, CurvedKnife.sac );
 
 			for (int d : droppedItems.keyArray()) {
 				bundle.put(Messages.format(DROPPED, d), droppedItems.get(d));
@@ -679,6 +695,13 @@ public class Dungeon {
 
 		gold = bundle.getInt( GOLD );
 		energy = bundle.getInt( ENERGY );
+		hero.critChance = bundle.getFloat(CRITCHANCE);
+		hero.critMult = bundle.getFloat(CRITMULTI);
+		if (hero.heroClass == HeroClass.HUNTRESS){
+			SpiritBow.bowusedtimes = bundle.getInt(BOWUSEDTIMES);
+		}
+		FistAttack.fistusedtimes = bundle.getInt(FISTUSEDTIMES);
+		CurvedKnife.sac = bundle.getInt(SACTIMES);
 
 		Statistics.restoreFromBundle( bundle );
 		Generator.restoreFromBundle( bundle );
@@ -757,7 +780,9 @@ public class Dungeon {
 		updateLevelExplored();
 		Statistics.gameWon = true;
 		if(Dungeon.depth >= SPDSettings.maxlevelunlocked() && (SPDSettings.challenges() == 0)) SPDSettings.maxlevelunlocked(Dungeon.depth+1);
-
+		if (Dungeon.depth >= 10){
+			SPDSettings.CANHAVECAREERBOOK = true;
+		}
 		hero.belongings.identify();
 
 		Rankings.INSTANCE.submit( true, cause );

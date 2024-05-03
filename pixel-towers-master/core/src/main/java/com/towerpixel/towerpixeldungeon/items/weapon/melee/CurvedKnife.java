@@ -1,11 +1,22 @@
 package com.towerpixel.towerpixeldungeon.items.weapon.melee;
 
+
 import com.towerpixel.towerpixeldungeon.Assets;
 import com.towerpixel.towerpixeldungeon.actors.Char;
 import com.towerpixel.towerpixeldungeon.actors.buffs.Buff;
 import com.towerpixel.towerpixeldungeon.actors.buffs.Hex;
 import com.towerpixel.towerpixeldungeon.actors.hero.Hero;
 import com.towerpixel.towerpixeldungeon.actors.mobs.Mob;
+import com.towerpixel.towerpixeldungeon.items.weapon.Weapon;
+import com.towerpixel.towerpixeldungeon.items.weapon.curses.Annoying;
+import com.towerpixel.towerpixeldungeon.items.weapon.curses.Dazzling;
+import com.towerpixel.towerpixeldungeon.items.weapon.curses.Degrading;
+import com.towerpixel.towerpixeldungeon.items.weapon.curses.Displacing;
+import com.towerpixel.towerpixeldungeon.items.weapon.curses.Explosive;
+import com.towerpixel.towerpixeldungeon.items.weapon.curses.Friendly;
+import com.towerpixel.towerpixeldungeon.items.weapon.curses.Polarized;
+import com.towerpixel.towerpixeldungeon.items.weapon.curses.Sacrificial;
+import com.towerpixel.towerpixeldungeon.items.weapon.curses.Wayward;
 import com.towerpixel.towerpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
@@ -18,19 +29,21 @@ public class CurvedKnife extends MeleeWeapon {
         hitSoundPitch = 1.1f;
         DLY = 0.7f;
         ACC = 1.2f;
-        visiblyCursed();
+        cursed = true;
+        cursedKnown = true;
+        enchantment = Enchantment.randomCurse(Annoying.class, Displacing.class, Dazzling.class, Explosive.class,Wayward.class, Polarized.class, Friendly.class, Degrading.class);
         tier = 2;
         rarity = 3;
     }
     @Override
     public int min(int lvl) {
         return (tier + 1) +    //3 base
-                lvl * (tier + 1) + (int)Math.sqrt(sac);   //scaling the same
+                lvl * (tier + 1) + sac;   //scaling the same
     }
     @Override
     public int max(int lvl) {
         return 2 * (tier + 1) +    //6 base
-                lvl * (tier + 1) + sac;   //scaling unchanged
+                lvl * (tier + 1) + sac * sac;   //scaling unchanged
     }
     ///they increase with each sacrificed duelist
 
@@ -61,7 +74,7 @@ public class CurvedKnife extends MeleeWeapon {
 
     @Override
     public float abilityChargeUse(Hero hero) {
-        return 2 * super.abilityChargeUse(hero);
+        return super.abilityChargeUse(hero);
     }
 
     @Override
@@ -70,9 +83,8 @@ public class CurvedKnife extends MeleeWeapon {
     }
     public static void sacrifice(Hero hero, MeleeWeapon wep){
         wep.beforeAbilityUsed(hero);
-        hero.die(1);
+        hero.damage(20,hero);
         sac++;//check hero class for sac
-        if (sac>6) sac = 6;
         Sample.INSTANCE.play( Assets.Sounds.HIT_STAB );
         wep.afterAbilityUsed(hero);
     }

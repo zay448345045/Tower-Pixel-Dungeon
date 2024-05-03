@@ -141,9 +141,10 @@ public class RenderedTextBlock extends Component {
 				highlighting = !highlighting;}
 			 else if (str.equals("#")) {
 				 redhighlighting = !redhighlighting;
-			} //else if (str.equals("&")) {
-				 //orangehighlighting = !orangehighlighting;
-			 //}
+			}
+			 else if (str.equals("&")) {
+				 orangehighlighting = !orangehighlighting;
+			 }
 		else if (str.equals("£")) {
 				 greenhighlighting = !greenhighlighting;
 			 } else if (str.equals("`")) {

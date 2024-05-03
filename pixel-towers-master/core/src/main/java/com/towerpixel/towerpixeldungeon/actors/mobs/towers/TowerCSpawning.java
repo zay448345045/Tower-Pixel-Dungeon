@@ -61,7 +61,9 @@ public abstract class TowerCSpawning extends Tower{
 
     @Override
     protected boolean act() {
-        minionCooldownLeft--;
+        if (minionCooldownLeft > 0){
+            minionCooldownLeft--;
+        }
         if (minionCooldownLeft<=0) {
             ArrayList<Integer> candidates = new ArrayList<>();
             for (int i : PathFinder.NEIGHBOURS8) {
@@ -71,8 +73,8 @@ public abstract class TowerCSpawning extends Tower{
             if (!candidates.isEmpty() && minionCount<maxMinions){
                 spawnMinion(Random.element(candidates));
                 minionCount++;
+                minionCooldownLeft = minionCooldown;
             }
-            minionCooldownLeft = minionCooldown;
         }
         return super.act();
     }

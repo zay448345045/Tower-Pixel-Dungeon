@@ -97,7 +97,8 @@ public class Sword extends MeleeWeapon {
 
 				Invisibility.dispel();
 				hero.spendAndNext(hero.attackDelay());
-				if (!enemy.isAlive()){
+				if (!enemy.isAlive()
+					&&wep.isFist() != true){
 					wep.onAbilityKill(hero);
 					Buff.prolong(hero, CleaveTracker.class, 5f);
 				} else {
@@ -109,6 +110,7 @@ public class Sword extends MeleeWeapon {
 			}
 		});
 	}
+
 
 	public static class CleaveTracker extends FlavourBuff {
 

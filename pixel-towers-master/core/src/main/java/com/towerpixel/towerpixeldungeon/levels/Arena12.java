@@ -274,6 +274,7 @@ public class Arena12 extends Arena{
         this.drop(Generator.random(Generator.Category.WEP_T3),Random.element(candidates));
         this.drop(Generator.random(Generator.Category.WEP_T4),Random.element(candidates));
         this.drop(Generator.random(Generator.Category.WEP_T5),Random.element(candidates));
+        this.drop(Generator.random(Generator.Category.WEP_T8),Random.element(candidates));
         this.drop(new Pickaxe() ,Random.element(candidates));
         candidates.clear();
 
@@ -282,7 +283,6 @@ public class Arena12 extends Arena{
 
     @Override
     public void doStuffEndwave(int wave) {
-        Dungeon.hero.HP = Dungeon.hero.HT;
         int goldAdd = 2000;
         Dungeon.gold+=goldAdd;
         GLog.w(Messages.get(Arena.class, "goldaddendwave", goldAdd));

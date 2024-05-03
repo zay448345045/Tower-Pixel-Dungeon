@@ -118,14 +118,14 @@ public class DebugBow extends Weapon {
     @Override
     public int min(int lvl) {
         int dmg = 10 + this.level()*10
-                + RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
+                + 10 * RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
         return Math.max(0, dmg);
     }
 
     @Override
     public int max(int lvl) {
         int dmg = 10 + this.level()*10
-                + 2 * RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
+                + 10 * RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
         return Math.max(0, dmg);
     }
 

@@ -41,6 +41,8 @@ public class PotionOfStrength extends Potion {
 		identify();
 		
 		hero.STR++;
+		hero.critChance += 0.035f;
+		hero.critMult += 0.05f;
 		hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "msg_1") );
 		GLog.p( Messages.get(this, "msg_2") );
 		

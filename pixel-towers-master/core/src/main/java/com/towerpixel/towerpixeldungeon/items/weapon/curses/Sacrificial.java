@@ -21,10 +21,12 @@
 
 package com.towerpixel.towerpixeldungeon.items.weapon.curses;
 
+import com.towerpixel.towerpixeldungeon.Dungeon;
 import com.towerpixel.towerpixeldungeon.actors.Char;
 import com.towerpixel.towerpixeldungeon.actors.buffs.Bleeding;
 import com.towerpixel.towerpixeldungeon.actors.buffs.Buff;
 import com.towerpixel.towerpixeldungeon.items.weapon.Weapon;
+import com.towerpixel.towerpixeldungeon.items.weapon.melee.CurvedKnife;
 import com.towerpixel.towerpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
@@ -40,6 +42,9 @@ public class Sacrificial extends Weapon.Enchantment {
 			float missingPercent = attacker.HP/(float)attacker.HT;
 			float bleedAmt = (float)(Math.pow(missingPercent, 2) * attacker.HT)/5;
 			Buff.affect(attacker, Bleeding.class).set(Math.max(1, bleedAmt), getClass());
+			if (Dungeon.hero.belongings.weapon instanceof CurvedKnife){
+				CurvedKnife.sac++;
+			}
 		}
 
 		return damage;

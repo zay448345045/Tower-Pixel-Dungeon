@@ -40,6 +40,7 @@ public class SPDSettings extends GameSettings {
 	private static final String STYLE		= "style";
 	private static final String MAXLEVELUNLOCKED = "maxlevelunlocked";
 	private static final String CHOSENLEVEL		= "chosenlevel";
+	public static boolean CANHAVECAREERBOOK = false;
 
 
 

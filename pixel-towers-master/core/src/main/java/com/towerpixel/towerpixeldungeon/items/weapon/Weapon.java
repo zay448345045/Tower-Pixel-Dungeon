@@ -61,6 +61,7 @@ import com.towerpixel.towerpixeldungeon.items.weapon.enchantments.Pure;
 import com.towerpixel.towerpixeldungeon.items.weapon.enchantments.Shocking;
 import com.towerpixel.towerpixeldungeon.items.weapon.enchantments.Unstable;
 import com.towerpixel.towerpixeldungeon.items.weapon.enchantments.Vampiric;
+import com.towerpixel.towerpixeldungeon.items.weapon.melee.FistAttack;
 import com.towerpixel.towerpixeldungeon.items.weapon.melee.MagesStaff;
 import com.towerpixel.towerpixeldungeon.items.weapon.melee.RunicBlade;
 import com.towerpixel.towerpixeldungeon.items.weapon.melee.Scimitar;
@@ -225,7 +226,7 @@ abstract public class Weapon extends KindOfWeapon {
 				delay *= Math.pow( 1.2, encumbrance );
 			}
 		}
-		delay *= 5;
+		delay /= 3;
 		return delay;
 	}
 
@@ -242,8 +243,11 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public int reachFactor(Char owner) {
 		int reach = RCH;
+		if (owner instanceof Hero && hero.belongings.weapon instanceof FistAttack&&hero.belongings.weapon.level() >= 10) {
+			return 1000000;
+		}
 		if (owner instanceof Hero && RingOfForce.fightingUnarmed((Hero) owner)){
-			reach = 1; //brawlers stance benefits from enchantments, but not innate reach
+			reach = 2; //brawlers stance benefits from enchantments, but not innate reach
 			if (!RingOfForce.unarmedGetsWeaponEnchantment((Hero) owner)){
 				return reach;
 			}
@@ -254,6 +258,7 @@ abstract public class Weapon extends KindOfWeapon {
 			return reach;
 		}
 	}
+
 
 	public int STRReq(){
 		int req = STRReq(level());

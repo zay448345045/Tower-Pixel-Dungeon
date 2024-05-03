@@ -1,7 +1,12 @@
 package com.towerpixel.towerpixeldungeon.levels;
 
+import static com.towerpixel.towerpixeldungeon.Dungeon.hero;
+
 import com.towerpixel.towerpixeldungeon.Assets;
 import com.towerpixel.towerpixeldungeon.Dungeon;
+import com.towerpixel.towerpixeldungeon.actors.buffs.ArtifactRecharge;
+import com.towerpixel.towerpixeldungeon.actors.buffs.Buff;
+import com.towerpixel.towerpixeldungeon.actors.buffs.Recharging;
 import com.towerpixel.towerpixeldungeon.effects.Ripple;
 import com.towerpixel.towerpixeldungeon.items.Generator;
 import com.towerpixel.towerpixeldungeon.items.Honeypot;
@@ -75,7 +80,6 @@ public class Arena2 extends Arena{
 
     @Override
     public void doStuffEndwave(int wave) {
-        Dungeon.hero.HP = Dungeon.hero.HT;
         int goldAdd = 700 + wave*10;
         Dungeon.gold+=goldAdd;
         GLog.w(Messages.get(Arena.class, "goldaddendwave", goldAdd));

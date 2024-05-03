@@ -49,6 +49,7 @@ import com.towerpixel.towerpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.towerpixel.towerpixeldungeon.items.Amulet;
 import com.towerpixel.towerpixeldungeon.items.BrokenSeal;
 import com.towerpixel.towerpixeldungeon.items.Item;
+import com.towerpixel.towerpixeldungeon.items.TengusMask;
 import com.towerpixel.towerpixeldungeon.items.Waterskin;
 import com.towerpixel.towerpixeldungeon.items.armor.ClothArmor;
 import com.towerpixel.towerpixeldungeon.items.armor.LeatherArmor;
@@ -58,6 +59,10 @@ import com.towerpixel.towerpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.towerpixel.towerpixeldungeon.items.artifacts.CloakOfShadows;
 import com.towerpixel.towerpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.towerpixel.towerpixeldungeon.items.artifacts.SandalsOfNature;
+import com.towerpixel.towerpixeldungeon.items.bags.MagicalHolster;
+import com.towerpixel.towerpixeldungeon.items.bags.PotionBandolier;
+import com.towerpixel.towerpixeldungeon.items.bags.ScrollHolder;
+import com.towerpixel.towerpixeldungeon.items.bags.VelvetPouch;
 import com.towerpixel.towerpixeldungeon.items.bombs.Flashbang;
 import com.towerpixel.towerpixeldungeon.items.debuggers.StableTeleportScroll;
 import com.towerpixel.towerpixeldungeon.items.debuggers.StaffOfBeasts;
@@ -75,6 +80,7 @@ import com.towerpixel.towerpixeldungeon.items.potions.elixirs.ElixirOfHoneyedHea
 import com.towerpixel.towerpixeldungeon.items.potions.exotic.PotionOfMagicalSight;
 import com.towerpixel.towerpixeldungeon.items.potions.exotic.PotionOfShielding;
 import com.towerpixel.towerpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
+import com.towerpixel.towerpixeldungeon.items.rings.RingOfFuror;
 import com.towerpixel.towerpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.towerpixel.towerpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.towerpixel.towerpixeldungeon.items.scrolls.ScrollOfMirrorImage;
@@ -108,7 +114,9 @@ import com.towerpixel.towerpixeldungeon.items.wands.WandOfSnakes;
 import com.towerpixel.towerpixeldungeon.items.weapon.DebugBow;
 import com.towerpixel.towerpixeldungeon.items.weapon.SpiritBow;
 import com.towerpixel.towerpixeldungeon.items.weapon.melee.Banhammer;
+import com.towerpixel.towerpixeldungeon.items.weapon.melee.CurvedKnife;
 import com.towerpixel.towerpixeldungeon.items.weapon.melee.Dirk;
+import com.towerpixel.towerpixeldungeon.items.weapon.melee.FistAttack;
 import com.towerpixel.towerpixeldungeon.items.weapon.melee.Gloves;
 import com.towerpixel.towerpixeldungeon.items.weapon.melee.MagesStaff;
 import com.towerpixel.towerpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -213,9 +221,10 @@ public enum HeroClass {
 	}
 
 	private static void initWarrior( Hero hero ) {
-		hero.critMult = 1.3f;
+		hero.critMult = 1.1f;
 		hero.STR = 14;
-		hero.attackSkill = 9;
+		hero.critChance += 0.14f;
+		hero.critMult += 0.2f;
 		gold = 1000;
 
 		Item i = new MailArmor().identify();
@@ -230,15 +239,25 @@ public enum HeroClass {
 			hero.belongings.armor.affixSeal(new BrokenSeal());
 		}
 
+		if (SPDSettings.CANHAVECAREERBOOK){
+			new TengusMask().collect();
+		}
 		new ElixirOfHoneyedHealing().collect();
 		new PotionOfPurity().collect();
 		new PotionOfShielding().collect();
 		new ScrollOfRage().identify().collect();
+		new MagicalHolster().collect();
+		new PotionBandolier().collect();
+		new ScrollHolder().collect();
+		new VelvetPouch().collect();
+		new FistAttack().identify().collect();
 	}
 
 	private static void initMage( Hero hero ) {
 		hero.STR = 12;
 		gold = 1000;
+		hero.critChance += 0.07;
+		hero.critMult += 0.1;
 
 		Item i = new LeatherArmor().identify();
 		hero.belongings.armor = (LeatherArmor)i;
@@ -248,6 +267,9 @@ public enum HeroClass {
 		hero.belongings.weapon.activate(hero);
 
 		Dungeon.quickslot.setSlot(0, staff);
+		if (SPDSettings.CANHAVECAREERBOOK){
+			new TengusMask().collect();
+		}
 
 		new ScrollOfUpgrade().identify();
 		new StoneOfShock().collect();
@@ -263,6 +285,11 @@ public enum HeroClass {
 		new StoneOfIntuition().collect();
 		new ScrollOfAntiMagic().collect();
 		new ScrollOfRecharging().collect();
+		new MagicalHolster().collect();
+		new PotionBandolier().collect();
+		new ScrollHolder().collect();
+		new VelvetPouch().collect();
+		new FistAttack().identify().collect();
 
 	}
 
@@ -271,6 +298,8 @@ public enum HeroClass {
 		hero.defenseSkill = 6;
 		hero.STR = 13;
 		gold = 2000;
+		hero.critChance += 0.105f;
+		hero.critMult += 0.15;
 		updateQuickslot();
 
 		Item i = new LeatherArmor().identify();
@@ -287,6 +316,9 @@ public enum HeroClass {
 
 		Dungeon.quickslot.setSlot(0, cloak);
 		Dungeon.quickslot.setSlot(1, knives);
+		if (SPDSettings.CANHAVECAREERBOOK){
+			new TengusMask().collect();
+		}
 
 		new ScrollOfMagicMapping().identify().collect();
 		new PotionOfInvisibility().identify().collect();
@@ -294,12 +326,19 @@ public enum HeroClass {
 		new StoneOfBlink().collect();
 		new Flashbang().collect();
 		new PotionOfSnapFreeze().collect();
+		new MagicalHolster().collect();
+		new PotionBandolier().collect();
+		new ScrollHolder().collect();
+		new VelvetPouch().collect();
+		new FistAttack().identify().collect();
 	}
 
 	private static void initHuntress( Hero hero ) {
 		hero.STR = 11;
 		hero.attackSkill = 11;
 		gold = 1000;
+		hero.critChance += 0.035f;
+		hero.critMult += 0.05f;
 
 		Item i = new ClothArmor().identify();
 		hero.belongings.armor = (ClothArmor)i;
@@ -309,6 +348,9 @@ public enum HeroClass {
 		bow.identify().collect();
 
 		Dungeon.quickslot.setSlot(0, bow);
+		if (SPDSettings.CANHAVECAREERBOOK){
+			new TengusMask().collect();
+		}
 
 		for (int x = 0; x < 3; x++){
 			new Dart().collect();
@@ -318,12 +360,19 @@ public enum HeroClass {
 		new Sungrass.Seed().collect();
 		new Swiftthistle.Seed().collect();
 		new Earthroot.Seed().collect();
+		new MagicalHolster().collect();
+		new PotionBandolier().collect();
+		new ScrollHolder().collect();
+		new VelvetPouch().collect();
+		new FistAttack().identify().collect();
 	}
 
 	private static void initDuelist( Hero hero ) {
 		hero.STR = 13;
-		hero.critChance = 0.15f;
+		hero.critChance = 0.05f;
 		gold = 1000;
+		hero.critChance += 0.105f;
+		hero.critMult += 0.15;
 		Item i = new LeatherArmor().identify();
 		hero.belongings.armor = (LeatherArmor)i;
 
@@ -336,12 +385,21 @@ public enum HeroClass {
 		new Dirk().identify().collect();
 		new Quarterstaff().identify().collect();
 
+		new FistAttack().identify().collect();
 		Dungeon.quickslot.setSlot(0, hero.belongings.weapon);
 		Dungeon.quickslot.setSlot(1, spikes);
+		if (SPDSettings.CANHAVECAREERBOOK){
+			new TengusMask().collect();
+		}
 
 		new ScrollOfMirrorImage().identify().collect();
 		new ScrollOfPrismaticImage().collect();
 		new ScrollOfSirensSong().collect();
+		new MagicalHolster().collect();
+		new PotionBandolier().collect();
+		new ScrollHolder().collect();
+		new VelvetPouch().collect();
+		new CurvedKnife().identify().collect();
 
 	}
 	private static void initFix(Hero hero){
@@ -379,7 +437,7 @@ public enum HeroClass {
 		WandOfSnakes r22 = new WandOfSnakes();
 		r22.identify().collect();
 
-		new WandOfRegrowth().collect();
+		new WandOfRegrowth().upgrade(10).collect();
 		new SandalsOfNature().upgrade(10000).collect();
 
 		StableTeleportScroll stableTeleportScroll=new StableTeleportScroll();
@@ -387,7 +445,9 @@ public enum HeroClass {
 
 		MasterThievesArmband armband = new MasterThievesArmband();
 		armband.identify().collect();
-
+		if (SPDSettings.CANHAVECAREERBOOK){
+			new TengusMask().collect();
+		}
 		for (int i = 0; i<=20; i++) {
 			new PotionOfMagicalSight().collect();
 			new ScrollOfTeleportation().collect();
@@ -398,12 +458,16 @@ public enum HeroClass {
 			new SpawnerCannon().identify().collect();
 			new ScrollOfMagicMapping().identify().collect();
 			new PotionOfToxicGas().identify().collect();
-
+			new ScrollOfUpgrade().identify().collect();
 		}
 
 
 		DebugBow bow = new DebugBow();
 		bow.identify().collect();
+
+		new FistAttack().identify().collect();
+
+		new RingOfFuror().identify().collect();
 
 		AlchemistsToolkit alchemistsToolkit = new AlchemistsToolkit();
 		alchemistsToolkit.identify().collect();

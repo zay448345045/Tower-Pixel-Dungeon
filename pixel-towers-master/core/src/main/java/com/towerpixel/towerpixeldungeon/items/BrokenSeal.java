@@ -72,7 +72,7 @@ public class BrokenSeal extends Item {
 
 	public int maxShield( int armTier, int armLvl ){
 		int shield = armTier + armLvl;
-		shield *= Dungeon.hero.pointsInTalent(Talent.IRON_WILL);
+		shield *= 1 + Dungeon.hero.pointsInTalent(Talent.IRON_WILL);
 		return shield;
 	}
 

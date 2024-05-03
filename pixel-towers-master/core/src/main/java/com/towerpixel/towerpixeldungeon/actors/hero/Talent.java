@@ -192,10 +192,10 @@ public enum Talent {
 			if (((Hero)target).hasTalent(Talent.PROTECTIVE_SHADOWS) && target.invisible > 0){
 				Barrier barrier = Buff.affect(target, Barrier.class);
 				barrierInc += 0.5f * ((Hero) target).pointsInTalent(Talent.PROTECTIVE_SHADOWS);
-				hero.HP = Math.max(hero.HP+1,hero.HT);
+				hero.HP = Math.min(hero.HP+1,hero.HT);
 				if (barrierInc >= 1){
 					barrierInc = 0;
-					hero.HP = Math.max(hero.HP+1,hero.HT);
+					hero.HP = Math.min(hero.HP+1,hero.HT);
 					barrier.incShield(1);
 				} else {
 					barrier.incShield(0); //resets barrier decay

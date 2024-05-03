@@ -13,12 +13,15 @@ import com.towerpixel.towerpixeldungeon.GamesInProgress;
 import com.towerpixel.towerpixeldungeon.ShatteredPixelDungeon;
 import com.towerpixel.towerpixeldungeon.actors.Actor;
 import com.towerpixel.towerpixeldungeon.actors.Char;
+import com.towerpixel.towerpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.towerpixel.towerpixeldungeon.actors.buffs.Buff;
 
 import com.towerpixel.towerpixeldungeon.actors.buffs.ChampionEnemy;
 import com.towerpixel.towerpixeldungeon.actors.buffs.Corrosion;
 import com.towerpixel.towerpixeldungeon.actors.buffs.Healing;
 import com.towerpixel.towerpixeldungeon.actors.buffs.Levitation;
+import com.towerpixel.towerpixeldungeon.actors.buffs.Recharging;
+import com.towerpixel.towerpixeldungeon.actors.buffs.WandEmpower;
 import com.towerpixel.towerpixeldungeon.actors.buffs.WaveBuff;
 import com.towerpixel.towerpixeldungeon.actors.buffs.WaveCooldownBuff;
 import com.towerpixel.towerpixeldungeon.actors.mobs.Albino;
@@ -90,6 +93,7 @@ import com.towerpixel.towerpixeldungeon.effects.MagicMissile;
 import com.towerpixel.towerpixeldungeon.effects.particles.ElmoParticle;
 import com.towerpixel.towerpixeldungeon.items.Amulet;
 import com.towerpixel.towerpixeldungeon.items.Heap;
+import com.towerpixel.towerpixeldungeon.items.artifacts.HornOfPlenty;
 import com.towerpixel.towerpixeldungeon.levels.features.LevelTransition;
 import com.towerpixel.towerpixeldungeon.levels.painters.Painter;
 import com.towerpixel.towerpixeldungeon.messages.Messages;
@@ -116,7 +120,8 @@ public class Arena extends Level {
         color1 = 0x801500;
         color2 = 0xa68521;
 
-        viewDistance = 15;
+        viewDistance = 20;
+
 
     }
     public int startGold = 50000;
@@ -584,6 +589,8 @@ public class Arena extends Level {
     public void doStuffStartwave(int wave){}/// does something in the beginning of each wave, overriden in arenas that need it.
     public void doStuffEndwave(int wave){
         Dungeon.hero.HP = Dungeon.hero.HT;
+        Buff.prolong( hero, Recharging.class, 10) ;
+        Buff.affect( hero, ArtifactRecharge.class).set(10);
     }/// does something in the end of each wave
     public void addDestinations(){}//for stuff placing around the map
     public Mob chooseMob(int wave){ //Chooses a mob to spawn on a wave;
@@ -1604,6 +1611,8 @@ public class Arena extends Level {
     @Override
     public void initNpcs() {
         hero.lvl = startLvl;
+        hero.critChance += 0.035f * (startLvl-1);
+        hero.critMult += 0.05f * (startLvl-1);
         hero.updateHT(true);
         Dungeon.gold += startGold;
         updateQuickslot();
@@ -1739,7 +1748,7 @@ public class Arena extends Level {
                 if (mob.alignment!=Alignment.ALLY) mob.beckon( this.pos );
                 if (mob.alignment==Alignment.ENEMY && !(mob instanceof Tower) && !(mob instanceof Piranha) && !(mob instanceof RotLasher) && !(mob instanceof Mimic) && !(mob instanceof Bee)) enemyspotted = true;
             }
-            if (Dungeon.depth==11 && Math.random()*50+level.wave>49){
+            if (Dungeon.depth==11 && Math.random()*50+level.wave>65){
                 if (mobs!=null && hero.buff(WaveCooldownBuff.class)==null) Arena11.dropRock(Random.element(mobs));
             }
             if (Dungeon.depth!=18){

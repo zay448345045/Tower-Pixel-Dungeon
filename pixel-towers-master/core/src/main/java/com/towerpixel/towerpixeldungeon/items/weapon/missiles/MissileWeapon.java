@@ -21,6 +21,8 @@
 
 package com.towerpixel.towerpixeldungeon.items.weapon.missiles;
 
+import static com.towerpixel.towerpixeldungeon.Dungeon.hero;
+
 import com.towerpixel.towerpixeldungeon.Dungeon;
 import com.towerpixel.towerpixeldungeon.actors.Actor;
 import com.towerpixel.towerpixeldungeon.actors.Char;
@@ -424,7 +426,9 @@ abstract public class MissileWeapon extends Weapon {
 				tier,
 				Math.round(augment.damageFactor(min())),
 				Math.round(augment.damageFactor(max())),
-				STRReq());
+				STRReq(),
+				Math.round(100*(this.critChance+hero.critChance())),
+				(Math.round(100*(this.critMult*hero.critMult())))-100);
 
 		if (STRReq() > Dungeon.hero.STR()) {
 			info += " " + Messages.get(Weapon.class, "too_heavy");

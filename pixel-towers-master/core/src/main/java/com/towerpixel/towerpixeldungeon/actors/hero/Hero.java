@@ -128,6 +128,7 @@ import com.towerpixel.towerpixeldungeon.items.wands.WandOfLivingEarth;
 import com.towerpixel.towerpixeldungeon.items.weapon.SpiritBow;
 import com.towerpixel.towerpixeldungeon.items.weapon.Weapon;
 import com.towerpixel.towerpixeldungeon.items.weapon.melee.DualHatchet;
+import com.towerpixel.towerpixeldungeon.items.weapon.melee.FistAttack;
 import com.towerpixel.towerpixeldungeon.items.weapon.melee.Flail;
 import com.towerpixel.towerpixeldungeon.items.weapon.melee.MagesStaff;
 import com.towerpixel.towerpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -183,8 +184,8 @@ public class Hero extends Char {
 	{
 		actPriority = HERO_PRIO;
 		alignment = Alignment.ALLY;
-		critChance = 0.05f;
-		critMult = 1.2f;
+		critChance = 0f;
+		critMult = 1f;
 	}
 	@Override
 	public float critMult() {
@@ -612,7 +613,10 @@ public class Hero extends Char {
 
 		if (!RingOfForce.fightingUnarmed(this)) {
 			dmg = wep.damageRoll( this );
-
+			if (hero.belongings.weapon instanceof FistAttack
+				&& hero.buff(RingOfForce.Force.class) != null){
+				dmg += RingOfForce.damageRoll(this)/2;
+			}
 			if (heroClass != HeroClass.DUELIST
 					&& hasTalent(Talent.LIGHTWEIGHT_CHARGE)
 					&& wep instanceof MeleeWeapon) {
@@ -1255,11 +1259,10 @@ public class Hero extends Char {
 		if (enemy.isAlive() && canAttack( enemy ) && !isCharmedBy( enemy ) && enemy.invisible == 0) {
 
 			if (heroClass != HeroClass.DUELIST
-					&& hasTalent(Talent.AGGRESSIVE_BARRIER)
+					&& hasTalent(Talent.AGGRESSIVE_BLOOD)
 					&& buff(Talent.AggressiveBarrierCooldown.class) == null
-					&& (HP / (float)HT) < 0.20f*(1+pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
-				Buff.affect(this, Barrier.class).setShield(3);
-				Buff.affect(this, Talent.AggressiveBarrierCooldown.class, 50f);
+					&& (HP / (float)HT) < 0.20f*(1+pointsInTalent(Talent.AGGRESSIVE_BLOOD))){
+				hero.HP = Math.min(hero.HP + 5,hero.HT);
 			}
 			sprite.attack( enemy.pos );
 
@@ -1738,6 +1741,8 @@ public class Hero extends Char {
 			this.exp -= maxExp();
 			if (lvl < MAX_LEVEL) {
 				lvl++;
+				critChance += 0.005f;
+				critMult += 0.01f;
 
 				levelUp = true;
 				

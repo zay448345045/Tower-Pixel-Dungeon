@@ -91,6 +91,8 @@ public class Arena15 extends Arena{
     @Override
     public void initNpcs() {
         hero.lvl = startLvl;
+        hero.critChance += 0.035f * (startLvl-1);
+        hero.critMult += 0.05f * (startLvl-1);
         hero.updateHT(true);
         Dungeon.gold += startGold;
         updateQuickslot();
@@ -130,7 +132,6 @@ public class Arena15 extends Arena{
     }
     @Override
     public void doStuffEndwave(int wave) {
-        Dungeon.hero.HP = Dungeon.hero.HT;
         int goldAdd = 10000;
         Dungeon.gold+=goldAdd;
         updateQuickslot();
@@ -343,6 +344,7 @@ public class Arena15 extends Arena{
         this.drop(Generator.random(Generator.Category.RING), Random.element(candidates));
         this.drop(Generator.random(Generator.Category.MISSILE), Random.element(candidates));
         this.drop(Generator.random(Generator.Category.MISSILE), Random.element(candidates));
+        this.drop(Generator.random(Generator.Category.WEP_T8),Random.element(candidates));
 
 
 
