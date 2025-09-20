@@ -646,7 +646,7 @@ public class vTowersNewChanges {
 	}
 	public static void add_v101_Changes( ArrayList<ChangeInfo> changeInfos) {
 
-		ChangeInfo changes = new ChangeInfo("v1.0.1", false, null);
+		ChangeInfo changes = new ChangeInfo("v1.0.1 - post-launch patch", true, null);
 		changes.hardlight(CharSprite.GREEN);
 		changeInfos.add(changes);
 
@@ -656,7 +656,7 @@ public class vTowersNewChanges {
 						"- fixed several annying bugs and somewhat reworked duelist's abilities"));
 		changes.addButton(new ChangeButton(new TowerTotemSprite.TShield(), "slight totem-type fixes",
 						"- All totem-type towers now save their cooldown between singular save game sessions"));
-		changes.addButton(new ChangeButton(new FlagFriendSprite(), "Banner rework",
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.HEROSPELL_BANNER), "Banner rework",
 				"Made a few additions to banners:\n" +
 						"- healing slightly decreased\n" +
 						"- Inspiration gained stacks softly, consists only of one buff (I guess that is a better way to do it) and decreases faster with inspiration amount"));
