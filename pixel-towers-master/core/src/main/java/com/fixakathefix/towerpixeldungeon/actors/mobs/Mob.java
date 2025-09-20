@@ -805,8 +805,8 @@ public abstract class Mob extends Char {
 		if (this instanceof Tower) delay = ((Tower)this).baseAttackDelay;
 		if ( buff(Adrenaline.class) != null) delay /= 1.5f;
 		if ( buff(Overcharge.class) != null) delay /= 10f;
-		for (Buff buff : buffs()){
-			if (buff instanceof Inspired) delay /= 1.15f;
+		if ( buff(Inspired.class)   != null) {
+			delay/= (1.1f * buff(Inspired.class).level);
 		}
 		return delay;
 	}

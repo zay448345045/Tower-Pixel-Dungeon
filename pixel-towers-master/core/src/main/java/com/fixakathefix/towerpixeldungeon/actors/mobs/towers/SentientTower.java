@@ -173,6 +173,7 @@ public class SentientTower extends Tower {
                 if (followingHero) target = Dungeon.hero.pos;
                 else target = defendingPos;
                 state = WANDERING;
+                spend( 1 / speed() );
                 return true;
             }
             return super.act(enemyInFOV, justAlerted);

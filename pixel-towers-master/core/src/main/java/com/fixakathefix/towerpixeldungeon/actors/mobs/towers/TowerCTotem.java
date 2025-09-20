@@ -6,6 +6,7 @@ import com.fixakathefix.towerpixeldungeon.Dungeon;
 import com.fixakathefix.towerpixeldungeon.actors.Char;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Animated;
 import com.fixakathefix.towerpixeldungeon.journal.Bestiary;
+import com.watabou.utils.Bundle;
 
 public abstract class TowerCTotem extends TowerNotliving{
 
@@ -50,5 +51,19 @@ public abstract class TowerCTotem extends TowerNotliving{
             abTime=0;
         }
         return true;
+    }
+    private static final String ABTIME = "abtime";
+    private static final String ABTIMEMAX = "abtimemax";
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(ABTIME, abTime);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        abTime = bundle.getInt(ABTIME);
     }
 }

@@ -56,6 +56,7 @@ import com.fixakathefix.towerpixeldungeon.actors.buffs.Faint;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Foresight;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.HoldFast;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Hunger;
+import com.fixakathefix.towerpixeldungeon.actors.buffs.Inspired;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Invisibility;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Levitation;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.LostInventory;
@@ -728,6 +729,10 @@ public class Hero extends Char {
 		}
 
 		float delay = 1f;
+
+		if ( buff(Inspired.class)   != null) {
+			delay/= (1.1f * buff(Inspired.class).level);
+		}
 
 		if (!RingOfForce.fightingUnarmed(this)) {
 			
