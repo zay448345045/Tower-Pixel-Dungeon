@@ -58,11 +58,11 @@ public class Inspired extends Buff{
     }
     @Override
     public String iconTextDisplay() {
-        return level*10 + "%";
+        return String.format("%.1f", (Math.pow(1.1, level))*100f) + "%";
     }
     @Override
     public String desc() {
-        return Messages.get(this, "desc", String.format("%.1f", 100f/(Math.pow(1.1, level))) + "%", String.format("%.1f", time/level));
+        return Messages.get(this, "desc", String.format("%.1f", (Math.pow(1.1, level))*100f) + "%", String.format("%.1f", time/level));
     }
 
     private static final String LEVEL	    = "level";
