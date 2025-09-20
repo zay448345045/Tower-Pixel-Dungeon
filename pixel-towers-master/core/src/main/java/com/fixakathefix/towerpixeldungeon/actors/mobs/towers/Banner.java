@@ -32,7 +32,7 @@ public class Banner extends TowerCTotem{
                 if (ch.buff(Inspired.class) == null) Buff.affect(ch, Inspired.class);
                 else ch.buff(Inspired.class).add(1);
             }
-            ch.heal(1 + Dungeon.hero.lvl/2);
+            ch.heal(1 + Dungeon.hero.lvl/3);
         }
     }
     protected void searchAndUse(){

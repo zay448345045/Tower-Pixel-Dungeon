@@ -31,6 +31,7 @@ import com.fixakathefix.towerpixeldungeon.sprites.BeeSprite;
 import com.fixakathefix.towerpixeldungeon.sprites.CausticSlimeSprite;
 import com.fixakathefix.towerpixeldungeon.sprites.CharSprite;
 import com.fixakathefix.towerpixeldungeon.sprites.ElementalSprite;
+import com.fixakathefix.towerpixeldungeon.sprites.FlagFriendSprite;
 import com.fixakathefix.towerpixeldungeon.sprites.GnollGuardSprite;
 import com.fixakathefix.towerpixeldungeon.sprites.GorematiaSpiritSprite;
 import com.fixakathefix.towerpixeldungeon.sprites.ItemSprite;
@@ -43,6 +44,7 @@ import com.fixakathefix.towerpixeldungeon.sprites.ShopkeeperSprite;
 import com.fixakathefix.towerpixeldungeon.sprites.SpinnerSprite;
 import com.fixakathefix.towerpixeldungeon.sprites.TowerCrossbow1Sprite;
 import com.fixakathefix.towerpixeldungeon.sprites.TowerRatCampSprite;
+import com.fixakathefix.towerpixeldungeon.sprites.TowerTotemSprite;
 import com.fixakathefix.towerpixeldungeon.sprites.YogSprite;
 import com.fixakathefix.towerpixeldungeon.ui.Icons;
 import com.fixakathefix.towerpixeldungeon.ui.Window;
@@ -66,6 +68,7 @@ public class vTowersNewChanges {
 		add_v053_Changes(changeInfos);
 		add_v054_Changes(changeInfos);
 		add_v100_Changes(changeInfos);
+		add_v101_Changes(changeInfos);
 	}
 
 	public static void add_Coming_Soon( ArrayList<ChangeInfo> changeInfos ) {
@@ -639,6 +642,30 @@ public class vTowersNewChanges {
 						"- A couple of Boss fixes\n" +
 						"- Fixed time scaling with several buffs and debuffs, some of which are Faint-related bugs\n" +
 						"- etc. etc. etc... there was quite a lot of them"));
+
+	}
+	public static void add_v101_Changes( ArrayList<ChangeInfo> changeInfos) {
+
+		ChangeInfo changes = new ChangeInfo("v1.0.1", false, null);
+		changes.hardlight(CharSprite.GREEN);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.COPY), "General",
+				"General update info:\n" +
+						"- Released 20.09.25\n" +
+						"- fixed several annying bugs and somewhat reworked duelist's abilities"));
+		changes.addButton(new ChangeButton(new TowerTotemSprite.TShield(), "slight totem-type fixes",
+						"- All totem-type towers now save their cooldown between singular save game sessions"));
+		changes.addButton(new ChangeButton(new FlagFriendSprite(), "Banner rework",
+				"Made a few additions to banners:\n" +
+						"- healing slightly decreased\n" +
+						"- Inspiration gained stacks softly, consists only of one buff (I guess that is a better way to do it) and decreases faster with inspiration amount"));
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), "Bugs",
+				"Bugs removed:\n" +
+						"- crashbug/hardlock with duelist's targeting ability\n" +
+						"- inspiration not working on heroes\n" +
+						"- guard ai bugs\n" +
+						"- priest-related visual bugs"));
 
 	}
 

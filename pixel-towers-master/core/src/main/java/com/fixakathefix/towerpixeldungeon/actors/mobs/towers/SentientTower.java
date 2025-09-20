@@ -165,7 +165,6 @@ public class SentientTower extends Tower {
     }
 
     private class Hunting extends Mob.Hunting {
-
         @Override
         public boolean act(boolean enemyInFOV, boolean justAlerted) {
             if (followingHero) defendingPos = -1;
