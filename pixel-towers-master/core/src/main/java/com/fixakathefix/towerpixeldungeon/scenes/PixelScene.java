@@ -76,7 +76,6 @@ public class PixelScene extends Scene {
 
 	public static int defaultZoom = 0;
 	public static int maxDefaultZoom = 0;
-	public static int maxScreenZoom = 0;
 	public static float minZoom;
 	public static float maxZoom;
 
@@ -118,7 +117,6 @@ public class PixelScene extends Scene {
 		}
 
 		maxDefaultZoom = (int)Math.min(Game.width/minWidth, Game.height/minHeight);
-		maxScreenZoom = (int)Math.min(Game.dispWidth/minWidth, Game.dispHeight/minHeight);
 		defaultZoom = SPDSettings.scale();
 
 		if (defaultZoom < Math.ceil( Game.density * 2 ) || defaultZoom > maxDefaultZoom){
@@ -143,7 +141,7 @@ public class PixelScene extends Scene {
 			TextureCache.get( Assets.Fonts.PIXELFONT), 0x00000000, BitmapText.Font.LATIN_FULL );
 		pixelFont.baseLine = 6;
 		pixelFont.tracking = -1;
-		
+
 		//set up the texture size which rendered text will use for any new glyphs.
 		int renderedTextPageSize;
 		if (defaultZoom <= 3){
@@ -274,7 +272,7 @@ public class PixelScene extends Scene {
 	//FIXME this system currently only works for a subset of windows
 	private static ArrayList<Class<?extends Window>> savedWindows = new ArrayList<>();
 	private static Class<?extends PixelScene> savedClass = null;
-	
+
 	public synchronized void saveWindows(){
 		if (members == null) return;
 
@@ -286,7 +284,7 @@ public class PixelScene extends Scene {
 			}
 		}
 	}
-	
+
 	public synchronized void restoreWindows(){
 		if (getClass().equals(savedClass)){
 			for (Class<?extends Window> w : savedWindows){
@@ -357,11 +355,11 @@ public class PixelScene extends Scene {
 			fadeIn( 0xFF000000, false );
 		}
 	}
-	
+
 	protected void fadeIn( int color, boolean light ) {
 		add( new Fader( color, light ) );
 	}
-	
+
 	public static void showBadge( Badges.Badge badge ) {
 		Game.runOnRenderThread(new Callback() {
 			@Override
@@ -386,24 +384,24 @@ public class PixelScene extends Scene {
 			}
 		});
 	}
-	
+
 	protected static class Fader extends ColorBlock {
-		
+
 		private static float FADE_TIME = 1f;
-		
+
 		private boolean light;
-		
+
 		private float time;
 
 		private static Fader INSTANCE;
-		
+
 		public Fader( int color, boolean light ) {
 			super( uiCamera.width, uiCamera.height, color );
-			
+
 			this.light = light;
-			
+
 			camera = uiCamera;
-			
+
 			alpha( 1f );
 			time = FADE_TIME;
 
@@ -412,12 +410,12 @@ public class PixelScene extends Scene {
 			}
 			INSTANCE = this;
 		}
-		
+
 		@Override
 		public void update() {
-			
+
 			super.update();
-			
+
 			if ((time -= Game.elapsed) <= 0) {
 				alpha( 0f );
 				parent.remove( this );
@@ -429,7 +427,7 @@ public class PixelScene extends Scene {
 				alpha( time / FADE_TIME );
 			}
 		}
-		
+
 		@Override
 		public void draw() {
 			if (light) {
@@ -441,9 +439,9 @@ public class PixelScene extends Scene {
 			}
 		}
 	}
-	
+
 	private static class PixelCamera extends Camera {
-		
+
 		public PixelCamera( float zoom ) {
 			super(
 				(int)(Game.width - Math.ceil( Game.width / zoom ) * zoom) / 2,
@@ -452,18 +450,18 @@ public class PixelScene extends Scene {
 				(int)Math.ceil( Game.height / zoom ), zoom );
 			fullScreen = true;
 		}
-		
+
 		@Override
 		protected void updateMatrix() {
 			float sx = align( this, scroll.x + shakeX );
 			float sy = align( this, scroll.y + shakeY );
-			
+
 			matrix[0] = +zoom * invW2;
 			matrix[5] = -zoom * invH2;
-			
+
 			matrix[12] = -1 + x * invW2 - sx * matrix[0];
 			matrix[13] = +1 - y * invH2 - sy * matrix[5];
-			
+
 		}
 	}
 }

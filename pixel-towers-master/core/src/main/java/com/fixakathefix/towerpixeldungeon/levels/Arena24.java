@@ -73,8 +73,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import jdk.internal.net.http.common.Pair;
-
 public class Arena24 extends Arena{
     {
         name = "Phantasmagoria";

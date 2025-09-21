@@ -24,16 +24,13 @@
 
 package com.watabou.input;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Cursor;
-import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
 
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.HashMap;
 
 public class PointerEvent {
@@ -41,6 +38,7 @@ public class PointerEvent {
 	public enum Type {
 		DOWN,
 		UP,
+		CANCEL,
 		HOVER
 	}
 
@@ -88,6 +86,11 @@ public class PointerEvent {
 		return this;
 	}
 
+	public PointerEvent cancel() {
+		if (type == Type.DOWN) type = Type.CANCEL;
+		return this;
+	}
+
 	public PointerEvent handle(){
 		handled = true;
 		return this;
@@ -124,6 +127,10 @@ public class PointerEvent {
 		}
 		return lastHoverPos.clone();
 	}
+
+	public static void setHoverPos(PointF pos){
+		lastHoverPos.set(pos);
+	}
 	
 	public static synchronized void addPointerEvent( PointerEvent event ){
 		pointerEvents.add( event );
@@ -138,6 +145,10 @@ public class PointerEvent {
 	public static boolean clearKeyboardThisPress = true;
 	
 	public static synchronized void processPointerEvents(){
+		if (pointerEvents.isEmpty()){
+			return;
+		}
+
 		//handle any hover events separately first as we may need to add drag events
 		boolean hovered = false;
 		for (PointerEvent p : pointerEvents){
@@ -160,9 +171,12 @@ public class PointerEvent {
 					pointerSignal.dispatch( null );
 				} else if (p.type == Type.DOWN) {
 					pointerSignal.dispatch( existing );
-				} else {
+				} else if (p.type == Type.UP){
 					activePointers.remove(existing.id);
 					pointerSignal.dispatch(existing.up());
+				} else if (p.type == Type.CANCEL){
+					activePointers.remove(existing.id);
+					pointerSignal.dispatch(existing.cancel());
 				}
 			} else {
 				if (p.type == Type.DOWN) {
@@ -172,7 +186,7 @@ public class PointerEvent {
 			}
 			if (clearKeyboardThisPress){
 				//most press events should clear the keyboard
-				Game.platform.setOnscreenKeyboardVisible(false);
+				Game.platform.setOnscreenKeyboardVisible(false, false);
 			}
 		}
 		pointerEvents.clear();
@@ -183,12 +197,4 @@ public class PointerEvent {
 		}
 	}
 
-	public static synchronized void clearPointerEvents(){
-		pointerEvents.clear();
-		for (PointerEvent p : activePointers.values()){
-			p.current = p.start = new PointF(-1, -1);
-			pointerSignal.dispatch(p.up());
-		}
-		activePointers.clear();
-	}
 }

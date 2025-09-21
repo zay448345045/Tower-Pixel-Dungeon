@@ -33,7 +33,6 @@ import com.badlogic.gdx.controllers.ControllerMapping;
 import com.badlogic.gdx.controllers.Controllers;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Cursor;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PointF;
 
 public class ControllerHandler implements ControllerListener {
@@ -49,7 +48,8 @@ public class ControllerHandler implements ControllerListener {
 	public static boolean controllerActive = false;
 
 	//sufficiently large number so that it'll never collide with touch pointers (which start at 0)
-	public static final int CONTROLLER_POINTER_ID = 1000;
+	//19 is the max to avoid array overflow when interacting with some libGDX graphics objects
+	public static final int CONTROLLER_POINTER_ID = 19;
 
 	private static void setControllerType(Controller controller){
 		if (controller.getName().contains("Xbox")){
@@ -63,11 +63,41 @@ public class ControllerHandler implements ControllerListener {
 		}
 	}
 
+	private static boolean initialized = false;
+	private static boolean failedInit = false;
+
 	public static boolean controllersSupported() {
-		if (DeviceCompat.isAndroid() && Gdx.app.getVersion() < 16) {
+		if (failedInit) {
 			return false;
-		} else {
+		} else if (initialized){
 			return true;
+		} else {
+			try {
+				//we do this to call Controllers.initialize(), which can fail in certain cases
+				// e.g. missing natives on very old 32-bit desktop platforms
+				Controllers.getCurrent();
+				initialized = true;
+				return true;
+			} catch (Exception e){
+				Game.reportException(e);
+				failedInit = true;
+				return false;
+			}
+		}
+	}
+
+	public static boolean vibrationSupported(){
+		try {
+			//library can throw a NPE here is controller was disconnected during sleep
+			return isControllerConnected() && Controllers.getCurrent().canVibrate();
+		} catch (Exception e){
+			return false;
+		}
+	}
+
+	public static void vibrate( int millis ){
+		if (vibrationSupported()) {
+			Controllers.getCurrent().startVibration(millis, 1f);
 		}
 	}
 
@@ -182,6 +212,8 @@ public class ControllerHandler implements ControllerListener {
 		if (sendEvent) {
 			controllerActive = true;
 			PointerEvent.addPointerEvent(new PointerEvent((int) controllerPointerPos.x, (int) controllerPointerPos.y, 10_000, PointerEvent.Type.HOVER, PointerEvent.NONE));
+		} else {
+			PointerEvent.setHoverPos(pos);
 		}
 	}
 
@@ -216,6 +248,10 @@ public class ControllerHandler implements ControllerListener {
 	}
 
 	public static boolean icControllerKey(int keyCode){
+		if (keyCode == 0){
+			return true;
+		}
+
 		if (keyCode >= Input.Keys.BUTTON_A
 				&& keyCode <= Input.Keys.BUTTON_MODE){
 			return true;

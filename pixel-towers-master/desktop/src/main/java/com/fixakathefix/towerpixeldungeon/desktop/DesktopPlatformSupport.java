@@ -21,21 +21,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-
 package com.fixakathefix.towerpixeldungeon.desktop;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.g2d.PixmapPacker;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.fixakathefix.towerpixeldungeon.SPDSettings;
-import com.watabou.noosa.Game;
-import com.watabou.utils.PlatformSupport;
-import com.watabou.utils.Point;
+		import com.badlogic.gdx.Gdx;
+		import com.badlogic.gdx.Graphics;
+		import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
+		import com.badlogic.gdx.graphics.Pixmap;
+		import com.badlogic.gdx.graphics.g2d.PixmapPacker;
+		import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+		import com.fixakathefix.towerpixeldungeon.SPDSettings;
+		import com.watabou.input.ControllerHandler;
+		import com.watabou.noosa.Game;
+		import com.watabou.utils.PlatformSupport;
+		import com.watabou.utils.Point;
 
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+		import java.util.HashMap;
+		import java.util.regex.Matcher;
+		import java.util.regex.Pattern;
 
 public class DesktopPlatformSupport extends PlatformSupport {
 
@@ -47,45 +49,70 @@ public class DesktopPlatformSupport extends PlatformSupport {
 	public void updateDisplaySize() {
 		if (previousSizes == null){
 			previousSizes = new Point[2];
-			previousSizes[0] = previousSizes[1] = new Point(Game.width, Game.height);
+			previousSizes[1] = SPDSettings.windowResolution();
 		} else {
 			previousSizes[1] = previousSizes[0];
-			previousSizes[0] = new Point(Game.width, Game.height);
 		}
+		previousSizes[0] = new Point(Game.width, Game.height);
 		if (!SPDSettings.fullscreen()) {
 			SPDSettings.windowResolution( previousSizes[0] );
 		}
-		//TODO fixes an in libGDX v1.11.0 with macOS displays
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
 	}
-	
+
+	private static boolean first = true;
+
 	@Override
 	public void updateSystemUI() {
 		Gdx.app.postRunnable( new Runnable() {
 			@Override
 			public void run () {
 				if (SPDSettings.fullscreen()){
-					Gdx.graphics.setFullscreenMode( Gdx.graphics.getDisplayMode() );
+					int monitorNum = 0;
+					if (!first){
+						Graphics.Monitor[] monitors = Gdx.graphics.getMonitors();
+						for (int i = 0; i < monitors.length; i++){
+							if (((Lwjgl3Graphics.Lwjgl3Monitor)Gdx.graphics.getMonitor()).getMonitorHandle()
+									== ((Lwjgl3Graphics.Lwjgl3Monitor)monitors[i]).getMonitorHandle()) {
+								monitorNum = i;
+							}
+						}
+					} else {
+						monitorNum = SPDSettings.fulLScreenMonitor();
+					}
+
+					Graphics.Monitor[] monitors = Gdx.graphics.getMonitors();
+					if (monitors.length <= monitorNum) {
+						monitorNum = 0;
+					}
+					Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode(monitors[monitorNum]));
+					SPDSettings.fulLScreenMonitor(monitorNum);
 				} else {
 					Point p = SPDSettings.windowResolution();
 					Gdx.graphics.setWindowedMode( p.x, p.y );
 				}
+				first = false;
 			}
 		} );
 	}
-	
+
 	@Override
 	public boolean connectedToUnmeteredNetwork() {
 		return true; //no easy way to check this in desktop, just assume user doesn't care
 	}
 
+	@Override
+	public boolean supportsVibration() {
+		//only supports vibration via controller
+		return ControllerHandler.vibrationSupported();
+	}
+
 	/* FONT SUPPORT */
-	
+
 	//custom pixel font, for use with Latin and Cyrillic languages
 	private static FreeTypeFontGenerator basicFontGenerator;
 	//droid sans fallback, for asian fonts
 	private static FreeTypeFontGenerator asianFontGenerator;
-	
+
 	@Override
 	public void setupFontGenerators(int pageSize, boolean systemfont) {
 		//don't bother doing anything if nothing has changed
@@ -104,13 +131,13 @@ public class DesktopPlatformSupport extends PlatformSupport {
 			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/pixel_font.ttf"));
 			asianFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/droid_sans.ttf"));
 		}
-		
+
 		fonts.put(basicFontGenerator, new HashMap<>());
 		fonts.put(asianFontGenerator, new HashMap<>());
-		
+
 		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
 	}
-	
+
 	private static Matcher asianMatcher = Pattern.compile("\\p{InHangul_Syllables}|" +
 			"\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}|" +
 			"\\p{InHiragana}|\\p{InKatakana}").matcher("");
@@ -123,7 +150,7 @@ public class DesktopPlatformSupport extends PlatformSupport {
 			return basicFontGenerator;
 		}
 	}
-	
+
 	//splits on newlines, underscores, and chinese/japaneses characters
 	// # - blood red
 	// ¢ - fire-orange
@@ -140,7 +167,7 @@ public class DesktopPlatformSupport extends PlatformSupport {
 					"(?<=\\p{InKatakana})|(?=\\p{InKatakana})|" +
 					"(?<=\\p{InCJK_Unified_Ideographs})|(?=\\p{InCJK_Unified_Ideographs})|" +
 					"(?<=\\p{InCJK_Symbols_and_Punctuation})|(?=\\p{InCJK_Symbols_and_Punctuation})");
-	
+
 	//additionally splits on words, so that each word can be arranged individually
 	private Pattern regularsplitterMultiline = Pattern.compile(
 			"(?<= )|(?= )|(?<=\n)|(?=\n)|(?<=_)|(?=_)|(?<=#)|(?=#)|(?<=})|(?=})|(?<=])|(?=])|(?<=№)|(?=№)|(?<=&)|(?=&)|(?<=£)|(?=£)|(?<=`)|(?=`)|(?<=¥)|(?=¥)|(?<=©)|(?=©)|(?<=®)|(?=®)|" +
@@ -150,7 +177,7 @@ public class DesktopPlatformSupport extends PlatformSupport {
 					"(?<=\\p{InKatakana})|(?=\\p{InKatakana})|" +
 					"(?<=\\p{InCJK_Unified_Ideographs})|(?=\\p{InCJK_Unified_Ideographs})|" +
 					"(?<=\\p{InCJK_Symbols_and_Punctuation})|(?=\\p{InCJK_Symbols_and_Punctuation})");
-	
+
 	@Override
 	public String[] splitforTextBlock(String text, boolean multiline) {
 		if (multiline) {

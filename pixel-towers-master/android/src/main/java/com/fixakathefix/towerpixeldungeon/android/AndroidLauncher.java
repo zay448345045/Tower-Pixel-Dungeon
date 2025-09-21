@@ -47,7 +47,8 @@ import com.fixakathefix.towerpixeldungeon.ui.Button;
 import com.watabou.utils.FileUtils;
 
 public class AndroidLauncher extends AndroidApplication {
-	
+
+
 	public static AndroidApplication instance;
 	
 	private static AndroidPlatformSupport support;
@@ -98,11 +99,11 @@ public class AndroidLauncher extends AndroidApplication {
 		}
 		
 		//set desired orientation (if it exists) before initializing the app.
-		if (SPDSettings.landscape() != null) {
-			instance.setRequestedOrientation( SPDSettings.landscape() ?
-					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
-					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT );
-		}
+
+		instance.setRequestedOrientation( SPDSettings.landscape() ?
+				ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
+				ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT );
+
 		
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.depth = 0;

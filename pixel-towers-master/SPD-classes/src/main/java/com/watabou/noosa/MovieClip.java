@@ -36,12 +36,6 @@ public class MovieClip extends Image {
 	public boolean paused = false;
 
 	public Listener listener;
-
-	public float animationSpeed = 1f;//SETS THE SPEED OF ANIMATIONS
-
-	public void setAnimationSpeed(float mod){
-		animationSpeed = mod;
-	}
 	
 	public MovieClip() {
 		super();
@@ -50,7 +44,12 @@ public class MovieClip extends Image {
 	public MovieClip( Object tx ) {
 		super( tx );
 	}
-	
+
+	private float animationSpeed = 1f;//SETS THE SPEED OF ANIMATIONS
+
+	public void setAnimationSpeed(float mod){
+		animationSpeed = mod;
+	}
 	@Override
 	public void update() {
 		super.update();
@@ -84,7 +83,7 @@ public class MovieClip extends Image {
 							return;
 						}
 					}
-					
+
 				} else {
 					curFrame++;
 				}
@@ -102,29 +101,20 @@ public class MovieClip extends Image {
 	}
 
 	public synchronized void play( Animation anim, boolean force ) {
+		
 		if (!force && (curAnim != null) && (curAnim == anim) && (curAnim.looped || !finished)) {
 			return;
 		}
-
+		
 		curAnim = anim;
 		curFrame = 0;
 		finished = false;
+		
 		frameTimer = 0;
-
-		if (curAnim != null) {
-			if (!curAnim.looped){
-				setAnimationSpeed(0.45f);
-			}
-			else setAnimationSpeed(1f);
-
-		}
-
-
-
+		
 		if (anim != null) {
 			frame( anim.frames[curFrame] );
 		}
-
 	}
 	
 	public static class Animation {
@@ -132,8 +122,6 @@ public class MovieClip extends Image {
 		public float delay;
 		public RectF[] frames;
 		public boolean looped;
-
-		public boolean fast = false;
 		
 		public Animation( int fps, boolean looped ) {
 			this.delay = 1f / fps;

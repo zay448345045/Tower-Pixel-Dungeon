@@ -285,6 +285,7 @@ public class Group extends Gizmo {
 	}
 	
 	public synchronized void clear() {
+		if (length == 0) return;
 		for (int i=0; i < length; i++) {
 			Gizmo g = members.get( i );
 			if (g != null) {
@@ -314,6 +315,7 @@ public class Group extends Gizmo {
 			return null;
 		}
 	}
+
 	public synchronized void sort(Comparator c){
 		//only sort if we aren't already sorted
 		for (int i=0; i < length-1; i++) {

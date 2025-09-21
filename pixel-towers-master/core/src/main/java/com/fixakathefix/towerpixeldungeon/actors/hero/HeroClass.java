@@ -142,6 +142,7 @@ import com.fixakathefix.towerpixeldungeon.items.scrolls.exotic.ScrollOfGolems;
 import com.fixakathefix.towerpixeldungeon.items.scrolls.exotic.ScrollOfHolyNova;
 import com.fixakathefix.towerpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis;
 import com.fixakathefix.towerpixeldungeon.items.scrolls.exotic.ScrollOfRatLegion;
+import com.fixakathefix.towerpixeldungeon.items.scrolls.exotic.ScrollOfSirensSong;
 import com.fixakathefix.towerpixeldungeon.items.scrolls.exotic.ScrollOfUnspeakableHorrors;
 import com.fixakathefix.towerpixeldungeon.items.stones.StoneOfAugmentation;
 import com.fixakathefix.towerpixeldungeon.items.stones.StoneOfBlast;
@@ -585,6 +586,7 @@ public enum HeroClass {
 
 		StaffOfBeasts staffo = new StaffOfBeasts();
 		staffo.identify().collect();
+		new ScrollOfSirensSong().collect();
 
 		//WandOfRegrowth wandOfRegrowth = new WandOfRegrowth();
 		//wandOfRegrowth.upgrade(5).collect();

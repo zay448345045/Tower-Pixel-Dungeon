@@ -228,7 +228,7 @@ public class AboutScene extends PixelScene {
 				Window.TITLE_COLOR,
 				null,
 				null,
-				"ShatteredPD is community-translated via _Transifex_! Towers is not, but still, here is the link to Shattered's trandlation page:",
+				"ShatteredPD is community-translated via _Transifex_! Towers is not, but still, here is the link to Shattered's translation page:",
 				"transifex.com/shattered-pixel/...",
 				"https://explore.transifex.com/shattered-pixel/shattered-pixel-dungeon/");
 		transifex.setRect((Camera.main.width - colWidth)/2f, purigro.bottom() + 12, colWidth, 0);

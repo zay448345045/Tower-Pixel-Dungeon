@@ -506,7 +506,7 @@ public abstract class Mob extends Char {
 							- after it sees, it targets it as a foe for all guard distance only if the guard is damaged, thinking the char is tring to snipe it from the distance
 							- force go back if attempted to juke
 							 */
-							!(mob.mapGuard && enemy.distance(this) > DISTANCE_FOR_GUARD_AGGRO && HP<HT )&&
+							!(mob.mapGuard && enemy!=null && enemy.distance(this) > DISTANCE_FOR_GUARD_AGGRO && HP<HT )&&
 							//ranged mobs must be close to the portal to be able to notice it
 							(!((mob instanceof Arena.AmuletTower || mob instanceof SubAmuletTower) && this.ranged && distance(mob)>1 )) )
 						enemies.add(mob);

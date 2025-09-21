@@ -139,13 +139,13 @@ public class Camera extends Gizmo {
 		panIntensity = 0f;
 	}
 	
-	public void zoom( float value ) {
+	public synchronized void zoom( float value ) {
 		zoom( value,
-			scroll.x + width / 2,
-			scroll.y + height / 2 );
+			scroll.x + width / 2f,
+			scroll.y + height / 2f );
 	}
 	
-	public void zoom( float value, float fx, float fy ) {
+	public synchronized void zoom( float value, float fx, float fy ) {
 
 		PointF offsetAdjust = centerOffset.clone();
 		centerOffset.scale(zoom).invScale(value);
@@ -157,7 +157,7 @@ public class Camera extends Gizmo {
 		snapTo( fx - offsetAdjust.x, fy - offsetAdjust.y );
 	}
 	
-	public void resize( int width, int height ) {
+	public synchronized void resize( int width, int height ) {
 		this.width = width;
 		this.height = height;
 		screenWidth = (int)(width * zoom);
@@ -165,7 +165,7 @@ public class Camera extends Gizmo {
 	}
 	
 	Visual followTarget = null;
-	PointF panTarget;
+	PointF panTarget = new PointF();
 	//camera moves at a speed such that it will pan to its current target in 1/intensity seconds
 	//keep in mind though that this speed is constantly decreasing, so actual pan time is higher
 	float panIntensity = 0f;
@@ -175,42 +175,45 @@ public class Camera extends Gizmo {
 	float followDeadzone = 0f;
 	
 	@Override
-	public void update() {
+	public synchronized void update() {
 		super.update();
 
 		float deadX = 0;
 		float deadY = 0;
-		if (followTarget != null){
-			panTarget = followTarget.center().offset(centerOffset);
+		if (followTarget != null && followTarget.visible){
+			//manually assign here to avoid an allocation from sprite.center()
+			panTarget.x = followTarget.x + followTarget.width()/2;
+			panTarget.y = followTarget.y + followTarget.height()/2;
+			panTarget.offset(centerOffset);
 			deadX = width * followDeadzone /2f;
 			deadY = height * followDeadzone /2f;
 		}
 		
 		if (panIntensity > 0f){
 
-			PointF panMove = new PointF();
-			panMove.x = panTarget.x - (scroll.x + width/2f);
-			panMove.y = panTarget.y - (scroll.y + height/2f);
+			float panX = panTarget.x - (scroll.x + width/2f);
+			float panY = panTarget.y - (scroll.y + height/2f);
 
-			if (panMove.x > deadX){
-				panMove.x -= deadX;
-			} else if (panMove.x < -deadX){
-				panMove.x += deadX;
+			if (panX > deadX){
+				panX -= deadX;
+			} else if (panX < -deadX){
+				panX += deadX;
 			} else {
-				panMove.x = 0;
+				panX = 0;
 			}
 
-			if (panMove.y > deadY){
-				panMove.y -= deadY;
-			} else if (panMove.y < -deadY){
-				panMove.y += deadY;
+			if (panY > deadY){
+				panY -= deadY;
+			} else if (panY < -deadY){
+				panY += deadY;
 			} else {
-				panMove.y = 0;
+				panY = 0;
 			}
 
-			panMove.scale(Math.min(1f, Game.elapsed * panIntensity));
+			panX *= Math.min(1f, Game.elapsed * panIntensity);
+			panY *= Math.min(1f, Game.elapsed * panIntensity);
 
-			scroll.offset(panMove);
+			scroll.offset(panX, panY);
 		}
 		
 		if ((shakeTime -= Game.elapsed) > 0) {
@@ -233,12 +236,12 @@ public class Camera extends Gizmo {
 		return x >= this.x && y >= this.y && x < this.x + screenWidth && y < this.y + screenHeight;
 	}
 	
-	public void shift( PointF point ){
+	public synchronized void shift( PointF point ){
 		scroll.offset(point);
 		panIntensity = 0f;
 	}
 
-	public void setCenterOffset( float x, float y ){
+	public synchronized void setCenterOffset( float x, float y ){
 		scroll.x    += x - centerOffset.x;
 		scroll.y    += y - centerOffset.y;
 		if (panTarget != null) {
@@ -248,8 +251,8 @@ public class Camera extends Gizmo {
 		centerOffset.set(x, y);
 	}
 	
-	public void snapTo(float x, float y ) {
-		scroll.set( x - width / 2, y - height / 2 ).offset(centerOffset);
+	public synchronized void snapTo(float x, float y ) {
+		scroll.set( x - width / 2f, y - height / 2f ).offset(centerOffset);
 		panIntensity = 0f;
 		followTarget = null;
 	}
@@ -258,18 +261,22 @@ public class Camera extends Gizmo {
 		snapTo( point.x, point.y );
 	}
 	
-	public void panTo( PointF dst, float intensity ){
+	public synchronized void panTo( PointF dst, float intensity ){
 		panTarget = dst.offset(centerOffset);
 		panIntensity = intensity;
 		followTarget = null;
 	}
 	
-	public void panFollow(Visual target, float intensity ){
+	public synchronized void panFollow(Visual target, float intensity ){
 		followTarget = target;
 		panIntensity = intensity;
 	}
 
-	public void setFollowDeadzone( float deadzone ){
+	public synchronized Visual followTarget(){
+		return followTarget;
+	}
+
+	public synchronized void setFollowDeadzone( float deadzone ){
 		followDeadzone = deadzone;
 	}
 	
@@ -310,7 +317,7 @@ public class Camera extends Gizmo {
 		
 	}
 	
-	public void shake( float magnitude, float duration ) {
+	public synchronized void shake( float magnitude, float duration ) {
 		shakeMagX = shakeMagY = magnitude;
 		shakeTime = shakeDuration = duration;
 	}

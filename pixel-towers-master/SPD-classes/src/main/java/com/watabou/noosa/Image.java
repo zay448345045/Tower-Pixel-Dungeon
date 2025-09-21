@@ -93,28 +93,19 @@ public class Image extends Visual {
 	}
 
 	public void copy( Image other ) {
-
-		if (other != null) {
-
 		texture = other.texture;
-
 		frame = new RectF( other.frame );
 		
 		width = other.width;
 		height = other.height;
 
 		scale = other.scale;
-		bm = other.bm;
-		gm = other.gm;
-		rm = other.rm;
-
-		ba = other.ba;
-		ga = other.ga;
-		ra = other.ra;
 		
 		updateFrame();
 		updateVertices();
-		}
+
+		rm = other.rm; gm = other.gm; bm = other.bm; am = other.am;
+		ra = other.ra; ga = other.ga; ba = other.ba; aa = other.aa;
 	}
 	
 	protected void updateFrame() {

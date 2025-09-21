@@ -27,10 +27,11 @@ public class HermitCrab extends Crab {
 
     @Override
     public void die(Object cause) {
-        super.die(cause);
         HermitCrabNoShell hermitCrabNoShell = new HermitCrabNoShell();
         hermitCrabNoShell.pos = pos;
         Buff.affect(hermitCrabNoShell, Terror.class, 5);
+        hermitCrabNoShell.alignment = this.alignment;
+        super.die(cause);
         GameScene.add(hermitCrabNoShell);
     }
 }

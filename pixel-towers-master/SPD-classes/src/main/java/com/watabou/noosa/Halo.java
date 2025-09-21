@@ -25,9 +25,7 @@
 package com.watabou.noosa;
 
 import com.badlogic.gdx.graphics.Pixmap;
-import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
-import com.watabou.glwrap.Texture;
 
 public class Halo extends Image {
 	
@@ -72,8 +70,14 @@ public class Halo extends Image {
 		this.y = y - (height()/2f);
 		return this;
 	}
-	
-	public void radius( float value ) {
+
+	@Override
+	public void alpha( float value) {
+		brightness = value;
+		super.alpha(value);
+	}
+
+	public void radius(float value ) {
 		scale.set(  (this.radius = value) / RADIUS );
 	}
 }

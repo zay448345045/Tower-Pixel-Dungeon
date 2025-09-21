@@ -28,9 +28,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.watabou.noosa.Game;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 public enum Sample {
 
@@ -64,32 +64,29 @@ public enum Sample {
 		}
 	}
 
-	public synchronized void load( final String... assets ) {
-
-		final ArrayList<String> toLoad = new ArrayList<>();
-
-		for (String asset : assets){
-			if (!ids.containsKey(asset)){
-				toLoad.add(asset);
+	public synchronized void load( final String asset){
+		if (asset != null) {
+			try {
+				Sound newSound = Gdx.audio.newSound(Gdx.files.internal(asset));
+				ids.put(asset, newSound);
+			} catch (Exception e){
+				Game.reportException(e);
 			}
 		}
+	}
 
-		//don't make a new thread of all assets are already loaded
-		if (toLoad.isEmpty()) return;
+	private static final LinkedList<String> loadingQueue = new LinkedList<>();
 
-		//load in a separate thread to prevent this blocking the UI
-		new Thread(){
-			@Override
-			public void run() {
-				for (String asset : toLoad) {
-					Sound newSound = Gdx.audio.newSound(Gdx.files.internal(asset));
-					synchronized (INSTANCE) {
-						ids.put(asset, newSound);
-					}
+	//queues multiple assets for loading, which happens in update()
+	// this prevents blocking while we load many assets
+	public void load( final String[] assets ) {
+		synchronized (loadingQueue) {
+			for (String asset : assets) {
+				if (!ids.containsKey(asset) && !loadingQueue.contains(asset)) {
+					loadingQueue.add(asset);
 				}
 			}
-		}.start();
-		
+		}
 	}
 
 	public synchronized void unload( Object src ) {
@@ -161,6 +158,12 @@ public enum Sample {
 	}
 
 	public void update(){
+		synchronized (loadingQueue) {
+			if (!loadingQueue.isEmpty()) {
+				load(loadingQueue.poll());
+			}
+		}
+
 		synchronized (delayedSFX) {
 			if (delayedSFX.isEmpty()) return;
 			for (DelayedSoundEffect sfx : delayedSFX.toArray(new DelayedSoundEffect[0])) {

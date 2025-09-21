@@ -247,7 +247,7 @@ public class WndSettings extends WndTabbed {
 					SPDSettings.fullscreen(checked());
 				}
 			};
-			if (DeviceCompat.supportsFullScreen()){
+			if (Game.platform.supportsFullScreen()){
 				chkFullscreen.checked(SPDSettings.fullscreen());
 			} else {
 				chkFullscreen.checked(true);
@@ -298,35 +298,6 @@ public class WndSettings extends WndTabbed {
 			};
 			chkIntrosOff.checked(SPDSettings.introsOff());
 			add(chkIntrosOff);
-
-			if (DeviceCompat.isAndroid() && PixelScene.maxScreenZoom >= 2) {
-				chkSaver = new CheckBox(Messages.get(this, "saver")) {
-					@Override
-					protected void onClick() {
-						super.onClick();
-						if (checked()) {
-							checked(!checked());
-							ShatteredPixelDungeon.scene().add(new WndOptions(Icons.get(Icons.DISPLAY),
-									Messages.get(DisplayTab.class, "saver"),
-									Messages.get(DisplayTab.class, "saver_desc"),
-									Messages.get(DisplayTab.class, "okay"),
-									Messages.get(DisplayTab.class, "cancel")) {
-								@Override
-								protected void onSelect(int index) {
-									if (index == 0) {
-										checked(!checked());
-										SPDSettings.powerSaver(checked());
-									}
-								}
-							});
-						} else {
-							SPDSettings.powerSaver(checked());
-						}
-					}
-				};
-				chkSaver.checked( SPDSettings.powerSaver() );
-				add( chkSaver );
-			}
 
 			sep2 = new ColorBlock(1, 1, 0xFF000000);
 			add(sep2);

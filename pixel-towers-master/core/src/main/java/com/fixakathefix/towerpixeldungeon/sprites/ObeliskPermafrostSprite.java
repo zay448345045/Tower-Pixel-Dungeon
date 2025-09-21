@@ -7,8 +7,6 @@ import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 
-import sun.jvm.hotspot.memory.UniverseExt;
-
 public class ObeliskPermafrostSprite extends MobSprite {
 
     public ObeliskPermafrostSprite() {

@@ -29,11 +29,13 @@ import com.fixakathefix.towerpixeldungeon.actors.Char;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Amok;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.AscensionChallenge;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Awareness;
+import com.fixakathefix.towerpixeldungeon.actors.buffs.Dread;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Highlighted;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Light;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.MagicalSight;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.MindVision;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.RevealedArea;
+import com.fixakathefix.towerpixeldungeon.actors.buffs.Terror;
 import com.fixakathefix.towerpixeldungeon.actors.hero.Hero;
 import com.fixakathefix.towerpixeldungeon.actors.hero.Talent;
 import com.fixakathefix.towerpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
@@ -1059,30 +1061,46 @@ public class Dungeon {
 		return PathFinder.getStep( ch.pos, to, passable );
 
 	}
-	
-	public static int flee( Char ch, int from, boolean[] pass, boolean[] visible, boolean chars ) {
-
+	public static boolean[] findPassable(Char ch, boolean[] pass, boolean[] vis, boolean chars, boolean considerLarge){
 		setupPassable();
-		if (ch.flying) {
+		if (ch.flying || ch.buff( Amok.class ) != null) {
 			BArray.or( pass, Dungeon.level.avoid, passable );
 		} else {
 			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
 		}
 
-		if (Char.hasProp(ch, Char.Property.LARGE)){
+		if (considerLarge && Char.hasProp(ch, Char.Property.LARGE)){
 			BArray.and( passable, Dungeon.level.openSpace, passable );
 		}
 
+		ch.modifyPassable(passable);
+
+		if (chars) {
+			for (Char c : Actor.chars()) {
+				if (vis[c.pos]) {
+					passable[c.pos] = false;
+				}
+			}
+		}
+
+		return passable;
+	}
+
+	public static int flee( Char ch, int from, boolean[] pass, boolean[] visible, boolean chars ) {
+		boolean[] passable = findPassable(ch, pass, visible, false, true);
 		passable[ch.pos] = true;
 
-		//only consider chars impassable if our retreat path runs into them
-		int step = PathFinder.getStepBack( ch.pos, from, passable );
-		while (step != -1 && Actor.findChar(step) != null){
+		//chars affected by terror have a shorter lookahead and can't approach the fear source
+		boolean canApproachFromPos = ch.buff(Terror.class) == null && ch.buff(Dread.class) == null;
+		int step = PathFinder.getStepBack( ch.pos, from, canApproachFromPos ? 8 : 4, passable, canApproachFromPos );
+
+		//only consider chars impassable if our retreat step runs into them
+		while (step != -1 && Actor.findChar(step) != null && chars){
 			passable[step] = false;
-			step = PathFinder.getStepBack( ch.pos, from, passable );
+			step = PathFinder.getStepBack( ch.pos, from, canApproachFromPos ? 8 : 4, passable, canApproachFromPos );
 		}
 		return step;
-		
+
 	}
 
 }
