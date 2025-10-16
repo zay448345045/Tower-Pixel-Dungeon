@@ -9,6 +9,11 @@ public class DrillBigSprite extends MobSprite {
         super();
         perspectiveRaise = -4.9f;
 
+        shadowHeight = 0.9f;
+        shadowWidth     = 1.0f;
+        shadowOffset    = 0.25f;
+
+
         texture( Assets.Sprites.DRILLBIG );
 
         TextureFilm frames = new TextureFilm( texture, 260, 174 );

@@ -33,6 +33,7 @@ import com.fixakathefix.towerpixeldungeon.Assets;
 import com.fixakathefix.towerpixeldungeon.Dungeon;
 import com.fixakathefix.towerpixeldungeon.actors.Char;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.WaveBuff;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.SentientTower;
 import com.fixakathefix.towerpixeldungeon.effects.CellEmitter;
 import com.fixakathefix.towerpixeldungeon.effects.particles.BlastParticle;
 import com.fixakathefix.towerpixeldungeon.items.wands.WandOfBlastWave;
@@ -83,18 +84,33 @@ public class DrillBig extends Mob {
     }
 
     public void moveForward() {
-        int v = pos;
         Bestiary.setSeen(getClass());
-
-        for (int x = v % Dungeon.level.width()+5; x>v % Dungeon.level.width()-1 ;x--) for (int y = v / Dungeon.level.width()+4; y>v / Dungeon.level.width()-1 ;y--){
-            if (Char.findChar(x+Dungeon.level.width()*y)!= null && Char.findChar(x+Dungeon.level.width()*y)!= this){
-                Char ch = Char.findChar(x+Dungeon.level.width()*y);
-                ch.pos++;
-                ch.sprite.move(x+Dungeon.level.width()*y, x+Dungeon.level.width()*y+1);
-                Dungeon.level.occupyCell(ch);
+        int xd = pos % level.width();
+        int yd = pos / level.width();
+        //move the mobs...
+        for (Mob mob : Level.mobs) if (mob != this) {
+            int x = mob.pos % level.width();
+            int y = mob.pos / level.width();
+            if (mob instanceof SentientTower) {
+                if (((SentientTower)mob).defendingPos != -1){
+                    ((SentientTower)mob).defendingPos++;
+                }
+            }
+            if (x - xd <= 5 && x - xd >=0 && y - yd <= 4 && y - yd >=0) {
+                mob.sprite.move(mob.pos, mob.pos + 1);
+                mob.pos++;
+                level.occupyCell(mob);
             }
         }
-
+        //then move the hero (hero is not a mob)
+        int xh = hero.pos % level.width();
+        int yh = hero.pos / level.width();
+        if (xh - xd <= 5 && xh - xd >=0 && yh - yd <= 4 && yh - yd >=0) {
+            hero.sprite.move(hero.pos, hero.pos + 1);
+            hero.pos++;
+            level.occupyCell(hero);
+        }
+        //then move the drill
         this.sprite.move(pos,pos+1);
         pos++;
         Dungeon.level.occupyCell(this);

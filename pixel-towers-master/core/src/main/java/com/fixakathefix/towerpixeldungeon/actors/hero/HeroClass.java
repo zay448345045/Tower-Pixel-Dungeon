@@ -586,7 +586,7 @@ public enum HeroClass {
 
 		StaffOfBeasts staffo = new StaffOfBeasts();
 		staffo.identify().collect();
-		new ScrollOfSirensSong().collect();
+		for (int i = 0; i < 20; i++) new ScrollOfSirensSong().collect();
 
 		//WandOfRegrowth wandOfRegrowth = new WandOfRegrowth();
 		//wandOfRegrowth.upgrade(5).collect();

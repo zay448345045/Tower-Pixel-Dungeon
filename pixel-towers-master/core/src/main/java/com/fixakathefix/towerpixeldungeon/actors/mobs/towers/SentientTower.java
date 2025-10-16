@@ -17,14 +17,13 @@ public class SentientTower extends Tower {
         HUNTING = new SentientTower.Hunting();
         state = WANDERING;
         actPriority = MOB_PRIO + 1;
-
     }
 
     public boolean justSpawned = true;
 
     protected boolean attacksAutomatically = true;
 
-    protected int defendingPos;
+    public int defendingPos;
 
     public boolean followingHero = false;
     protected boolean movingToDefendPos = false;

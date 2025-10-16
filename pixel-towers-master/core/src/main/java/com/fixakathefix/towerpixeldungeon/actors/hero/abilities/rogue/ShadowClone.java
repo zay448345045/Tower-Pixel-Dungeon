@@ -112,7 +112,7 @@ public class ShadowClone extends ArmorAbility {
 				armor.charge -= chargeUse(hero);
 				armor.updateQuickslot();
 
-				ally = new ShadowAlly(hero.lvl);
+				ally = new ShadowAlly();
 				ally.pos = Random.element(spawnPoints);
 				GameScene.add(ally);
 
@@ -151,27 +151,14 @@ public class ShadowClone extends ArmorAbility {
 
 		{
 			spriteClass = ShadowSprite.class;
-
 			HP = HT = 80;
-
+			defenseSkill = 5;
 			immunities.add(AllyBuff.class);
 		}
 
 		public ShadowAlly(){
 			super();
 		}
-
-		public ShadowAlly( int heroLevel ){
-			super();
-			int hpBonus = 15 + 5*heroLevel;
-			hpBonus = Math.round(0.1f * Dungeon.hero.pointsInTalent(Talent.PERFECT_COPY) * hpBonus);
-			if (hpBonus > 0){
-				HT += hpBonus;
-				HP += hpBonus;
-			}
-			defenseSkill = 5; //equal to base hero defense skill
-		}
-
 		@Override
 		protected boolean act() {
 			int oldPos = pos;

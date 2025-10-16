@@ -665,6 +665,7 @@ public class vTowersNewChanges {
 						"- crashbug/hardlock with duelist's targeting ability\n" +
 						"- inspiration not working on heroes\n" +
 						"- guard ai bugs\n" +
+						"- lvl 18 drill bugs, including spontaneous rotation, health bar showing, shadow alignment\n" +
 						"- Map guard + Siren song scroll crash bug\n" +
 						"- priest-related visual bugs"));
 

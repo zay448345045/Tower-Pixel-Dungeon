@@ -7,6 +7,7 @@ import com.fixakathefix.towerpixeldungeon.Dungeon;
 import com.fixakathefix.towerpixeldungeon.actors.Char;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.AbilityCooldown;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Buff;
+import com.fixakathefix.towerpixeldungeon.actors.buffs.Paralysis;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.Mob;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.Tower;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerLightning1;
@@ -54,6 +55,7 @@ public class AbTrLightningStrike extends HeroSpellTargeted {
                     Char ch = Char.findChar(cell);
                     if (ch!=null){
                         ch.damage(Random.Int(mindam(), maxdam()), AbTrLightningStrike.this);
+                        Buff.affect(ch, Paralysis.class, 2);
                     }
                     cooldown();
                 }

@@ -26,6 +26,8 @@ package com.fixakathefix.towerpixeldungeon.ui;
 
 import com.fixakathefix.towerpixeldungeon.actors.Char;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.BossImage;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.Drill;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.DrillBig;
 import com.fixakathefix.towerpixeldungeon.scenes.GameScene;
 import com.fixakathefix.towerpixeldungeon.sprites.CharSprite;
 
@@ -36,7 +38,7 @@ public class CharHealthIndicator extends HealthBar {
 	private Char target;
 	
 	public CharHealthIndicator( Char c ){
-		if (!(c instanceof BossImage)) {
+		if (!(c instanceof BossImage || c instanceof DrillBig || c instanceof Drill)) {
 			target = c;
 			GameScene.add(this);
 		}

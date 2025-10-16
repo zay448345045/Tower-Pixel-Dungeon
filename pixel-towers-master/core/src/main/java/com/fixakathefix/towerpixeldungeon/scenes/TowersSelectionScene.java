@@ -74,6 +74,7 @@ public class TowersSelectionScene extends PixelScene {
     @Override
     public void create() {
         super.create();
+        SPDSettings.towerUnlockedMessage(false);
         System.out.println(delta);
         int w = Camera.main.width;
         int h = Camera.main.height;
