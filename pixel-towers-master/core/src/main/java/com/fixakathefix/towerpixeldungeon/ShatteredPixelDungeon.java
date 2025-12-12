@@ -28,10 +28,10 @@ import com.fixakathefix.towerpixeldungeon.scenes.EnteringScene;
 import com.fixakathefix.towerpixeldungeon.scenes.GameScene;
 import com.fixakathefix.towerpixeldungeon.scenes.PixelScene;
 import com.fixakathefix.towerpixeldungeon.scenes.TitleScene;
+import com.fixakathefix.towerpixeldungeon.windows.WndDialogueWithPic;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PlatformSupport;
 
 public class ShatteredPixelDungeon extends Game {
@@ -43,6 +43,8 @@ public class ShatteredPixelDungeon extends Game {
 	public static final int v1_4_3  = 668;
 
 	public static final int v2_0_0  = 684;
+
+
 	
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? (SPDSettings.introsOff() ? TitleScene.class : EnteringScene.class) : sceneClass, platform );
@@ -110,6 +112,11 @@ public class ShatteredPixelDungeon extends Game {
 		super.switchScene();
 		if (scene instanceof PixelScene){
 			((PixelScene) scene).restoreWindows();
+			if (scene instanceof GameScene &&
+					Dungeon.level!=null &&
+					Dungeon.level.lastSavedWndDialogueWithPic!=null){
+				WndDialogueWithPic.dialogueFromWindowThatWasThereButDisappearedDueToResizing(Dungeon.level.lastSavedWndDialogueWithPic);
+			}
 		}
 	}
 	

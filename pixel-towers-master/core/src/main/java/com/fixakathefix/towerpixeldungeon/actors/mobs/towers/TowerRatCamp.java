@@ -163,6 +163,7 @@ public class TowerRatCamp extends TowerWave {
                                 levelCurrent++;
                                 minionencodingsCurrent += toadd;
                                 Dungeon.gold -= gold;
+                                heal(HT/2);
                                 sprite.update();
                                 sprite.linkVisuals(TowerRatCamp.this);
                                 Item.updateQuickslot();

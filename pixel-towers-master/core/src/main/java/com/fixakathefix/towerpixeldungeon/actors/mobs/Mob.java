@@ -50,6 +50,7 @@ import com.fixakathefix.towerpixeldungeon.actors.buffs.Inspired;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Invisibility;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.MindVision;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Minion;
+import com.fixakathefix.towerpixeldungeon.actors.buffs.MinionBoss;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.MonkEnergy;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Overcharge;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Preparation;
@@ -995,7 +996,7 @@ public abstract class Mob extends Char {
 	@Override
 	public void die( Object cause ) {
 
-		if (alignment==Alignment.ENEMY&&EXP>=1&&maxLvl>=1&&buff(Minion.class)==null) Dungeon.gold += 3*EXP + 1;// Foes add up to gold
+		if (alignment==Alignment.ENEMY&&EXP>=1&&maxLvl>=1&&buff(Minion.class)==null&&buff(MinionBoss.class)==null) Dungeon.gold += 3*EXP + 1;// Foes add up to gold
 		updateQuickslot();
 		if (buff(ChampionEnemy.Rejuvenating.class)!=null){
 			for (int i : PathFinder.NEIGHBOURS25){

@@ -55,6 +55,7 @@ public class SmartTexture extends Texture {
 		this.fModeMin = this.fModeMax = filtering;
 		this.wModeH = this.wModeV = wrapping;
 		this.premultiplied = premultiplied;
+		
 
 	}
 

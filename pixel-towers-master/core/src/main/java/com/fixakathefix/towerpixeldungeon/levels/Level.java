@@ -95,6 +95,7 @@ import com.fixakathefix.towerpixeldungeon.tiles.CustomTilemap;
 import com.fixakathefix.towerpixeldungeon.ui.towerlist.TowerInfo;
 import com.fixakathefix.towerpixeldungeon.utils.BArray;
 import com.fixakathefix.towerpixeldungeon.utils.GLog;
+import com.fixakathefix.towerpixeldungeon.windows.WndDialogueWithPic;
 import com.fixakathefix.towerpixeldungeon.windows.WndModes;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -168,6 +169,7 @@ public abstract class Level implements Bundlable {
 
 	//when a boss level has become locked.
 	public boolean locked = true;
+	public WndDialogueWithPic lastSavedWndDialogueWithPic;
 
 	protected Group wallVisuals;
 	
@@ -213,6 +215,7 @@ public abstract class Level implements Bundlable {
 	private static final String SLOT2	= "slot2";
 	private static final String SLOT3	= "slot3";
 	private static final String SLOT4	= "slot4";
+	private static final String WINDOWDIALOGUE	= "wnddialogue";
 
 	public void initNpcs(){
 	}
@@ -1362,7 +1365,7 @@ public abstract class Level implements Bundlable {
 				}
 			} else if (mob instanceof TalismanOfForesight.Observer) {
 				for (int i = 0; i< Dungeon.level.width()*Dungeon.level.height();i++)
-					if (((TalismanOfForesight.Observer) mob).getEnemy()!=null && mob.fieldOfView[i] &&  ((TalismanOfForesight.Observer) mob).getEnemy().fieldOfView[i] && mob.pos+i>0 && mob.pos + i<width()*height()){
+					if (((TalismanOfForesight.Observer) mob).getEnemy()!=null && mob.fieldOfView!=null && mob.fieldOfView[i] && ((TalismanOfForesight.Observer) mob).getEnemy().fieldOfView!= null && ((TalismanOfForesight.Observer) mob).getEnemy().fieldOfView[i] && mob.pos+i>0 && mob.pos + i<width()*height()){
 						if (!cellAdjacentToBorderCells(mob.pos + i)) heroMindFov[i] = true;
 				}
 			}

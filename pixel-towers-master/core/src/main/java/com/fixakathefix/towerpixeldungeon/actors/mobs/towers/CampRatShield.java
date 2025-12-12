@@ -36,12 +36,12 @@ public class CampRatShield extends CampRat {
 		HP = HT = 60;
 		defenseSkill = 1;
 
-		damageMin = 13;//dpt/c=0.023
-		damageMax = 18;
+		damageMin = 10;
+		damageMax = 15;
 		defMin = 1;
 		defMax = 3;
 
-		cost = 650;
+		cost = 600;
 	}
 	@Override
 	public int attackSkill( Char target ) {
@@ -50,7 +50,7 @@ public class CampRatShield extends CampRat {
 
 	@Override
 	public float attackDelay() {
-		return super.attackDelay() * 1.33f;
+		return super.attackDelay() * 1.5f;
 	}
 
 	@Override

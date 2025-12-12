@@ -39,15 +39,15 @@ public class CampRatLeader extends CampRat {
 	{
 		spriteClass = CampRatFlagSprite.class;
 		
-		HP = HT = 40;
+		HP = HT = 100;
 		defenseSkill = 5;
 
-		damageMin = 10;//dpt/c = 0.0275
-		damageMax = 12;
-		defMin = 2;
-		defMax = 3;
+		damageMin = 8;//dpt/c = 0.0275
+		damageMax = 10;
+		defMin = 1;
+		defMax = 2;
 
-		cost = 400;
+		cost = 800;
 
 		immunities.add(Paralysis.class);
 		immunities.add(StenchGas.class);

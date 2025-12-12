@@ -39,7 +39,9 @@ public class NightmareBossRiftSprite extends MobSprite {
 		if (ch==null) play (idle); else linkVisuals(ch);
 	}
 
-
+	public int blood() {
+		return 0xFFBB00BB;
+	}
 	@Override
 	public void linkVisuals(Char ch) {
 		super.linkVisuals(ch);

@@ -94,6 +94,7 @@ import com.fixakathefix.towerpixeldungeon.ui.QuickSlotButton;
 import com.fixakathefix.towerpixeldungeon.ui.Toolbar;
 import com.fixakathefix.towerpixeldungeon.utils.BArray;
 import com.fixakathefix.towerpixeldungeon.utils.DungeonSeed;
+import com.fixakathefix.towerpixeldungeon.windows.WndDialogueWithPic;
 import com.fixakathefix.towerpixeldungeon.windows.WndResurrect;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
@@ -224,6 +225,8 @@ public class Dungeon {
 	public static boolean dailyReplay;
 	public static String customSeedText = "";
 	public static long seed;
+
+
 	
 	public static void init() {
 
@@ -552,10 +555,6 @@ public class Dungeon {
 			Statistics.storeInBundle( bundle );
 			Notes.storeInBundle( bundle );
 			Generator.storeInBundle( bundle );
-			
-			//Scroll.save( bundle );
-			//Potion.save( bundle );
-			//Ring.save( bundle );
 
 			Actor.storeNextID( bundle );
 			

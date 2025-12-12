@@ -30,6 +30,10 @@ public class NightmareRiftSprite extends MobSprite {
 		play( idle );
 	}
 
+	public int blood() {
+		return 0xFFFF0000;
+	}
+
 	public void broken(){
 		play(broken);
 	}

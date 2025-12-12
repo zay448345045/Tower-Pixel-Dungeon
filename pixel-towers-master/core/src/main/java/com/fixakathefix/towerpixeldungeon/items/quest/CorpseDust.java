@@ -28,17 +28,25 @@ import com.fixakathefix.towerpixeldungeon.Assets;
 import com.fixakathefix.towerpixeldungeon.Badges;
 import com.fixakathefix.towerpixeldungeon.Dungeon;
 import com.fixakathefix.towerpixeldungeon.actors.Actor;
+import com.fixakathefix.towerpixeldungeon.actors.Char;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Buff;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.MagicImmune;
+import com.fixakathefix.towerpixeldungeon.actors.buffs.SoulBleeding;
 import com.fixakathefix.towerpixeldungeon.actors.hero.Hero;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.Mob;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.RipperDemon;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.Wraith;
+import com.fixakathefix.towerpixeldungeon.effects.CellEmitter;
+import com.fixakathefix.towerpixeldungeon.effects.particles.FlameParticle;
+import com.fixakathefix.towerpixeldungeon.effects.particles.ShadowParticle;
 import com.fixakathefix.towerpixeldungeon.items.Item;
 import com.fixakathefix.towerpixeldungeon.messages.Messages;
+import com.fixakathefix.towerpixeldungeon.scenes.GameScene;
 import com.fixakathefix.towerpixeldungeon.sprites.ItemSpriteSheet;
 import com.fixakathefix.towerpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -54,9 +62,22 @@ public class CorpseDust extends Item {
 	}
 
 	@Override
-	public ArrayList<String> actions(Hero hero) {
-		if (cursed && hero.buff(MagicImmune.class)==null) return new ArrayList<>(); //yup, no dropping this one without items
-		else return super.actions(hero);
+	protected void onThrow(int cell) {
+		if (CeremonialCandle.checkCellForSurroundingLitCandles(cell)){
+			int power = 4 + Dungeon.depth*1;
+			while (power > 0){
+				power -= 1;
+				Wraith wraith = new Wraith();
+				wraith.pos = cell;
+				wraith.alignment = Char.Alignment.ALLY;
+				wraith.state = wraith.HUNTING;
+				CellEmitter.floor(cell).burst(ShadowParticle.UP, 2);
+				GameScene.add(wraith);
+			}
+			Sample.INSTANCE.play(Assets.Sounds.CURSED);
+			return;
+		}
+		super.onThrow(cell);
 	}
 
 	@Override

@@ -36,13 +36,13 @@ public class CampRatMage extends CampRat {
 		HP = HT = 8;
 		defenseSkill = 1;//dpt/c = 0.01025
 
-		damageMin = 10;
+		damageMin = 1;
 		damageMax = 31;
 		defMin = 0;
 		defMax = 1;
 
 
-		cost = 800;
+		cost = 750;
 	}
 
 	@Override

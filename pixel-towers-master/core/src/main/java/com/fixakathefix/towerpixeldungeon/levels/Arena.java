@@ -221,12 +221,7 @@ public class Arena extends Level {
 
     /** Mob deploying system
      * On a wave start choose a random cell which is canDeployOnCell, choose a random of some mobs and summon them, so each run is kind of unique.
-     * for
-     *
      */
-
-    public int waveLast = 100;
-    public int[] wavePrepareTime = new int[waveLast+1];//+1 for last wave existing; Cooldown 0 being the pre-start cooldown
 
     public int waveCooldownNormal = 20;
     public int waveCooldownBoss   = 50;
@@ -441,10 +436,6 @@ public class Arena extends Level {
             onexdsum+=onexd;
         }
     }
-
-    public void deployMobsOnPortal(int portalPos){
-
-    }
     public void deployMobs(int wave) {
         deploymobs(wave, Direction.RANDOM,0);
     }
@@ -578,8 +569,8 @@ public class Arena extends Level {
             completeStage();
             return;
         }
-        //attempts to save each fifth (5) wave.
-        if (wave%5==0)try {
+        //attempts to save each fifth (5) wave, starting from wave 3.
+        if (wave%3==0)try {
             Dungeon.saveAll();
         } catch (Exception ignored) {}
         Buff.detach(hero, WaveBuff.class);

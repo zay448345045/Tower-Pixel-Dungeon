@@ -68,7 +68,7 @@ public class vTowersNewChanges {
 		add_v053_Changes(changeInfos);
 		add_v054_Changes(changeInfos);
 		add_v100_Changes(changeInfos);
-		add_v101_Changes(changeInfos);
+		add_v110_Changes(changeInfos);
 	}
 
 	public static void add_Coming_Soon( ArrayList<ChangeInfo> changeInfos ) {
@@ -644,30 +644,40 @@ public class vTowersNewChanges {
 						"- etc. etc. etc... there was quite a lot of them"));
 
 	}
-	public static void add_v101_Changes( ArrayList<ChangeInfo> changeInfos) {
+	public static void add_v110_Changes( ArrayList<ChangeInfo> changeInfos) {
 
-		ChangeInfo changes = new ChangeInfo("v1.0.1 - post-launch patch", true, null);
-		changes.hardlight(CharSprite.GREEN);
+		ChangeInfo changes = new ChangeInfo("v1.1.0 - post-launch additions", true, null);
+		changes.hardlight(CharSprite.CYAN);
 		changeInfos.add(changes);
 
 		changes.addButton(new ChangeButton(Icons.get(Icons.COPY), "General",
 				"General update info:\n" +
-						"- Released 20.09.25\n" +
-						"- fixed several annying bugs and somewhat reworked duelist's abilities"));
-		changes.addButton(new ChangeButton(new TowerTotemSprite.TShield(), "slight totem-type fixes",
-						"- All totem-type towers now save their cooldown between singular save game sessions"));
-		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.HEROSPELL_BANNER), "Banner rework",
-				"Made a few additions to banners:\n" +
+						"- Released 21.10.25\n" +
+						"- fixed many bugs and somewhat reworked duelist's abilities, reworked Yog's boss battle"));
+		changes.addButton(new ChangeButton(new YogSprite(), "Yog rework",
+						"- You are now forced to destroy the portals, with little time you have, as they start spawning triple the enemies after some time"));
+		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.HEROSPELL_BANNER), "Balance changes",
+				"Rebalanced rat camp:\n" +
+						"- knife rat slightly nerfed\n" +
+						"- leaderrats are much more expensive and more focus on tenacity than damage\n" +
+						"- legionairats became a bit cheaper and weaker offensively\n" +
+						"- magic rodent's minimal damage reduced to 1, price slightly decreased\n" +
+						"- Rat camp heals for half of its max health when upgraded\n" +
+						"Made a few additions to banners:\n" +
 						"- healing slightly decreased\n" +
 						"- Inspiration gained stacks softly, consists only of one buff (I guess that is a better way to do it) and decreases faster with inspiration amount"));
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), "Bugs",
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), "Bugs & other",
 				"Bugs removed:\n" +
 						"- crashbug/hardlock with duelist's targeting ability\n" +
 						"- inspiration not working on heroes\n" +
 						"- guard ai bugs\n" +
+						"- bugs with light effect overriding hero FoV\n" +
 						"- lvl 18 drill bugs, including spontaneous rotation, health bar showing, shadow alignment\n" +
 						"- Map guard + Siren song scroll crash bug\n" +
-						"- priest-related visual bugs"));
+						"- priest-related visual bugs\n" +
+						"Other changes:\n" +
+						"- Corpse dust can be thrown away now\n" +
+						"- Corpse dust ritual added"));
 
 	}
 

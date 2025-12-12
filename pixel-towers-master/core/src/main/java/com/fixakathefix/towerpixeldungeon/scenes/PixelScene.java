@@ -27,11 +27,13 @@ package com.fixakathefix.towerpixeldungeon.scenes;
 import com.badlogic.gdx.Input;
 import com.fixakathefix.towerpixeldungeon.Assets;
 import com.fixakathefix.towerpixeldungeon.Badges;
+import com.fixakathefix.towerpixeldungeon.Dungeon;
 import com.fixakathefix.towerpixeldungeon.SPDSettings;
 import com.fixakathefix.towerpixeldungeon.effects.BadgeBanner;
 import com.fixakathefix.towerpixeldungeon.ui.RenderedTextBlock;
 import com.fixakathefix.towerpixeldungeon.ui.Tooltip;
 import com.fixakathefix.towerpixeldungeon.ui.Window;
+import com.fixakathefix.towerpixeldungeon.windows.WndDialogueWithPic;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.input.ControllerHandler;
@@ -279,7 +281,7 @@ public class PixelScene extends Scene {
 		savedWindows.clear();
 		savedClass = getClass();
 		for (Gizmo g : members.toArray(new Gizmo[0])){
-			if (g instanceof Window){
+			if (g instanceof Window && !(g instanceof WndDialogueWithPic)){
 				savedWindows.add((Class<? extends Window>) g.getClass());
 			}
 		}
@@ -294,7 +296,9 @@ public class PixelScene extends Scene {
 					//window has no public zero-arg constructor, just eat the exception
 				}
 			}
+
 		}
+
 		savedWindows.clear();
 	}
 

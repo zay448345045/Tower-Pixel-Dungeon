@@ -11,6 +11,7 @@ import com.fixakathefix.towerpixeldungeon.actors.buffs.Chill;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Frost;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.MagicalSleep;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Minion;
+import com.fixakathefix.towerpixeldungeon.actors.buffs.MinionBoss;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Paralysis;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Slow;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.CausticSlime;
@@ -22,6 +23,7 @@ import com.fixakathefix.towerpixeldungeon.actors.mobs.Snake;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.Thief;
 import com.fixakathefix.towerpixeldungeon.effects.CellEmitter;
 import com.fixakathefix.towerpixeldungeon.effects.particles.BloodParticle;
+import com.fixakathefix.towerpixeldungeon.effects.particles.ShadowParticle;
 import com.fixakathefix.towerpixeldungeon.items.stuff.BloodCrystal;
 import com.fixakathefix.towerpixeldungeon.levels.Arena10;
 import com.fixakathefix.towerpixeldungeon.levels.Arena16;
@@ -112,7 +114,9 @@ public class EnemyPortal extends Mob {
                 mob.pos = Random.element(candidatesNear);
                 mob.state = mob.HUNTING;
                 mob.alignment = alignment;
-                Buff.affect(mob, Minion.class);
+                if (this instanceof EnemyBossPortal) Buff.affect(mob, MinionBoss.class);
+                else  Buff.affect(mob, Minion.class);
+
                 GameScene.add(mob);
                 CellEmitter.floor(mob.pos).burst(BloodParticle.BURST, 10);
             }
@@ -141,7 +145,7 @@ public class EnemyPortal extends Mob {
     }
     @Override
     public CharSprite sprite() { // changes the icon in the mob info window
-        NightmareRiftSprite sprite = (NightmareRiftSprite) super.sprite();
+        NightmareRiftSprite sprite = (NightmareRiftSprite) Reflection.newInstance(spriteClass);;
         if (HP<HT*0.5f) {
             sprite.broken();
         }
@@ -209,10 +213,24 @@ public class EnemyPortal extends Mob {
         return count;
     }
 
+    public void upgrade(){
+        EnemyBossPortal newportal = new EnemyBossPortal();
+        newportal.countDownToSpawn = countDownToSpawnLeft = this.countDownToSpawn;
+        newportal.pos = pos;
+        newportal.counting = false;
+        Sample.INSTANCE.play(Assets.Sounds.CURSED);
+        CellEmitter.floor(pos).start(ShadowParticle.CURSE,0.2f,10);
+        GLog.i(Messages.get(EnemyBossPortal.class,"appear"));
+        die(this);
+        GameScene.add(newportal);
+    }
+
     @Override
     public void die(Object cause) {
-        Badges.validateEyeSlayer();
-        level.drop(new BloodCrystal(), pos);
+        if (cause != this) {
+            Badges.validateEyeSlayer();
+            level.drop(new BloodCrystal(), pos);
+        }
         super.die(cause);
     }
 

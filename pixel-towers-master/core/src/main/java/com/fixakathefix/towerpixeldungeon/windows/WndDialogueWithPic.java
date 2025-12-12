@@ -1,18 +1,14 @@
 package com.fixakathefix.towerpixeldungeon.windows;
 
 import static com.fixakathefix.towerpixeldungeon.Dungeon.level;
-import static com.fixakathefix.towerpixeldungeon.Dungeon.win;
 
 import com.badlogic.gdx.utils.Timer;
 import com.fixakathefix.towerpixeldungeon.Chrome;
 import com.fixakathefix.towerpixeldungeon.Dungeon;
-import com.fixakathefix.towerpixeldungeon.GamesInProgress;
 import com.fixakathefix.towerpixeldungeon.ShatteredPixelDungeon;
-import com.fixakathefix.towerpixeldungeon.items.Amulet;
 import com.fixakathefix.towerpixeldungeon.levels.Arena;
 import com.fixakathefix.towerpixeldungeon.scenes.GameScene;
 import com.fixakathefix.towerpixeldungeon.scenes.PixelScene;
-import com.fixakathefix.towerpixeldungeon.scenes.RankingsScene;
 import com.fixakathefix.towerpixeldungeon.sprites.CharSprite;
 import com.fixakathefix.towerpixeldungeon.ui.RenderedTextBlock;
 import com.fixakathefix.towerpixeldungeon.ui.Window;
@@ -21,6 +17,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.PointerArea;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -36,7 +33,7 @@ public class WndDialogueWithPic extends Window {
     ArrayList<Runnable> runnableArrayList;
 
 
-    private int textNum = 0;
+    public int textNum = 0;
     public boolean lastDialogue = false;
     public boolean unskippable = false;
 
@@ -45,6 +42,7 @@ public class WndDialogueWithPic extends Window {
     private int letterNum = 0;
     private CharSprite image;
     private boolean typing = false;
+    private boolean shouldSkipThisRunnable = false;
 
     public byte spriteActionIndexes[];
 
@@ -69,16 +67,39 @@ public class WndDialogueWithPic extends Window {
     public static void dialogue(CharSprite icon, String title, String[] text, byte spriteActionIndexes[], WndType type) {
         dialogue(icon, title, text, spriteActionIndexes, type, new ArrayList<>());
     }
-    public static void dialogue(CharSprite icon, String title, String[] text, byte[] spriteActionIndexes, WndType type, ArrayList<Runnable> runnableArrayList) {
-
+    public static void dialogue(CharSprite icon, String title, String[] text, byte[] spriteActionIndexes, WndType type, ArrayList<Runnable> runnableArrayList){
+        dialogue(icon, title, text, spriteActionIndexes, type, runnableArrayList, 0);
+    }
+    public static void dialogueFromWindowThatWasThereButDisappearedDueToResizing(WndDialogueWithPic wndref){
+        wndref.timer.clear();
+        if ( level == null || level.mode == WndModes.Modes.NORMAL || wndref.lastDialogue) {
+            Game.runOnRenderThread(new Callback() {
+                @Override
+                public void call() {
+                    CharSprite newSprite = Reflection.newInstance(wndref.image.getClass());
+                    WndDialogueWithPic wnd = new WndDialogueWithPic(
+                            newSprite, wndref.ttl.text(), wndref.texts, wndref.spriteActionIndexes, wndref.textNum, true);
+                    if (wndref.lastDialogue) wnd.lastDialogue = true;
+                    if (wndref.unskippable) wnd.unskippable = true;
+                    wnd.runnableArrayList = wndref.runnableArrayList;
+                    Dungeon.level.lastSavedWndDialogueWithPic = wnd;
+                    if (ShatteredPixelDungeon.scene() instanceof GameScene)
+                        GameScene.show(wnd);
+                    else ShatteredPixelDungeon.scene().add(wnd);
+                }
+            });
+        }
+    }
+    public static void dialogue(CharSprite icon, String title, String[] text, byte[] spriteActionIndexes, WndType type, ArrayList<Runnable> runnableArrayList, int textnum) {
         if ( level == null || level.mode == WndModes.Modes.NORMAL || type == WndType.FINAL || type == WndType.YOGFINAL) {
             Game.runOnRenderThread(new Callback() {
                 @Override
                 public void call() {
-                    WndDialogueWithPic wnd = new WndDialogueWithPic(icon, title, text, spriteActionIndexes);
+                    WndDialogueWithPic wnd = new WndDialogueWithPic(icon, title, text, spriteActionIndexes ,textnum, false);
                     if (type == WndType.FINAL) wnd.lastDialogue = true;
                     if (type == WndType.YOGFINAL) wnd.unskippable = true;
                     wnd.runnableArrayList = runnableArrayList;
+                    Dungeon.level.lastSavedWndDialogueWithPic = wnd;
                     if (ShatteredPixelDungeon.scene() instanceof GameScene)
                         GameScene.show(wnd);
                     else ShatteredPixelDungeon.scene().add(wnd);
@@ -97,11 +118,14 @@ public class WndDialogueWithPic extends Window {
     }
 
     public WndDialogueWithPic(CharSprite icon, String title, String[] text, byte spriteActionIndexes[]) {
+        this(icon, title, text, spriteActionIndexes, 0, false);
+    }
+
+    public WndDialogueWithPic(CharSprite icon, String title, String[] text, byte spriteActionIndexes[], int textnum, boolean shouldSkipThisRunnable) {
         super(0, 0, Chrome.get(Chrome.Type.TOAST_TR));
         shadow.visible = false;
         resize(PixelScene.uiCamera.width, PixelScene.uiCamera.height);
         texts = text;
-        textNum = 0;
 
         image = icon;
 
@@ -139,6 +163,10 @@ public class WndDialogueWithPic extends Window {
         tf.setPos(chrome.x + 2 * MARGIN, y + 2 * MARGIN);
         add(tf);
 
+        this.shouldSkipThisRunnable = shouldSkipThisRunnable;
+
+        this.textNum = textnum;
+
 
         PointerArea blocker = new PointerArea(0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height) {
             @Override
@@ -148,13 +176,14 @@ public class WndDialogueWithPic extends Window {
         };
         blocker.camera = PixelScene.uiCamera;
         addToBack(blocker);
-        startText(texts[0]);
+        startText(texts[textNum]);
 
     }
 
-    ;
 
     private Timer timer = new Timer();
+
+
 
 
     @Override
@@ -180,6 +209,12 @@ public class WndDialogueWithPic extends Window {
 
     }
 
+    @Override
+    public void hide() {
+        super.hide();
+        level.lastSavedWndDialogueWithPic = null;
+    }
+
     private void startText(String text) {
         curText = "";
         tf.text(curText);
@@ -188,9 +223,13 @@ public class WndDialogueWithPic extends Window {
         typing = true;
         timer.clear();
         timer.start();
-        try {
-            runnableArrayList.get(textNum).run();
-        } catch (Exception ignored){}
+        if (shouldSkipThisRunnable){
+            shouldSkipThisRunnable = false;
+        } else {
+            try {
+                runnableArrayList.get(textNum).run();
+            } catch (Exception ignored){}
+        }
         if (textNum < spriteActionIndexes.length) switch (spriteActionIndexes[textNum]) {
             case 0:
             default:

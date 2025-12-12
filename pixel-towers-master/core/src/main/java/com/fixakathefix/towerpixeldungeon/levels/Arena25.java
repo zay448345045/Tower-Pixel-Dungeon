@@ -39,6 +39,7 @@ import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.CampRatArcher;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.CampRatLeader;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.CampRatMage;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.CampRatShield;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.EnemyBossPortal;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.EnemyPortal;
 import com.fixakathefix.towerpixeldungeon.effects.CellEmitter;
 import com.fixakathefix.towerpixeldungeon.effects.Pushing;
@@ -370,6 +371,19 @@ public class Arena25 extends ArenaHalls {
     public void affectMob(Mob mob) {
         Buff.affect(mob, ChampionEnemy.Copying.class);
     }
+    private void transformOnePortal(){
+        EnemyPortal portal = null;
+        //looks for the portal closest to the hero base (the biggest pos number)
+        for (Mob mob : mobs){
+            if (mob instanceof EnemyPortal && !(mob instanceof EnemyBossPortal)){
+                if (portal == null || portal.pos < mob.pos) portal = (EnemyPortal) mob;
+            }
+        }
+        if (portal!=null ){
+            Camera.main.panTo(DungeonTilemap.tileCenterToWorld(portal.pos), 1f);
+            portal.upgrade();
+        }
+    }
 
     @Override
     public void doStuffStartwave(int wave) {
@@ -385,6 +399,48 @@ public class Arena25 extends ArenaHalls {
                             WndDialogueWithPic.RUN,
                             WndDialogueWithPic.IDLE
                     });
+        }
+        if (wave == 6){
+            WndDialogueWithPic.dialogue(new YogSprite(), Messages.get(BossYog.class, "name"),
+                    new String[]{
+                            Messages.get(RatKing.class, "portals1"),
+                    },
+                    new byte[]{
+                            WndDialogueWithPic.RUN
+                    });
+            transformOnePortal();
+        }
+        if (wave == 11){
+            WndDialogueWithPic.dialogue(new YogSprite(), Messages.get(BossYog.class, "name"),
+                    new String[]{
+                            Messages.get(RatKing.class, "portals2"),
+                    },
+                    new byte[]{
+                            WndDialogueWithPic.RUN
+                    });
+            transformOnePortal();
+        }
+        if (wave == 16){
+            WndDialogueWithPic.dialogue(new YogSprite(), Messages.get(BossYog.class, "name"),
+                    new String[]{
+                            Messages.get(RatKing.class, "portals3"),
+                    },
+                    new byte[]{
+                            WndDialogueWithPic.RUN
+                    });
+            transformOnePortal();
+        }
+        if (wave == 21){
+            WndDialogueWithPic.dialogue(new YogSprite(), Messages.get(BossYog.class, "name"),
+                    new String[]{
+                            Messages.get(RatKing.class, "portals4"),
+                    },
+                    new byte[]{
+                            WndDialogueWithPic.RUN
+                    });
+            transformOnePortal();
+            transformOnePortal();
+            transformOnePortal();
         }
     }
 
