@@ -12,6 +12,7 @@ import com.fixakathefix.towerpixeldungeon.levels.Level;
 import com.fixakathefix.towerpixeldungeon.messages.Messages;
 import com.fixakathefix.towerpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.DeviceCompat;
 
 public class AbTrHyperats extends HeroSpell{
 
@@ -38,13 +39,15 @@ public class AbTrHyperats extends HeroSpell{
 
     @Override
     protected int castCooldown() {
+        if (DeviceCompat.isDebug()) return 0;
         int addturns = 0;
+        //FIXME there is a concurrent modification exception to this somewhere. I just don't know, as the hashset does not change. Swapped to
         try {
             for (Mob mob : Level.mobs) {
                 if (mob instanceof TowerRatCamp && mob.alignment == Char.Alignment.ALLY)
                     addturns += TURNS_PER_RATCAMP + ((Arena)Dungeon.level).waveCooldownBoss/3;
             }
-        } catch (NullPointerException ignored) {
+        } catch (Exception ignored) {
         }
         return 100 + addturns;
     }
