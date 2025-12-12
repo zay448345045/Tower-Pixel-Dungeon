@@ -77,7 +77,7 @@ public class Badges {
 		//diamond
 		ALMOST_LOST_2(160),TOWER_TYPES(161),CAPTAIN(162),AVATAR(163), PYLONS(164), NOPYLONS(165),
 		//ruby
-		DUELIST_SAC(176), ALMOST_LOST_3(177),BLOOD_CULTIST_2(178),
+		DUELIST_SAC(176), ALMOST_LOST_3(177),BLOOD_CULTIST_2(178),RAT_LIMBO(179),
 		//special
 		REDEMPTION(192),
 
@@ -458,6 +458,11 @@ public class Badges {
 		local.add( badge );
 		displayBadge( badge );
 	}
+	public static void validateRatLimbo() {
+		Badge badge = Badge.RAT_LIMBO;
+		local.add( badge );
+		displayBadge( badge );
+	}
 	public static void validateCandle() {
 		Badge badge = Badge.CANDLE;
 		local.add( badge );
@@ -677,6 +682,7 @@ public class Badges {
 			{Badge.DWM  ,Badge.DWM   },
 			{Badge.KING ,Badge.KING  },
 			{Badge.YOG  ,Badge.YOG   },
+			{Badge.RAT_LIMBO  ,Badge.RAT_LIMBO  },
 			{Badge.RATKING ,Badge.RATKING   },
 			{Badge.AVATAR ,Badge.AVATAR },
 			{Badge.VICTORY ,Badge.VICTORY   },

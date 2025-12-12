@@ -167,6 +167,7 @@ import com.fixakathefix.towerpixeldungeon.items.wands.WandOfRegrowth;
 import com.fixakathefix.towerpixeldungeon.items.weapon.SpiritBow;
 import com.fixakathefix.towerpixeldungeon.items.weapon.Weapon;
 import com.fixakathefix.towerpixeldungeon.items.weapon.melee.Banhammer;
+import com.fixakathefix.towerpixeldungeon.items.weapon.melee.BerserkerAxe;
 import com.fixakathefix.towerpixeldungeon.items.weapon.melee.Dagger;
 import com.fixakathefix.towerpixeldungeon.items.weapon.melee.Dirk;
 import com.fixakathefix.towerpixeldungeon.items.weapon.melee.MagesStaff;
@@ -550,8 +551,9 @@ public enum HeroClass {
 	}
 	private static void initFix(Hero hero){
 
-		Banhammer banhammer = new Banhammer();
-		banhammer.upgrade(10000);
+		BerserkerAxe banhammer = new BerserkerAxe();
+		banhammer.upgrade(10);
+		new RoseSeed().collect();
 
 		(hero.belongings.weapon = banhammer).identify();
 

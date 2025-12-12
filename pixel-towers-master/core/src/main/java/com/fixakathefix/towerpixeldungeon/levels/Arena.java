@@ -569,6 +569,19 @@ public class Arena extends Level {
             completeStage();
             return;
         }
+        if (wave > maxWaves+2){
+            Badges.validateRatLimbo();
+        }
+        if (wave > maxWaves+8){
+            completeStage();
+            return;
+        } else if (wave > maxWaves+7){
+            GLog.i("Ok, so a couple minutes left, I'll count the round as a win. Losing progress after you've done so much... is not something we like to see");
+        } else if (wave > maxWaves+6){
+            GLog.i("Was the game broken? Let me help... Sorry, I don't know which language you speak...");
+        } else if (wave > maxWaves+5){
+            GLog.i("Wait why are you here?");
+        }
         //attempts to save each fifth (5) wave, starting from wave 3.
         if (wave%3==0)try {
             Dungeon.saveAll();
