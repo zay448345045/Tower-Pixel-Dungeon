@@ -47,6 +47,7 @@ import com.fixakathefix.towerpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.fixakathefix.towerpixeldungeon.items.artifacts.RoseSeed;
 import com.fixakathefix.towerpixeldungeon.items.artifacts.SandalsOfNature;
 import com.fixakathefix.towerpixeldungeon.items.artifacts.TalismanOfForesight;
+import com.fixakathefix.towerpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.fixakathefix.towerpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.fixakathefix.towerpixeldungeon.items.bombs.Bomb;
 import com.fixakathefix.towerpixeldungeon.items.bombs.Firebomb;
@@ -606,6 +607,7 @@ public class Generator {
 			
 			ARTIFACT.classes = new Class<?>[]{
 					//AlchemistsToolkit.class,
+					//DO NOT PUT THE BROKEN HOURGLASS HERE IT IS BROKEN and produces a nullpointer
 					ChaliceOfBlood.class,
 					CloakOfShadows.class,
 					RoseSeed.class,
@@ -614,7 +616,7 @@ public class Generator {
 					MasterThievesArmband.class,
 					SandalsOfNature.class,
 					TalismanOfForesight.class,
-					BrokenHourglass.class,
+					TimekeepersHourglass.class,
 					UnstableSpellbook.class,
 					CapeOfThorns.class
 			};

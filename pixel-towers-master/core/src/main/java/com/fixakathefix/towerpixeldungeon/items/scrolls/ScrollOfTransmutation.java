@@ -81,9 +81,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	
 	@Override
 	protected void onItemSelected(Item item) {
-		
 		Item result = changeItem(item);
-		
 		if (result == null){
 			//This shouldn't ever trigger
 			GLog.n( Messages.get(this, "nothing") );

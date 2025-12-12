@@ -70,6 +70,7 @@ import com.fixakathefix.towerpixeldungeon.items.armor.curses.Unreliable;
 import com.fixakathefix.towerpixeldungeon.items.artifacts.BrokenHourglass;
 import com.fixakathefix.towerpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.fixakathefix.towerpixeldungeon.items.artifacts.CloakOfShadows;
+import com.fixakathefix.towerpixeldungeon.items.artifacts.EtherealChains;
 import com.fixakathefix.towerpixeldungeon.items.artifacts.HornOfPlenty;
 import com.fixakathefix.towerpixeldungeon.items.artifacts.RoseSeed;
 import com.fixakathefix.towerpixeldungeon.items.artifacts.SandalsOfNature;
@@ -137,6 +138,7 @@ import com.fixakathefix.towerpixeldungeon.items.scrolls.ScrollOfMirrorImage;
 import com.fixakathefix.towerpixeldungeon.items.scrolls.ScrollOfRage;
 import com.fixakathefix.towerpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.fixakathefix.towerpixeldungeon.items.debuggers.WandOfDebug;
+import com.fixakathefix.towerpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.fixakathefix.towerpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.fixakathefix.towerpixeldungeon.items.scrolls.exotic.ScrollOfGolems;
 import com.fixakathefix.towerpixeldungeon.items.scrolls.exotic.ScrollOfHolyNova;
@@ -568,56 +570,20 @@ public enum HeroClass {
 		PlateArmor armor = new PlateArmor();
 		armor.identify().collect();
 		armor.upgrade(150);
-		armor.cursed = true;
-		armor.inscribe(new AntiEntropy());
 
 		new ScrollOfHolyNova().collect();
-		//new RoseSeed().collect();
-
-		for (int i = 0; i < 9; i++) {
-			new ScrollOfGolems().collect();
-			MeleeWeapon wep = Generator.randomWeapon();
-			if (Math.random()>0.5) wep.cursed = true;
-			wep.collect();
-			new CeremonialCandle().collect();
-		}
-
-		WandOfDebug buggo = new WandOfDebug();
-		buggo.identify().collect();
-		new Ankh().collect();
+		new EtherealChains().collect();
 
 		StaffOfBeasts staffo = new StaffOfBeasts();
 		staffo.identify().collect();
-		for (int i = 0; i < 20; i++) new ScrollOfSirensSong().collect();
+		for (int i = 0; i < 200; i++){
+			new ScrollOfTransmutation().collect();
+			new SpawnerCamp().collect();
+		}
 
-		//WandOfRegrowth wandOfRegrowth = new WandOfRegrowth();
-		//wandOfRegrowth.upgrade(5).collect();
-
-		//StableTeleportScroll stableTeleportScroll = new StableTeleportScroll();
-		//stableTeleportScroll.identify().collect();
-		//new ScrollOfTeleportation().collect();
-
-		//new AbTrArrowVolley().collect();
-		//new AbTrBombVolley().collect();
-		//new AbTrOvercharge().collect();
-		//new AbTrHyperats().collect();
-		//new AbTrAngerTheDead().collect();
-		//new AbTrDartgunAlly().collect();
-		//new AbTrGreatWall().collect();
-		//new AbTrLightningStrike().collect();
-		//new AbTrNullify().collect();
-		//new AbTrOrder().collect();
-		//new AbTrPlanB().collect();
+		new AbTrHyperats().collect();
 
 
-		new PotionOfLevitation().collect();
-		new BrokenHourglass().collect();
-		new UnstableSpellbook().collect();
-		new WandOfBlastWave().collect();
-		/*for (Class cas : Generator.Category.SCROLL.classes){
-			Scroll s = (Scroll)Reflection.newInstance(cas);
-			s.collect();
-		}*/
 
 
 	}
