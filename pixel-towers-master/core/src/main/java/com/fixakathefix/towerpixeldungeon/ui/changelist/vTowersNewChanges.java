@@ -69,6 +69,7 @@ public class vTowersNewChanges {
 		add_v054_Changes(changeInfos);
 		add_v100_Changes(changeInfos);
 		add_v110_Changes(changeInfos);
+		add_v111_Changes(changeInfos);
 	}
 
 	public static void add_Coming_Soon( ArrayList<ChangeInfo> changeInfos ) {
@@ -678,6 +679,22 @@ public class vTowersNewChanges {
 						"Other changes:\n" +
 						"- Corpse dust can be thrown away now\n" +
 						"- Corpse dust ritual added"));
+
+	}
+	public static void add_v111_Changes( ArrayList<ChangeInfo> changeInfos) {
+
+		ChangeInfo changes = new ChangeInfo("v1.1.1 patch", true, null);
+		changes.hardlight(CharSprite.DEFAULT);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.COPY), "General",
+				"General update info:\n" +
+						"- Released 12.12.25\n" +
+						"- fixed a crucial crushbug with window interaction, and some more"));
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), "Bugs & other",
+				"Bugs removed/things added:\n" +
+						"- Added a badge for finding the infinite loop of _DATA REMOVED_\n" +
+						"- Most, if not all bugs, regarding dialogue window removal/changing/duplication after display resize/screen orientation change have been fixed"));
 
 	}
 
