@@ -694,6 +694,8 @@ public class vTowersNewChanges {
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), "Bugs & other",
 				"Bugs removed/things added:\n" +
 						"- Added a badge for finding the infinite loop of _DATA REMOVED_\n" +
+						"- fixed transmutation scroll crashbug (not all of PT artifacts are equipable, and it turned equipped artifacts into an unequippable broken hourglass with a chance)\n" +
+						"- blocked some extremely rare crashbugs from crashing the game\n" +
 						"- Most, if not all bugs, regarding dialogue window removal/changing/duplication after display resize/screen orientation change have been fixed"));
 
 	}
