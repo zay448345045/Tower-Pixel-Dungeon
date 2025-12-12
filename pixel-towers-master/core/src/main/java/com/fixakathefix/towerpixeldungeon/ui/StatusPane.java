@@ -274,9 +274,14 @@ public class StatusPane extends Component {
 		for (Compass compassExisting : heroCompassesAddedLinks){
 			remove(compassExisting);
 		}
+		//FIXME a rare compass null addition glitch is there. IDK what it is.
 		for (Compass compass1 : heroCompasses){
-			add(compass1);
-			heroCompassesAddedLinks.add(compass1);
+			try{
+				add(compass1);
+				heroCompassesAddedLinks.add(compass1);
+			} catch (NullPointerException exception){
+
+			}
 		}
 
 		if (!Dungeon.hero.isAlive()) {
