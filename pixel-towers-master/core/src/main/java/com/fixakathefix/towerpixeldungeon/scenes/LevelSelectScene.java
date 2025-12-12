@@ -473,7 +473,16 @@ public class LevelSelectScene extends PixelScene {
             @Override
             protected void onClick() {
                 super.onClick();
-                if (SPDSettings.towerUnlockedMessage()) {
+                if (SPDSettings.levelUnlockedMessage()) {
+                    WndDialogueWithPic.dialogue_outsideOfGame(
+                            new BossRatKingSprite(),
+                            Messages.get(BossRatKing.class, "name"),
+                            new String[]{
+                                    Messages.get(LevelSelectScene.class, "newlevelunlocked1"),
+                                    Messages.get(LevelSelectScene.class, "newlevelunlocked2")
+                            },
+                            new byte[]{WndDialogueWithPic.RUN});
+                } else if (SPDSettings.towerUnlockedMessage()) {
                     SPDSettings.towerUnlockedMessage(false);
                     WndDialogueWithPic.dialogue_outsideOfGame(
                             new BossRatKingSprite(),
@@ -541,9 +550,11 @@ public class LevelSelectScene extends PixelScene {
             @Override
             protected void onClick() {
                 super.onClick();
+                SPDSettings.levelUnlockedMessage(false);
                 if (chosenLevel < levelArrayList.size()) chosenLevel++;
                 Game.switchScene(LevelSelectScene.class);
             }
+
         };
         arrowRightButton.icon(Icons.get(Icons.ARROW));
         arrowRightButton.setSize(15, 15);

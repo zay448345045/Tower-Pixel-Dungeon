@@ -113,8 +113,10 @@ public class TitleScene extends PixelScene {
 
 		final Chrome.Type GREY_TR = Chrome.Type.GREY_BUTTON_TR;
 		final Chrome.Type BIG_BUTTON = Chrome.Type.GEM;
+
+		String buttonMessage = SPDSettings.levelUnlockedMessage() ? Messages.get(TitleScene.class, "enter_theresastage") : Messages.get(TitleScene.class, "enter");
 		
-		StyledButton btnPlay = new StyledButton(GREY_TR, Messages.get(this, "enter")){
+		StyledButton btnPlay = new StyledButton(GREY_TR, buttonMessage){
 			@Override
 			protected void onClick() {
 				if (GamesInProgress.checkAll().size() == 0){
@@ -126,7 +128,13 @@ public class TitleScene extends PixelScene {
 				}
 			}
 
-
+			@Override
+			public void update() {
+				super.update();
+				if (SPDSettings.levelUnlockedMessage()){
+					textColor(ColorMath.interpolate( 0.5f + (float)Math.sin(Game.timeTotal)/2f, 0xFF9999,0xFFFF99));
+				}
+			}
 
 			@Override
 			protected boolean onLongClick() {
@@ -243,15 +251,6 @@ public class TitleScene extends PixelScene {
 
 		int unreadCount = -1;
 
-
-
-		@Override
-		public void update() {
-			super.update();
-
-			textColor(ColorMath.interpolate( 0.5f + (float)Math.sin(Game.timeTotal)/2f, 0xFF9999,0xFFFF99,0x99FF99,0x99FFFF,0x9999FF,0xFF99FF));
-
-		}
 
 		@Override
 		protected void onClick() {

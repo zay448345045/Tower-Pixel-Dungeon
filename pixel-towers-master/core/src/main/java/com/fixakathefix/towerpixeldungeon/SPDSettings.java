@@ -86,6 +86,14 @@ public class SPDSettings extends GameSettings {
 	}
 	public static boolean towerUnlockedMessage() {
 		return getBoolean(TOWERUNLOCKEDMESSAGE, false);
+
+	}
+	private static final String LEVELUNLOCKEDMESSAGE = "levelunlockedmessage";
+	public static void levelUnlockedMessage(boolean value) {
+		put (LEVELUNLOCKEDMESSAGE, value);
+	}
+	public static boolean levelUnlockedMessage() {
+		return getBoolean(LEVELUNLOCKEDMESSAGE, false);
 	}
 
 	private static final String RITUALWASMADE = "ritualwasmade";

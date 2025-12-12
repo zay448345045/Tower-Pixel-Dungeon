@@ -533,7 +533,6 @@ public class Arena2 extends ArenaSewers{
         armor.upgrade(1);
         armor.identify();
         this.drop(armor, x+4 + WIDTH*(y+5));
-        this.drop(new Bomb(), x+2+WIDTH*(y+4));
 
         //trapcircle
         do {x = Random.Int(12,WIDTH-15);} while (x<60&&x>40);
@@ -556,7 +555,6 @@ public class Arena2 extends ArenaSewers{
         do {x = Random.Int(5,WIDTH-10);} while (x<60&&x>30);
         do {y = Random.Int(5,HEIGHT-10);} while (y<60&&y>30);
         Painter.fillEllipse(this,x,y,3,8, Terrain.EMBERS);
-        this.drop(new Bomb(), x+2+y*(WIDTH+3));
 
         this.map[exitCell] = Terrain.EXIT;
         this.map[amuletCell] = Terrain.PEDESTAL;

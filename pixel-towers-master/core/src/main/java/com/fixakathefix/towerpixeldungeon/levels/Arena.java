@@ -634,6 +634,9 @@ public class Arena extends Level {
         Dungeon.deleteGame( GamesInProgress.curSlot, true );
         Game.switchScene( RankingsScene.class );
         int maxnewlevel = SPDSettings.maxlevelunlocked();
+        if (maxlevel == 1 && maxnewlevel == 2){
+            SPDSettings.levelUnlockedMessage(true);
+        }
         if (maxnewlevel > maxlevel) {
             if (maxnewlevel == 5 ||
                     maxnewlevel==7||
