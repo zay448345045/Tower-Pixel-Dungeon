@@ -16,6 +16,7 @@ import com.fixakathefix.towerpixeldungeon.actors.blobs.ToxicGas;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Amok;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Buff;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Burning;
+import com.fixakathefix.towerpixeldungeon.actors.buffs.ChampionEnemy;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Corrosion;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Cripple;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Hex;
@@ -43,6 +44,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class DMW extends Mob {
 
@@ -504,37 +506,20 @@ public class DMW extends Mob {
         CellEmitter.center(pos).burst(SmokeParticle.FACTORY, 5);
 
         if (!candidates.isEmpty()) {
-            DMWHead spawn1 = new DMWHead();
-            DMWBody spawn2 = new DMWBody();
-            DMWWheels spawn3 = new DMWWheels();
-
-            spawn1.pos = Random.element(candidates);
-            spawn1.state = spawn1.HUNTING;
-            spawn1.alignment = alignment;
-            GameScene.add(spawn1, 1);
-            Dungeon.level.occupyCell(spawn1);
-
-            spawn2.pos = Random.element(candidates);
-            spawn2.state = spawn2.PASSIVE;
-            spawn2.alignment = alignment;
-            GameScene.add(spawn2, 1);
-            Dungeon.level.occupyCell(spawn2);
-
-            spawn3.pos = Random.element(candidates);
-            spawn3.state = spawn3.HUNTING;
-            spawn3.alignment = alignment;
-            GameScene.add(spawn3, 1);
-            Dungeon.level.occupyCell(spawn3);
-
-
-            if (sprite.visible) {
-                Actor.addDelayed(new Pushing(spawn1, pos, spawn1.pos), -1);
-            }
-            if (sprite.visible) {
-                Actor.addDelayed(new Pushing(spawn2, pos, spawn2.pos), -1);
-            }
-            if (sprite.visible) {
-                Actor.addDelayed(new Pushing(spawn3, pos, spawn3.pos), -1);
+            HashSet<Mob> toSpawn = new HashSet<>();
+            toSpawn.add(new DMWHead());
+            toSpawn.add(new DMWBody());
+            toSpawn.add(new DMWWheels());
+            for (Mob mob : toSpawn){
+                mob.pos = Random.element(candidates);
+                mob.state = mob.HUNTING;
+                mob.alignment = alignment;
+                GameScene.add(mob, 1);
+                Dungeon.level.occupyCell(mob);
+                if (sprite.isVisible()) Actor.addDelayed(new Pushing(mob, pos, mob.pos), -1);
+                for (Buff b : buffs(ChampionEnemy.class)){
+                    Buff.affect( mob, b.getClass());
+                }
             }
         }
 

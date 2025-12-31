@@ -62,7 +62,7 @@ public class GreatCrab extends Crab {
 		if (state != SLEEPING
 				&& buff(PotionOfCleansing.Cleanse.class)==null
 				&& paralysed == 0
-				&& (!DamageSource.MAGICAL.contains(src.getClass())&&!DamageSource.ELEMENTAL.contains(src.getClass()))
+				&& (src!=null && !DamageSource.MAGICAL.contains(src.getClass()) && !DamageSource.ELEMENTAL.contains(src.getClass()))
 				&& enemy.invisible == 0){
 			GLog.n( Messages.get(this, "noticed") );
 			sprite.showStatus( CharSprite.NEUTRAL, Messages.get(this, "def_verb") );

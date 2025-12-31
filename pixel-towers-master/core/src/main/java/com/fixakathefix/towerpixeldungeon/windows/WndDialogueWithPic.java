@@ -9,7 +9,12 @@ import com.fixakathefix.towerpixeldungeon.ShatteredPixelDungeon;
 import com.fixakathefix.towerpixeldungeon.levels.Arena;
 import com.fixakathefix.towerpixeldungeon.scenes.GameScene;
 import com.fixakathefix.towerpixeldungeon.scenes.PixelScene;
+import com.fixakathefix.towerpixeldungeon.sprites.AlmostEmptySprite;
 import com.fixakathefix.towerpixeldungeon.sprites.CharSprite;
+import com.fixakathefix.towerpixeldungeon.sprites.GooSprite;
+import com.fixakathefix.towerpixeldungeon.sprites.GorematiaSpiritSprite;
+import com.fixakathefix.towerpixeldungeon.sprites.RatKingSprite;
+import com.fixakathefix.towerpixeldungeon.sprites.RatSprite;
 import com.fixakathefix.towerpixeldungeon.ui.RenderedTextBlock;
 import com.fixakathefix.towerpixeldungeon.ui.Window;
 import com.watabou.input.PointerEvent;
@@ -53,12 +58,16 @@ public class WndDialogueWithPic extends Window {
 
     public enum WndType {
         NORMAL,
+        UNSKIPPABLE,
         FINAL, //ends the game after that dialogue
         YOGFINAL // unskippable
     }
 
     public static void dialogue(CharSprite icon, String title, String[] text) {
         dialogue(icon, title, text, new byte[]{});
+    }
+    public static void dialogue(CharSprite icon, String title, String[] text, WndType type) {
+        dialogue(icon, title, text, new byte[]{}, type, new ArrayList<>());
     }
 
     public static void dialogue(CharSprite icon, String title, String[] text, byte spriteActionIndexes[]) {
@@ -77,10 +86,19 @@ public class WndDialogueWithPic extends Window {
                 @Override
                 public void call() {
                     CharSprite newSprite = Reflection.newInstance(wndref.image.getClass());
+                    if (newSprite == null){
+                      newSprite = wndref.image;
+                      newSprite.scale.set(1);
+                      newSprite.x= 0;
+                      newSprite.y = 0;
+                      newSprite.update();
+                    }
+
                     WndDialogueWithPic wnd = new WndDialogueWithPic(
                             newSprite, wndref.ttl.text(), wndref.texts, wndref.spriteActionIndexes, wndref.textNum, true);
-                    if (wndref.lastDialogue) wnd.lastDialogue = true;
-                    if (wndref.unskippable) wnd.unskippable = true;
+                    wnd.repositionElements();
+                    wnd.lastDialogue = wndref.lastDialogue;
+                    wnd.unskippable = wndref.unskippable;
                     wnd.runnableArrayList = wndref.runnableArrayList;
                     Dungeon.level.lastSavedWndDialogueWithPic = wnd;
                     if (ShatteredPixelDungeon.scene() instanceof GameScene)
@@ -91,13 +109,13 @@ public class WndDialogueWithPic extends Window {
         }
     }
     public static void dialogue(CharSprite icon, String title, String[] text, byte[] spriteActionIndexes, WndType type, ArrayList<Runnable> runnableArrayList, int textnum) {
-        if ( level == null || level.mode == WndModes.Modes.NORMAL || type == WndType.FINAL || type == WndType.YOGFINAL) {
+        if ( level == null || level.mode == WndModes.Modes.NORMAL || type == WndType.FINAL || type == WndType.YOGFINAL || type == WndType.UNSKIPPABLE) {
             Game.runOnRenderThread(new Callback() {
                 @Override
                 public void call() {
                     WndDialogueWithPic wnd = new WndDialogueWithPic(icon, title, text, spriteActionIndexes ,textnum, false);
                     if (type == WndType.FINAL) wnd.lastDialogue = true;
-                    if (type == WndType.YOGFINAL) wnd.unskippable = true;
+                    if (type == WndType.YOGFINAL || type == WndType.UNSKIPPABLE) wnd.unskippable = true;
                     wnd.runnableArrayList = runnableArrayList;
                     Dungeon.level.lastSavedWndDialogueWithPic = wnd;
                     if (ShatteredPixelDungeon.scene() instanceof GameScene)
@@ -127,40 +145,22 @@ public class WndDialogueWithPic extends Window {
         resize(PixelScene.uiCamera.width, PixelScene.uiCamera.height);
         texts = text;
 
-        image = icon;
+
+
+        //FIXME there is somewhere a null icon, i need to find where
+        if (icon == null) {
+            AlmostEmptySprite sprite = new AlmostEmptySprite();
+            image = sprite;
+        } else image = icon;
 
         this.spriteActionIndexes = spriteActionIndexes;
 
-        int chromeWidth = PixelScene.landscape() ? (int)(PixelScene.uiCamera.width / 1.5f): PixelScene.uiCamera.width - 4;
-        int chromeHeight = Math.round(PixelScene.uiCamera.height * 0.3f);
-        chrome.x = (PixelScene.uiCamera.width - chromeWidth) * 0.5f;
-        chrome.y = (PixelScene.uiCamera.height - chromeHeight - 2);
-        chrome.size(chromeWidth, chromeHeight);
-        addToFront(chrome);
-
-        float y = chrome.y + MARGIN;
-
-        int scale = 8;
-        icon.scale.set(scale);
-
-        while (icon.width() > PixelScene.uiCamera.width / 2) {
-            scale--;
-            icon.scale.set(scale);
-        }
-
-        icon.x = chrome.x;
-        icon.y = chrome.y - icon.height * (scale / 1.5f);
-        addToBack(icon);
-
-
         ttl = PixelScene.renderTextBlock(title, 11);
-        ttl.maxWidth(chromeWidth - 4 * MARGIN);
-        ttl.setPos(chrome.x + icon.width() + 2 * MARGIN, chrome.y - 2 * MARGIN - ttl.height());
-        add(ttl);
-
         tf = PixelScene.renderTextBlock("", 9);
-        tf.maxWidth(chromeWidth - 4 * MARGIN);
-        tf.setPos(chrome.x + 2 * MARGIN, y + 2 * MARGIN);
+        repositionElements();
+        addToFront(chrome);
+        addToBack(image);
+        add(ttl);
         add(tf);
 
         this.shouldSkipThisRunnable = shouldSkipThisRunnable;
@@ -177,7 +177,32 @@ public class WndDialogueWithPic extends Window {
         blocker.camera = PixelScene.uiCamera;
         addToBack(blocker);
         startText(texts[textNum]);
+    }
+    private void repositionElements(){
+        int chromeWidth = PixelScene.landscape() ? (int)(PixelScene.uiCamera.width / 1.5f): PixelScene.uiCamera.width - 4;
+        int chromeHeight = Math.round(PixelScene.uiCamera.height * 0.3f);
+        chrome.x = (PixelScene.uiCamera.width - chromeWidth) * 0.5f;
+        chrome.y = (PixelScene.uiCamera.height - chromeHeight - 2);
+        chrome.size(chromeWidth, chromeHeight);
 
+        float y = chrome.y + MARGIN;
+
+        int scale = 8;
+        image.scale.set(scale);
+
+        while (image.width() > PixelScene.uiCamera.width / 2) {
+            scale--;
+            image.scale.set(scale);
+        }
+
+        image.x = chrome.x;
+        image.y = chrome.y - image.height * (scale / 1.5f);
+
+        ttl.maxWidth(chromeWidth - 4 * MARGIN);
+        ttl.setPos(chrome.x + image.width() + 2 * MARGIN, chrome.y - 2 * MARGIN - ttl.height());
+
+        tf.maxWidth(chromeWidth - 4 * MARGIN);
+        tf.setPos(chrome.x + 2 * MARGIN, y + 2 * MARGIN);
     }
 
 
@@ -198,6 +223,7 @@ public class WndDialogueWithPic extends Window {
                 textNum++;
                 if (textNum >= texts.length) {
                     hide();
+                    nullifyLastWindow();
                     if (lastDialogue) {
                         Arena.completeStage();
                         return;
@@ -212,7 +238,11 @@ public class WndDialogueWithPic extends Window {
     @Override
     public void hide() {
         super.hide();
-        level.lastSavedWndDialogueWithPic = null;
+        timer.stop();
+        timer.clear();
+    }
+    public static void nullifyLastWindow(){
+        if (level!=null) level.lastSavedWndDialogueWithPic = null;
     }
 
     private void startText(String text) {

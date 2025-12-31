@@ -254,7 +254,7 @@ public class BossTengu extends Mob {
         int cell;
 
 
-        if (phase == 3) for (int i : PathFinder.NEIGHBOURS9){
+        if (phase == 3) for (int i : PathFinder.NEIGHBOURS9) if (enemy!=null) {
             cell = enemy.pos + i;
             if (Actor.findChar(cell)!=null){
                 if (Actor.findChar(enemy.pos).alignment == Alignment.ENEMY){

@@ -1429,7 +1429,8 @@ public abstract class Level implements Bundlable {
 			}
 
 			//set mind vision chars
-			for (Mob mob : mobs) {
+			HashSet<Mob> concMobs = new HashSet<>(mobs);
+			for (Mob mob : concMobs) {
 				if (heroMindFov[mob.pos] && !fieldOfView[mob.pos]){
 					Dungeon.hero.mindVisionEnemies.add(mob);
 				}

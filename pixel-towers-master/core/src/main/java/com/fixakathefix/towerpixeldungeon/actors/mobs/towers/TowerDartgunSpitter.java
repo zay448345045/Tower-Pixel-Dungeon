@@ -19,8 +19,8 @@ public class TowerDartgunSpitter extends TowerDartgun3 {
         attackRange = 11;//dpt 0.002 (3 + 4p) effective if hits 4 non-bots + slows.
         cost = 1610;
         upgCount = 0;
-        damageMin = 2;
-        damageMax = 4;
+        damageMin = 8;
+        damageMax = 10;
         upgradeLevel = 8;
         poisonPower = 10;
     }
@@ -36,7 +36,7 @@ public class TowerDartgunSpitter extends TowerDartgun3 {
             if (splashPos == poisonSplashLlistica.collisionPos) break;
             if (x!=null && x.alignment!=this.alignment) {
                 Buff.affect(x, Poison.class).set(poisonPower);
-                if (Random.Int(6)<2)Buff.affect(x, Slow.class, 2);
+                if (Random.Int(3)==0)Buff.affect(x, Slow.class, 3);
             }
         }
         return super.attack(enemy, dmgMulti, dmgBonus, accMulti);

@@ -40,7 +40,7 @@ public class CampRatKnife extends CampRat {
 		defMin = 0;
 		defMax = 1;
 
-		cost = 100;
+		cost = 120;
 	}
 	@Override
 	public int attackSkill( Char target ) {

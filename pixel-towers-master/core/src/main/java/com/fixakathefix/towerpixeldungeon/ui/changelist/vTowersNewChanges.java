@@ -70,6 +70,7 @@ public class vTowersNewChanges {
 		add_v100_Changes(changeInfos);
 		add_v110_Changes(changeInfos);
 		add_v111_Changes(changeInfos);
+		add_v112_Changes(changeInfos);
 	}
 
 	public static void add_Coming_Soon( ArrayList<ChangeInfo> changeInfos ) {
@@ -697,6 +698,21 @@ public class vTowersNewChanges {
 						"- fixed transmutation scroll crashbug (not all of PT artifacts are equipable, and it turned equipped artifacts into an unequippable broken hourglass with a chance)\n" +
 						"- blocked some extremely rare crashbugs from crashing the game\n" +
 						"- Most, if not all bugs, regarding dialogue window removal/changing/duplication after display resize/screen orientation change have been fixed"));
+
+	}
+	public static void add_v112_Changes( ArrayList<ChangeInfo> changeInfos) {
+
+		ChangeInfo changes = new ChangeInfo("v1.1.2 bug and balance patch", true, null);
+		changes.hardlight(CharSprite.DEFAULT);
+		changeInfos.add(changes);
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.COPY), "General",
+				"General update info:\n" +
+						"- Released 31.12.25\n" +
+						"- fixed more crushbugs, balanced some towers"));
+		changes.addButton(new ChangeButton(Icons.get(Icons.NEWS), "Bugs and additions",
+						"- removed crashbugs connected to Lightning spell, great crab, Tengu, spectral necromances, DK and dialogue windows. Gotten rid of some typos.\n" +
+						"- buffed higher dartguns, nerfed rats in cost, added DK reactions to hardmode and challenge mode"));
 
 	}
 

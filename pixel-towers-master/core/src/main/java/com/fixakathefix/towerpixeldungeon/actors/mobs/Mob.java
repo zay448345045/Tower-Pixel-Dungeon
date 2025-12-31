@@ -949,7 +949,7 @@ public abstract class Mob extends Char {
 			}
 			if (!positions.isEmpty()){
 				Mob mob = Reflection.newInstance(this.getClass());
-				mob.HP = mob.HT = 1;
+				mob.HP = 1;
 				mob.pos = Random.element(positions);
 				GameScene.add(mob);
 			}

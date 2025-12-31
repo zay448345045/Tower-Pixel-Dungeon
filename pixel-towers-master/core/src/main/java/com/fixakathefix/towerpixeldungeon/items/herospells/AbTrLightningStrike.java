@@ -14,6 +14,7 @@ import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerLightning1;
 import com.fixakathefix.towerpixeldungeon.effects.Lightning;
 import com.fixakathefix.towerpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.fixakathefix.towerpixeldungeon.items.wands.WandOfBlastWave;
+import com.fixakathefix.towerpixeldungeon.levels.Level;
 import com.fixakathefix.towerpixeldungeon.messages.Messages;
 import com.fixakathefix.towerpixeldungeon.scenes.CellSelector;
 import com.fixakathefix.towerpixeldungeon.scenes.GameScene;
@@ -24,6 +25,7 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class AbTrLightningStrike extends HeroSpellTargeted {
     private static int MIN_COST = 10;
@@ -77,7 +79,8 @@ public class AbTrLightningStrike extends HeroSpellTargeted {
     @Override
     protected int castCooldown() {
         int lightcost = 0;
-        for (Mob mob : Dungeon.level.mobs){
+        HashSet<Mob> mobsInRange = new HashSet<>(Level.mobs);
+        for (Mob mob : mobsInRange){
             if (mob instanceof TowerLightning1){
                 lightcost += ((Tower)mob).cost;
             }

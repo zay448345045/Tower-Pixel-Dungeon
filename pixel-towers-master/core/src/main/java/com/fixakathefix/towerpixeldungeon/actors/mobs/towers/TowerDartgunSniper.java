@@ -12,8 +12,8 @@ public class TowerDartgunSniper extends TowerDartgun3 {
         cost = 1610;
         upgCount = 0;
         baseAttackDelay = 3.5f;
-        damageMin = 31;
-        damageMax = 33;
+        damageMin = 41;
+        damageMax = 43;
         upgradeLevel = 8;
         poisonPower = 19;
     }

@@ -47,7 +47,7 @@ public class CampRatLeader extends CampRat {
 		defMin = 1;
 		defMax = 2;
 
-		cost = 800;
+		cost = 900;
 
 		immunities.add(Paralysis.class);
 		immunities.add(StenchGas.class);

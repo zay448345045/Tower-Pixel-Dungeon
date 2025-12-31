@@ -137,17 +137,20 @@ public class SpectralNecromancer extends Necromancer {
 		summoning = firstSummon = false;
 
 		Wraith wraith = Wraith.spawnAt(summoningPos);
-		wraith.adjustStats(0);
-		wraith.targetingPreference = TargetingPreference.NOT_WALLS;
-		Dungeon.level.occupyCell( wraith );
+		if(wraith!=null){
+			wraith.adjustStats(0);
+			wraith.targetingPreference = TargetingPreference.NOT_WALLS;
+			Dungeon.level.occupyCell( wraith );
+			for (Buff b : buffs(AllyBuff.class)){
+				Buff.affect( wraith, b.getClass());
+			}
+			for (Buff b : buffs(ChampionEnemy.class)){
+				Buff.affect( wraith, b.getClass());
+			}
+			wraithIDs.add(wraith.id());
+		}
 		((SpectralNecromancerSprite)sprite).finishSummoning();
 
-		for (Buff b : buffs(AllyBuff.class)){
-			Buff.affect( wraith, b.getClass());
-		}
-		for (Buff b : buffs(ChampionEnemy.class)){
-			Buff.affect( wraith, b.getClass());
-		}
-		wraithIDs.add(wraith.id());
+
 	}
 }
