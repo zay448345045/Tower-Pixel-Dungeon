@@ -4,7 +4,6 @@ import static com.fixakathefix.towerpixeldungeon.Dungeon.level;
 
 import com.fixakathefix.towerpixeldungeon.Assets;
 import com.fixakathefix.towerpixeldungeon.Dungeon;
-import com.fixakathefix.towerpixeldungeon.SPDSettings;
 import com.fixakathefix.towerpixeldungeon.actors.Char;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Amok;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Blindness;
@@ -18,9 +17,7 @@ import com.fixakathefix.towerpixeldungeon.actors.buffs.Slow;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Speed;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Strength;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Vulnerable;
-import com.fixakathefix.towerpixeldungeon.actors.mobs.Albino;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.BossDwarfKing;
-import com.fixakathefix.towerpixeldungeon.actors.mobs.ChiefRat;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.DM100;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.Elemental;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.Ghoul;
@@ -56,31 +53,22 @@ import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerGuard1;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerLightning1;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerRatCamp;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerTntLog;
-import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerWall1;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerWand1;
 import com.fixakathefix.towerpixeldungeon.effects.CellEmitter;
 import com.fixakathefix.towerpixeldungeon.effects.particles.ShadowParticle;
-import com.fixakathefix.towerpixeldungeon.items.Generator;
 import com.fixakathefix.towerpixeldungeon.items.Gold;
 import com.fixakathefix.towerpixeldungeon.items.Heap;
 import com.fixakathefix.towerpixeldungeon.levels.features.LevelTransition;
-import com.fixakathefix.towerpixeldungeon.levels.painters.Painter;
 import com.fixakathefix.towerpixeldungeon.messages.Messages;
 import com.fixakathefix.towerpixeldungeon.scenes.GameScene;
 import com.fixakathefix.towerpixeldungeon.sprites.KingSprite;
 import com.fixakathefix.towerpixeldungeon.sprites.RatKingSprite;
-import com.fixakathefix.towerpixeldungeon.tiles.DungeonTilemap;
-import com.fixakathefix.towerpixeldungeon.ui.towerlist.TowerInfo;
 import com.fixakathefix.towerpixeldungeon.utils.GLog;
 import com.fixakathefix.towerpixeldungeon.windows.WndDialogueWithPic;
 import com.fixakathefix.towerpixeldungeon.windows.WndModes;
-import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.particles.Emitter;
-import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.PathFinder;
-import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -379,7 +367,7 @@ public class Arena20 extends ArenaCity {
                             Messages.get(BossDwarfKing.class, "start2"),
                             Messages.get(BossDwarfKing.class, "start3"),
                             Messages.get(BossDwarfKing.class, "start4"),
-                    }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                    }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
         }
     }
 
@@ -437,17 +425,17 @@ public class Arena20 extends ArenaCity {
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "favtower_crossbow"),
                                 Messages.get(BossDwarfKing.class, "strategy_crossbow"),
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
                 deploymobs(5001, Direction.TOOUP,10 );
             } else if (maxcoinson == wands) {
                 WndDialogueWithPic.dialogue(new KingSprite(), Messages.get(BossDwarfKing.class, "name"),
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "favtower_wand"),
                                 Messages.get(BossDwarfKing.class, "strategy_wand"),
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
                 for (Mob x : level.mobs){
                     if (x instanceof TowerWand1){
-                        Buff.affect(x, Ooze.class).set(300);
+                        Buff.affect(x, Ooze.class).set(50);
                         CellEmitter.center(x.pos).start(ShadowParticle.UP, 0.1f, 10);
                     }
                 }
@@ -457,7 +445,7 @@ public class Arena20 extends ArenaCity {
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "favtower_wall"),
                                 Messages.get(BossDwarfKing.class, "strategy_wall"),
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
                 for (Mob x : level.mobs){
                     if (x instanceof TowerCWall&&!(x instanceof IceWall)){
                         Buff.affect(x, Vulnerable.class, 10000);
@@ -470,7 +458,7 @@ public class Arena20 extends ArenaCity {
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "favtower_cannon"),
                                 Messages.get(BossDwarfKing.class, "strategy_cannon"),
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
                 for (Mob x : level.mobs){
                     if (x instanceof TowerCannon1 || x instanceof TowerCannonNuke){
                         Buff.affect(x, Hex.class, 10000);
@@ -487,17 +475,17 @@ public class Arena20 extends ArenaCity {
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "favtower_dartgun"),
                                 Messages.get(BossDwarfKing.class, "strategy_dartgun"),
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
                 deploymobs(5005, Direction.UP,50 );
             } else if (maxcoinson == disintegrations) {
                 WndDialogueWithPic.dialogue(new KingSprite(), Messages.get(BossDwarfKing.class, "name"),
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "favtower_disintegration"),
                                 Messages.get(BossDwarfKing.class, "strategy_disintegration"),
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
                 for (Mob x : level.mobs){
                     if (x instanceof TowerDisintegration1){
-                        Buff.affect(x, Amok.class, 8);
+                        Buff.affect(x, Amok.class, 10);
                         CellEmitter.center(x.pos).start(ShadowParticle.CURSE, 0.1f, 10);
                     }
                 }
@@ -507,17 +495,17 @@ public class Arena20 extends ArenaCity {
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "favtower_lightning"),
                                 Messages.get(BossDwarfKing.class, "strategy_lightning"),
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
                 deploymobs(5007, Direction.TOOUP,10 );
             } else if (maxcoinson == guards) {
                 WndDialogueWithPic.dialogue(new KingSprite(), Messages.get(BossDwarfKing.class, "name"),
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "favtower_guard"),
                                 Messages.get(BossDwarfKing.class, "strategy_guard"),
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
                 for (Mob x : level.mobs){
                     if (x instanceof TowerGuard1){
-                        Buff.affect(x, Amok.class, 8);
+                        Buff.affect(x, Amok.class, 12);
                         CellEmitter.center(x.pos).start(ShadowParticle.CURSE, 0.1f, 10);
                     }
                 }
@@ -527,11 +515,11 @@ public class Arena20 extends ArenaCity {
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "favtower_ratcamp"),
                                 Messages.get(BossDwarfKing.class, "strategy_ratcamp"),
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
                 Sample.INSTANCE.play(Assets.Sounds.SHATTER);
                 for (Mob x : level.mobs){
                     if (x instanceof TowerRatCamp){
-                        Buff.affect(x, Frost.class, 200);
+                        Buff.affect(x, Frost.class, 500);
                     }
                 }
                 deploymobs(5008, Direction.TOOUP,10 );
@@ -540,14 +528,14 @@ public class Arena20 extends ArenaCity {
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "favtower_graveyard"),
                                 Messages.get(BossDwarfKing.class, "strategy_graveyard"),
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
                 deploymobs(5009, Direction.TOOUP,10 );
             } else if (maxcoinson == tntlogs) {
                 WndDialogueWithPic.dialogue(new KingSprite(), Messages.get(BossDwarfKing.class, "name"),
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "favtower_tntlog"),
                                 Messages.get(BossDwarfKing.class, "strategy_tntlog"),
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
                 deploymobs(5010, Direction.TOOUP,10 );
             }
 
@@ -615,14 +603,14 @@ public class Arena20 extends ArenaCity {
                             speechtype,
                             speechflank,
                             speechfinal
-                    }, WndDialogueWithPic.WndType.UNSKIPPABLE
+                    }, WndDialogueWithPic.WndType.ALWAYS_SHOW
                     );
         } else if (wave == 14){
             if (level.distance(amuletCell, Dungeon.hero.pos)>20){
                 WndDialogueWithPic.dialogue(new KingSprite(), Messages.get(BossDwarfKing.class, "name"),
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "rise_hero")
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
                 for (int i : PathFinder.NEIGHBOURS8) if (Char.findChar(Dungeon.hero.pos + i)== null){
                     Mob skele = Random.oneOf(new Skeleton(), new Skeleton(), new SkeletonArmored());
                     skele.pos = Dungeon.hero.pos + i;
@@ -634,7 +622,7 @@ public class Arena20 extends ArenaCity {
                 WndDialogueWithPic.dialogue(new KingSprite(), Messages.get(BossDwarfKing.class, "name"),
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "rise_amulet")
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
                 for (int i : PathFinder.NEIGHBOURS25) if (Char.findChar(amuletCell + i)== null){
                     Skeleton skele = Random.oneOf(new Skeleton(), new Skeleton(), new SkeletonArmored());
                     skele.pos = amuletCell + i;
@@ -646,7 +634,7 @@ public class Arena20 extends ArenaCity {
                 WndDialogueWithPic.dialogue(new KingSprite(), Messages.get(BossDwarfKing.class, "name"),
                         new String[]{
                                 Messages.get(BossDwarfKing.class, "rise_walls")
-                        }, WndDialogueWithPic.WndType.UNSKIPPABLE);
+                        }, WndDialogueWithPic.WndType.ALWAYS_SHOW);
 
                 HashSet<Integer> fudgeconcurrent = new HashSet<>();
                 for (Mob wall : level.mobs) if (wall instanceof TowerCWall || wall instanceof TowerGuard1) for (int i : PathFinder.NEIGHBOURS8) if (Char.findChar(wall.pos + i)== null)
@@ -728,7 +716,7 @@ public class Arena20 extends ArenaCity {
                     new String[]{
                             Messages.get(BossDwarfKing.class, "rkdkrat1"),
                             Messages.get(BossDwarfKing.class, "rkdkrat2")
-                    }, WndDialogueWithPic.WndType.UNSKIPPABLE
+                    }, WndDialogueWithPic.WndType.ALWAYS_SHOW
             );
 
             for (int x = 34; x<37; x++) {
@@ -756,7 +744,7 @@ public class Arena20 extends ArenaCity {
                             Messages.get(BossDwarfKing.class, "prespeech4"),
                             Messages.get(BossDwarfKing.class, "prespeech5"),
                             Messages.get(BossDwarfKing.class, "prespeech6")
-                    }, WndDialogueWithPic.WndType.UNSKIPPABLE
+                    }, WndDialogueWithPic.WndType.ALWAYS_SHOW
             );
             deploymobs(23, Direction.TOORIGHT, 10);
         } else if (wave == 24){
@@ -767,7 +755,7 @@ public class Arena20 extends ArenaCity {
                             Messages.get(BossDwarfKing.class, "speech1"),
                             Messages.get(BossDwarfKing.class, "speech2"),
                             Messages.get(BossDwarfKing.class, "speech3")
-                    }, WndDialogueWithPic.WndType.UNSKIPPABLE
+                    }, WndDialogueWithPic.WndType.ALWAYS_SHOW
             );
             deploymobs(25, Direction.UP, 10);
             if (dwarfKing == null) {

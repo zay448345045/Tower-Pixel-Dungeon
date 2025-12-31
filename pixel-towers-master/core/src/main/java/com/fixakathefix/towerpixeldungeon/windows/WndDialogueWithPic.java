@@ -11,10 +11,6 @@ import com.fixakathefix.towerpixeldungeon.scenes.GameScene;
 import com.fixakathefix.towerpixeldungeon.scenes.PixelScene;
 import com.fixakathefix.towerpixeldungeon.sprites.AlmostEmptySprite;
 import com.fixakathefix.towerpixeldungeon.sprites.CharSprite;
-import com.fixakathefix.towerpixeldungeon.sprites.GooSprite;
-import com.fixakathefix.towerpixeldungeon.sprites.GorematiaSpiritSprite;
-import com.fixakathefix.towerpixeldungeon.sprites.RatKingSprite;
-import com.fixakathefix.towerpixeldungeon.sprites.RatSprite;
 import com.fixakathefix.towerpixeldungeon.ui.RenderedTextBlock;
 import com.fixakathefix.towerpixeldungeon.ui.Window;
 import com.watabou.input.PointerEvent;
@@ -58,7 +54,7 @@ public class WndDialogueWithPic extends Window {
 
     public enum WndType {
         NORMAL,
-        UNSKIPPABLE,
+        ALWAYS_SHOW,
         FINAL, //ends the game after that dialogue
         YOGFINAL // unskippable
     }
@@ -109,13 +105,13 @@ public class WndDialogueWithPic extends Window {
         }
     }
     public static void dialogue(CharSprite icon, String title, String[] text, byte[] spriteActionIndexes, WndType type, ArrayList<Runnable> runnableArrayList, int textnum) {
-        if ( level == null || level.mode == WndModes.Modes.NORMAL || type == WndType.FINAL || type == WndType.YOGFINAL || type == WndType.UNSKIPPABLE) {
+        if ( level == null || level.mode == WndModes.Modes.NORMAL || type == WndType.FINAL || type == WndType.YOGFINAL || type == WndType.ALWAYS_SHOW) {
             Game.runOnRenderThread(new Callback() {
                 @Override
                 public void call() {
                     WndDialogueWithPic wnd = new WndDialogueWithPic(icon, title, text, spriteActionIndexes ,textnum, false);
                     if (type == WndType.FINAL) wnd.lastDialogue = true;
-                    if (type == WndType.YOGFINAL || type == WndType.UNSKIPPABLE) wnd.unskippable = true;
+                    if (type == WndType.YOGFINAL) wnd.unskippable = true;
                     wnd.runnableArrayList = runnableArrayList;
                     Dungeon.level.lastSavedWndDialogueWithPic = wnd;
                     if (ShatteredPixelDungeon.scene() instanceof GameScene)
