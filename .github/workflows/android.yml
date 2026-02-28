@@ -48,6 +48,7 @@ jobs:
       # 
       - name: Build Release APK
         run: ./gradlew assembleDebug --stacktrace
+        working-directory: ./pixel-towers-master
         #env:
           # 
 
@@ -60,9 +61,11 @@ jobs:
             echo "can not find APK！"
             exit 1
           fi
+          #FULL_APK_PATH=$(pwd)/$APK_PATH
           echo "APK_PATH=$APK_PATH" >> $GITHUB_OUTPUT
           echo "APK_NAME=$(basename $APK_PATH)" >> $GITHUB_OUTPUT
 
+#working-directory: ./pixel-towers-master
       # 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
