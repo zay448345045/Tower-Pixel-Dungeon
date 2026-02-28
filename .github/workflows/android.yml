@@ -1,0 +1,79 @@
+name: Build & Release (Manual Trigger)
+
+# 
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release'
+        required: true
+        default: 'v1.0.0'
+        type: string
+      is_prerelease:
+        description: 'pre?'
+        required: false
+        default: false
+        type: boolean
+
+# 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Release
+
+    steps:
+      # 
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      # 
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+
+      # 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+        working-directory: ./pixel-towers-master
+      # 
+      - name: Build Release APK
+        run: ./gradlew assembleDebug --stacktrace
+        #env:
+          # 
+
+      # 
+      - name: Locate Release APK
+        id: find_apk
+        run: |
+          APK_PATH=$(find app/build/outputs/apk/debug -name "*.apk" | head -n 1)
+          if [ -z "$APK_PATH" ]; then
+            echo "can not find APK！"
+            exit 1
+          fi
+          echo "APK_PATH=$APK_PATH" >> $GITHUB_OUTPUT
+          echo "APK_NAME=$(basename $APK_PATH)" >> $GITHUB_OUTPUT
+
+      # 
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.find_apk.outputs.APK_PATH }}
+          tag_name: ${{ github.event.inputs.release_version }}  
+          name: Release ${{ github.event.inputs.release_version }}
+          body: |
+            ## Android
+            - r：${{ github.event.inputs.release_version }}
+            - t：Android 14 (API 34)
+           # - ti：${{ github.run_at }}
+           # - 
+          draft: false
+          prerelease: ${{ github.event.inputs.is_prerelease }}  
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
