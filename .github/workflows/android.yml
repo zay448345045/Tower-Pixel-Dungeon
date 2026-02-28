@@ -1,6 +1,6 @@
 name: Build & Release (Manual Trigger)
 
-#  
+# 
 on:
   push:
     paths:
@@ -34,6 +34,53 @@ jobs:
 
       # 
       - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+
+      # 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+        working-directory: ./pixel-towers-master
+      # 
+      - name: Build Release APK
+        run: |
+         ./gradlew assembleDebug --stacktrace
+         echo "Build outputs:"
+         ls -la ./app/build/outputs/ || echo "Build outputs directory not found!"
+         ls -la ./app/build/outputs/apk/ || echo "APK directory not found!"
+         ls -la ./app/build/outputs/apk/debug/ || echo "Debug APK directory not found!"
+  
+        working-directory: ./pixel-towers-master
+        #env:
+          # 
+
+      # 
+      - name: Locate Release APK
+        id: find_apk
+        run: |
+          cd ./pixel-towers-master
+          APK_PATH=$(find ./app/build/outputs/apk -name "*.apk" | head -n 1)
+          if [ -z "$APK_PATH" ]; then
+          echo "Error: Can not find APK file!"
+          # 打印所有可能的输出目录，方便排查
+          echo "All build directories:"
+          find ./app/build -type d
+          exit 1
+          fi
+          # 转换为绝对路径（关键：避免后续上传路径错误）
+          FULL_APK_PATH=$(pwd)/$APK_PATH
+          APK_NAME=$(basename $APK_PATH)
+          echo "Found APK: $FULL_APK_PATH"
+          echo "APK_PATH=$FULL_APK_PATH" >> $GITHUB_OUTPUT
+          echo "APK_NAME=$APK_NAME" >> $GITHUB_OUTPUT
+          working-directory: .
+          APK_PATH=$(find ./app/build/outputs/apk/debug -name "*.apk" | head -n 1)
+          if [ -z "$APK_PATH" ]; then
+            echo "can not find APK！"
         uses: actions/setup-java@v5
         with:
           java-version: '21'
