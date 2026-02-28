@@ -17,7 +17,10 @@ public class AbBerserk extends HeroSpell {
     @Override
     public void cast() {
         super.cast();
-        Buff.affect(Dungeon.hero, Adrenaline.class, 15);
+        int time = 15;
+        if (Dungeon.hero.HP < Dungeon.hero.HT/2) time = 20;
+        if (Dungeon.hero.HP < Dungeon.hero.HT/4) time = 30;
+        Buff.affect(Dungeon.hero, Adrenaline.class, time);
 
         curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
         Sample.INSTANCE.play(Assets.Sounds.CHALLENGE, 1f, 0.9f);
@@ -25,8 +28,8 @@ public class AbBerserk extends HeroSpell {
 
     @Override
     protected int castCooldown() {
-
+        int cooldown = 100 - Dungeon.hero.lvl*2;
         if (Dungeon.hero == null) return 100;
-        return 100 - Dungeon.hero.lvl*2;
+        return cooldown;
     }
 }

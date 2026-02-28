@@ -369,7 +369,7 @@ public enum HeroClass {
 
 	private static void initWarrior( Hero hero ) {
 		hero.critMult = 2f;
-		hero.STR = 14;
+		hero.STR = 15;
 		hero.attackSkill = 9;
 
 
@@ -499,7 +499,7 @@ public enum HeroClass {
 	}
 
 	private static void initDuelist( Hero hero ) {
-		hero.STR = 13;
+		hero.STR = 14;
 		hero.critChance = 0.225f;
 
 		Item i = new LeatherArmor().identify();

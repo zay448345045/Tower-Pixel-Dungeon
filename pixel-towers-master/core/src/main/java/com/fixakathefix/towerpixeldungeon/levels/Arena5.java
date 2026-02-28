@@ -411,7 +411,7 @@ public class Arena5 extends ArenaSewers{
         for (int i : PathFinder.NEIGHBOURS25) if (level.passable[slimePoint+i] && Char.findChar(slimePoint+i)==null) {
             cells.add(slimePoint + i );
         }
-        for (int i = 0;i < 6; i++) if (!cells.isEmpty()) {
+        for (int i = 0;i < 10; i++) if (!cells.isEmpty()) {
             CausticSlime slime = new CausticSlime();
             int cell = Random.element(cells);
             cells.remove((Integer) cell);
@@ -419,13 +419,8 @@ public class Arena5 extends ArenaSewers{
             slime.mapGuard = true;
             slime.state = slime.HUNTING;
             GameScene.add(slime);
-            CausticSlime slime2 = new CausticSlime();
-            cell = Random.element(cells);
-            cells.remove((Integer) cell);
-            slime2.pos = cell;
-            slime2.mapGuard = true;
-            slime2.state = slime2.HUNTING;
-            GameScene.add(slime2);
+        }
+        for (int i = 0;i < 6; i++) if (!cells.isEmpty()) {
             int chestcell = Random.element(cells);
             Dungeon.level.drop(Generator.random(Generator.Category.WEAPON), chestcell).type = Heap.Type.SKELETON;
             cells.remove((Integer) chestcell);
