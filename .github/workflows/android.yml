@@ -68,7 +68,11 @@ jobs:
         working-directory: ./pixel-towers-master
         # 即使构建失败也继续，方便查看日志
         continue-on-error: true
-
+      - name: upload artifact 
+        uses: actions/upload-artifact@v6
+        with:
+         name: apk
+         path: '**/*.apk'
       # 查找 APK（仅当构建成功时执行）
       - name: Locate APK file
         id: find_apk
