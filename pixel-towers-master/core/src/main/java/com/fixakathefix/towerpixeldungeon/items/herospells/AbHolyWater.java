@@ -80,13 +80,13 @@ public class AbHolyWater extends HeroSpellTargeted{
 
         for ( Char ch : affectedChars ){
             if (ch.properties().contains(Char.Property.UNDEAD)||ch.properties().contains(Char.Property.DEMONIC)) {
-                ch.damage(10 + Dungeon.hero.lvl/2, this);
-                Buff.affect(ch, Blindness.class, 10);
+                ch.damage(10 + Dungeon.hero.lvl, this);
+                Buff.affect(ch, Blindness.class, 15);
                 CellEmitter.floor(ch.pos).start(ShadowParticle.UP,0.1f,10);
             } else if (ch.alignment == Char.Alignment.ALLY){
-                ch.heal(5 + Dungeon.hero.lvl/2);
+                ch.heal(5 + Dungeon.hero.lvl);
             } else {
-                ch.damage(5 + Dungeon.hero.lvl/3, this);
+                ch.damage(5 + Dungeon.hero.lvl, this);
             }
         }
     }

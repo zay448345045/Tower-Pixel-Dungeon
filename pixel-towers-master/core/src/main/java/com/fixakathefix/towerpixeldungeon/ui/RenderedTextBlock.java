@@ -70,10 +70,12 @@ public class RenderedTextBlock extends Component {
 	private int alignment = LEFT_ALIGN;
 	
 	public RenderedTextBlock(int size){
+		members = new ArrayList<>();
 		this.size = size;
 	}
 
 	public RenderedTextBlock(String text, int size){
+		members = new ArrayList<>();
 		this.size = size;
 		text(text);
 	}

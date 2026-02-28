@@ -7,12 +7,16 @@ import com.fixakathefix.towerpixeldungeon.actors.buffs.Barrier;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Buff;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.Mob;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCWall;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerGrave1;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerGraveCrypt;
 import com.fixakathefix.towerpixeldungeon.effects.particles.custom.CPShield;
 import com.fixakathefix.towerpixeldungeon.levels.Level;
 import com.fixakathefix.towerpixeldungeon.messages.Messages;
 import com.fixakathefix.towerpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
+
+import java.util.HashSet;
 
 public class AbTrGreatWall extends HeroSpell{
     private static final int TURNS_ADDED_PER_WALL = 10;
@@ -42,12 +46,11 @@ public class AbTrGreatWall extends HeroSpell{
     @Override
     protected int castCooldown() {
         int addturns = 0;
-        try {
-            for (Mob mob : Level.mobs) {
-                if (mob instanceof TowerCWall && mob.alignment == Char.Alignment.ALLY)
-                    addturns += TURNS_ADDED_PER_WALL;
-            }
-        } catch (NullPointerException ignored) {
+
+        HashSet<Mob> mobs = new HashSet<>(Level.mobs);
+        for (Mob mob : mobs) if (mob.isAlive() && mob.alignment != null){
+            if (mob instanceof TowerCWall && mob.alignment == Char.Alignment.ALLY)
+                addturns += TURNS_ADDED_PER_WALL;
         }
         return 100 + addturns;
     }

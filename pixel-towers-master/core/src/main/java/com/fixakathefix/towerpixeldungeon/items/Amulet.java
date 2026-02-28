@@ -86,36 +86,10 @@ public class Amulet extends Item {
 	@Override
 	protected void onThrow(int cell) {
 		if (CeremonialCandle.checkCellForSurroundingLitCandles(cell)){
-			Timer timer = new Timer();
-			timer.scheduleTask(new Timer.Task() {
-				@Override
-				public void run() {
-					WndDialogueWithPic.dialogue(
-							Dungeon.hero.sprite,
-							"#1ERROR 3209434023840283402830948230984092894802398402834082038402834029834028#1",
-							new String[]{"?"});
-				}
-			}, 3, 0.2f, 20);
-			timer.scheduleTask(new Timer.Task() {
-				@Override
-				public void run() {
-					Camera.main.shake(2f, 10f);
-					Sample.INSTANCE.play(Assets.Sounds.HEALTH_CRITICAL);
-				}
-			}, 5, 0.2f, 10);
-			timer.scheduleTask(new Timer.Task() {
-				@Override
-				public void run() {
-					Dungeon.hero.die(Arena.AmuletTower.class);
-				}
-			}, 7);
-			timer.scheduleTask(new Timer.Task() {
-				@Override
-				public void run() {
-					Dungeon.fail(CeremonialCandle.class);
-					ShatteredPixelDungeon.switchScene(TitleScene.class);
-				}
-			}, 8);
+			WndDialogueWithPic.dialogue(
+					Dungeon.hero.sprite,
+					"#1ERROR 3209434023840283402830948230984092894802398402834082038402834029834028#1",
+					new String[]{"?"});
 			return;
 		}
 		super.onThrow(cell);

@@ -23,6 +23,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.function.Predicate;
 
 public class AbTrAngerTheDead extends HeroSpell{
@@ -68,13 +69,12 @@ public class AbTrAngerTheDead extends HeroSpell{
     @Override
     protected int castCooldown() {
         int addturns = 0;
-        try {
-            for (Mob mob : Level.mobs) {
-                if ((mob instanceof TowerGrave1 || mob instanceof TowerGraveCrypt) && mob.alignment == Char.Alignment.ALLY)
-                    addturns += TURNS_ADDED_PER_GRAVE;
-            }
-        } catch (NullPointerException ignored) {
+        HashSet<Mob> mobs = new HashSet<>(Level.mobs);
+        for (Mob mob : mobs) if (mob.isAlive() && mob.alignment != null){
+            if ((mob instanceof TowerGrave1 || mob instanceof TowerGraveCrypt) && mob.alignment == Char.Alignment.ALLY)
+                addturns += TURNS_ADDED_PER_GRAVE;
         }
+
         return 100 + addturns;
     }
 }

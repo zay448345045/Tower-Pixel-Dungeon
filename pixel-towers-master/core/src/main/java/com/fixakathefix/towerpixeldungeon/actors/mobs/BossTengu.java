@@ -256,11 +256,9 @@ public class BossTengu extends Mob {
 
         if (phase == 3) for (int i : PathFinder.NEIGHBOURS9) if (enemy!=null) {
             cell = enemy.pos + i;
-            if (Actor.findChar(cell)!=null){
-                if (Actor.findChar(enemy.pos).alignment == Alignment.ENEMY){
-                    Actor.findChar(cell).damage (Math.round(damageRoll()*0.05f) - enemy.drRoll(), Bomb.class);//his minions receive 5% damage only
-                } else if (Actor.findChar(enemy.pos)==Actor.findChar(cell)) {
-                } else Actor.findChar(cell).damage (Math.round(damageRoll()*0.3f) - enemy.drRoll(),Bomb.class);//damages foes nearby, with lowered damage
+            Char choncell = Actor.findChar(cell);
+            if (choncell!=null && choncell!=enemy) {
+                    choncell.damage (Math.round(damageRoll()*0.3f) - enemy.drRoll(),Bomb.class);//damages foes nearby, with lowered damage
             }
             if (Dungeon.level.heroFOV[enemy.pos+i]) {
                 CellEmitter.center(cell).burst(BlastParticle.FACTORY, 30);

@@ -932,7 +932,12 @@ public class GameScene extends PixelScene {
 						//elements that aren't visual go to the end of the list
 						//if (a instanceof BossTrollSprite && b instanceof BossTrollSprite)
 							//return ((BossTrollSprite)a).y > ((BossTrollSprite)b).y ? 1 : -1;
-						if (a instanceof DrillSprite || a instanceof DrillBigSprite) return -1;
+						if (a instanceof DrillSprite || a instanceof DrillBigSprite){
+							if (b instanceof DrillSprite || b instanceof DrillBigSprite)
+								return (int) Math.signum((((Visual) a).y + ((Visual) a).height())
+									- (((Visual) b).y + ((Visual) b).height()));
+							return -1;
+						}
 						else if (b instanceof DrillSprite || b instanceof DrillBigSprite) return 1;
 						else if (a instanceof Visual && b instanceof Visual) {
 							return (int) Math.signum((((Visual) a).y + ((Visual) a).height())

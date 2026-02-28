@@ -1003,7 +1003,7 @@ public abstract class Mob extends Char {
 				int cell = this.pos + i;
 				CellEmitter.get( cell ).start(CPHeal.UP, 0.05f, 10 );
 				Char ch = Char.findChar(cell);
-				if (ch != null && ch.alignment == this.alignment) ch.heal(this.HT/2);
+				if (ch != null && ch.alignment == this.alignment) ch.heal(this instanceof Swarm ? this.HT/10 : this.HT/2);
 			}
 		}
 

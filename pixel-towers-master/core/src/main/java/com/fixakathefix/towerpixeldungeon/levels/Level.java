@@ -220,6 +220,11 @@ public abstract class Level implements Bundlable {
 	public void initNpcs(){
 	}
 
+	public boolean passableChecked(int cell) {
+		if (cellAdjacentToBorderCells(cell)) return false;
+		return passable[cell];
+	}
+
 	public void create() {
 		Random.pushGenerator( Dungeon.seedCurDepth() );
 

@@ -37,7 +37,7 @@ public class AbPray extends HeroSpell {
     @Override
     public void cast() {
         super.cast();
-        int index = Random.NormalIntRange(1, 1000);
+        int index = Random.IntRange(1, 1000);
         GLog.i(prayResult(index));
     }
 
@@ -46,32 +46,43 @@ public class AbPray extends HeroSpell {
         if (index < 300 ) return Messages.get(AbPray.class, "no");
         else {
             if (index < 400){
-                subtleWispSummon();
+                for (int i = 0; i < 2 ; i++){
+                    subtleWispSummon();
+                }
             } else if (index < 500){
                 subtleHeroHeal();
                 subtleCoinGive();
+                subtleHeroShield();
             } else if (index < 550){
                 subtleHeroBless();
             } else if (index < 600){
                 subtleItemDrop();
                 subtleBless();
+                subtleHeroShield();
             } else if (index < 700){
                 subtleFoeIgnite();
+                subtleFoeIgnite();
+                subtleFoeIgnite();
+                subtleHeroShield();
             } else if (index < 750){
                 subtleFoeKill();
             } else if (index < 800){
                 subtleMassHealToHalf();
             } else if (index < 850){
                 subtleDefenseskillUpgrade();
+                subtleHeroShield();
             } else if (index < 900){
                 subtleGoldDrop();
                 subtleHeroShield();
             } else if (index < 950){
                 subtleSeveralFoeKill();
+                subtleHeroShield();
             } else if (index < 999){
                 subtleSeveralFoeKill();
+                subtleHeroBless();
             } else if (index == 1000){
                 apocalypse();
+                subtleHeroBless();
             }
         }
         return Messages.get(AbPray.class, "yes");
@@ -100,7 +111,6 @@ public class AbPray extends HeroSpell {
                 Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.HIT, Assets.Sounds.HIT_CRUSH, Assets.Sounds.HIT_STRONG));
                 mob.damage(mob.HT/2, Dungeon.hero);
                 WandOfBlastWave.BlastWave.blast(mob.pos);
-
             }
         }
     }

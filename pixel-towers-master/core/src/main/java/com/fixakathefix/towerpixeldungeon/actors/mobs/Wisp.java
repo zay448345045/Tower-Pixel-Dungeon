@@ -53,10 +53,15 @@ public class Wisp extends Mob {
         flying = true;
     }
 
+    @Override
+    protected boolean act() {
+        beckon(hero.pos);
+        return super.act();
+    }
 
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange(1, hero.lvl);
+        return Random.NormalIntRange(1, hero.lvl*2);
     }
 
     @Override

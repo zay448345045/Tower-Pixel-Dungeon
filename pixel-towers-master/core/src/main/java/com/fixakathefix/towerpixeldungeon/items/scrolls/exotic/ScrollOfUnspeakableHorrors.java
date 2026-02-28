@@ -122,20 +122,25 @@ public class ScrollOfUnspeakableHorrors extends ExoticScroll {
 		protected void onAdd() {
 			super.onAdd();
 			Music.INSTANCE.volume(0f);
-			GameScene.scene.menu.active =
-					GameScene.scene.menu.visible = false;
-			GameScene.scene.status.active =
-					GameScene.scene.status.visible = false;
+			GameScene scene = GameScene.scene;
+			//additional checks for the silentio effect are necessary as its only goal is to scare the player on launch. I don't want to overbear the game with constant checking for the silentio to disable the menus
+			if (scene!=null){
+				if (scene.menu!=null) scene.menu.active = scene.menu.visible = false;
+				if (scene.status!=null) scene.status.active = scene.status.visible = false;
+			}
 		}
 
 		@Override
 		public void detach() {
 			super.detach();
 			Music.INSTANCE.volume(SPDSettings.musicVol() * SPDSettings.musicVol() * 0.01f);
-			GameScene.scene.menu.active =
-					GameScene.scene.menu.visible = true;
-			GameScene.scene.status.active =
-					GameScene.scene.status.visible = true;
+			GameScene scene = GameScene.scene;
+			//additional checks for the silentio effect are necessary as its only goal is to scare the player on launch. I don't want to overbear the game with constant checking for the silentio to disable the menus
+			if (scene!=null){
+				if (scene.menu!=null) scene.menu.active = scene.menu.visible = true;
+				if (scene.status!=null) scene.status.active = scene.status.visible = true;
+			}
+
 		}
 	}
 }

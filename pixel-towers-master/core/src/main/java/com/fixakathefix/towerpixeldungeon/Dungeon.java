@@ -319,7 +319,9 @@ public class Dungeon {
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;
 		}
-		
+		if (level == null){
+			level = new DeadEndLevel();
+		}
 		level.create();
 		
 		return level;
@@ -751,8 +753,10 @@ public class Dungeon {
 			Rankings.INSTANCE.submit( false, cause );
 		}
 	}
-	
-	public static void win( Class cause ) {
+
+
+
+	public static void win(Class cause ) {
 
 		int towerstotal     = 0;
 		int crossbows       = 0;

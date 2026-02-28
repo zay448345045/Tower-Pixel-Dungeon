@@ -40,15 +40,17 @@ public abstract class TowerCSpawning extends TowerNotliving{
     public String info() {
         StringBuilder info = new StringBuilder();
         info.append(description());
-        info.append(Messages.get(this, "stats", HT , maxMinions, minionCooldown, minionHP, minionDamageMin, minionDamageMax, minionAttackSkill*10, minionDefenseSkill*20, minionDR, minions.size(), maxMinions, minionCooldownLeft));
+        info.append(Messages.get(this, "stats", HT , maxMinions, minionCooldown, minionHP, minionDamageMin, minionDamageMax, minionAttackSkill*10, minionDefenseSkill*20, minionDR));
+        info.append(Messages.get(this, "currentstats",  minions.size(), maxMinions, minionCooldownLeft));
         info.append(Messages.get(this, "descstats"));
         return info.toString();
     }
 
     public String infoWithoutCurrent() {
         StringBuilder info = new StringBuilder();
-        info.append(info());
-        info.delete(info.indexOf("Current number of"), info.indexOf("Turns to next spawn attempt:") + "Turns to next spawn attempt:".length() + Integer.toString(minionCooldownLeft).length()+4);
+        info.append(description());
+        info.append(Messages.get(this, "stats", HT , maxMinions, minionCooldown, minionHP, minionDamageMin, minionDamageMax, minionAttackSkill*10, minionDefenseSkill*20, minionDR));
+        info.append(Messages.get(this, "descstats"));
         return info.toString();
     }
 

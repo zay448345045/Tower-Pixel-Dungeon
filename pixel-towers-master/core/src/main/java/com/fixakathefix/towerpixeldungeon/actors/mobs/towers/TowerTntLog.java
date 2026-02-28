@@ -49,8 +49,7 @@ public class TowerTntLog extends TowerCWall{
                 if (ch.alignment == Alignment.ALLY){
                     //friends receive 0 damage
                 } else {
-                    int dam = Math.round(damageRoll()) - enemy.drRoll();
-
+                    int dam = Math.round(damageRoll()) - ch.drRoll();
                     ch.damage (cause instanceof AbTrPlanB ? dam*2 : dam,this);
                     Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
                     throwChar(ch, trajectory, cause instanceof AbTrPlanB ? 6 : 3, false, true, getClass());

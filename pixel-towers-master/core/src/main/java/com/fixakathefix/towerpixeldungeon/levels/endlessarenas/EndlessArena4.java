@@ -7,6 +7,8 @@ import com.fixakathefix.towerpixeldungeon.Assets;
 import com.fixakathefix.towerpixeldungeon.Dungeon;
 import com.fixakathefix.towerpixeldungeon.actors.Char;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Buff;
+import com.fixakathefix.towerpixeldungeon.actors.buffs.ChampionEnemy;
+import com.fixakathefix.towerpixeldungeon.actors.buffs.Humongous;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Minion;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.MinionBoss;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.WaveCooldownBuff;
@@ -158,6 +160,11 @@ public class EndlessArena4 extends ArenaCaves {
                         GoblinShaman.randomInstance(),
                         new GoblinGiant(),new GoblinGiant(),new GoblinGiant(),new GoblinGiant(),new GoblinGiant());
             }  break;
+        }
+        if (wave > 30) ChampionEnemy.giveRandomChampiontitle(mob);
+        if (wave > 50) {
+            Buff.affect(mob, Humongous.class);
+            ChampionEnemy.giveRandomChampiontitle(mob);
         }
         if (level.mode == WndModes.Modes.CHALLENGE){
             affectMob(mob);

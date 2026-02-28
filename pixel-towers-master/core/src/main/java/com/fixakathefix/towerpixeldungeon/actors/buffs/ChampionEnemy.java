@@ -91,6 +91,14 @@ public abstract class ChampionEnemy extends Buff {
 	{
 		immunities.add(AllyBuff.class);
 	}
+	public static void giveRandomChampiontitle(Mob mob){
+		Class<? extends ChampionEnemy> buff = Random.oneOf(
+				Blazing.class, Projecting.class, AntiMagic.class,
+				Giant.class, Blessed.class, Growing.class,
+				Rejuvenating.class, Destructive.class, Copying.class
+		);
+		Buff.affect(mob, buff);
+	}
 
 	public static void rollForChampion(Mob m){
 		if (Dungeon.mobsToChampion <= 0) Dungeon.mobsToChampion = 8;

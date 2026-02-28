@@ -54,9 +54,9 @@ public class ScrollOfRatLegion extends ExoticScroll {
 		ArrayList<Integer> candidates = new ArrayList<>();
 		for (int i : PathFinder.NEIGHBOURS25){
 			int cell = Dungeon.hero.pos + i;
-			if (Char.findChar(cell)==null && Dungeon.level.passable[cell]) candidates.add(cell);
+			if (Char.findChar(cell)==null && Dungeon.level.passableChecked(cell)) candidates.add(cell);
 		}
-		int power = Dungeon.depth*15 + ((Arena)Dungeon.level).wave*3;
+		int power = Dungeon.depth*15 + Dungeon.level.wave*3;
 		if (!candidates.isEmpty()) while (power >=0){
 			if (power > 100) {
 				power-=55;
