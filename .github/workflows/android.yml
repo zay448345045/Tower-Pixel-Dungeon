@@ -2,6 +2,9 @@ name: Build & Release (Manual Trigger)
 
 # 
 on:
+  push:
+    paths:
+     - 'action.on' 
   workflow_dispatch:
     inputs:
       release_version:
