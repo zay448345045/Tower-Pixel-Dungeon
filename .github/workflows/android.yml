@@ -97,7 +97,7 @@ jobs:
             ## Android Build
             - Version: ${{ github.event.inputs.release_version }}
             - Minimum SDK: Android 14 (API 34)
-            - Build Time: ${{ github.run_at }}
+           # - Build Time: ${{ github.run_at }}
           draft: false
           prerelease: ${{ github.event.inputs.is_prerelease }}
         env:
@@ -108,3 +108,4 @@ jobs:
         with:
          name: apk
          path: '**/*.apk'
+   
