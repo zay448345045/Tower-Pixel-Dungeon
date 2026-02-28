@@ -81,11 +81,7 @@ jobs:
           APK_PATH=$(find ./app/build/outputs/apk/debug -name "*.apk" | head -n 1)
           if [ -z "$APK_PATH" ]; then
             echo "can not find APK！"
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: gradle
+        
 
 
       # 
@@ -101,7 +97,7 @@ jobs:
 
       # 
       - name: Locate Release APK
-        id: find_apk
+      #  id: find_apk
         run: |
           APK_PATH=$(find ./app/build/outputs/apk/debug -name "*.apk" | head -n 1)
           if [ -z "$APK_PATH" ]; then
