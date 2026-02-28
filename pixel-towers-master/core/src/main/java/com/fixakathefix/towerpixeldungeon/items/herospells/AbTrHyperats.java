@@ -4,6 +4,7 @@ import com.fixakathefix.towerpixeldungeon.Assets;
 import com.fixakathefix.towerpixeldungeon.Dungeon;
 import com.fixakathefix.towerpixeldungeon.actors.Char;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.Mob;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCWall;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCrossbow1;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerRatCamp;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerTntLog;
@@ -13,6 +14,8 @@ import com.fixakathefix.towerpixeldungeon.messages.Messages;
 import com.fixakathefix.towerpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.DeviceCompat;
+
+import java.util.HashSet;
 
 public class AbTrHyperats extends HeroSpell{
 
@@ -41,13 +44,13 @@ public class AbTrHyperats extends HeroSpell{
     protected int castCooldown() {
         if (DeviceCompat.isDebug()) return 0;
         int addturns = 0;
-        //FIXME there is a concurrent modification exception to this somewhere. I just don't know, as the hashset does not change. Swapped to
-        try {
-            for (Mob mob : Level.mobs) {
-                if (mob instanceof TowerRatCamp && mob.alignment == Char.Alignment.ALLY)
+
+        HashSet<Mob> mobs = new HashSet<>(Level.mobs);
+        for (Mob mob : mobs) if (mob!= null && mob.isAlive() && mob.alignment != null) {
+            if (mob.alignment == Char.Alignment.ALLY) {
+                if (mob instanceof TowerRatCamp)
                     addturns += TURNS_PER_RATCAMP + ((Arena)Dungeon.level).waveCooldownBoss/3;
             }
-        } catch (Exception ignored) {
         }
         return 100 + addturns;
     }

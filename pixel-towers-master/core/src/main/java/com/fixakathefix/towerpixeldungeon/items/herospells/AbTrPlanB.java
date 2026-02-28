@@ -13,6 +13,7 @@ import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerWand1;
 import com.fixakathefix.towerpixeldungeon.effects.CellEmitter;
 import com.fixakathefix.towerpixeldungeon.effects.MagicMissile;
 import com.fixakathefix.towerpixeldungeon.effects.Speck;
+import com.fixakathefix.towerpixeldungeon.levels.Level;
 import com.fixakathefix.towerpixeldungeon.messages.Messages;
 import com.fixakathefix.towerpixeldungeon.scenes.GameScene;
 import com.fixakathefix.towerpixeldungeon.sprites.CharSprite;
@@ -22,6 +23,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class AbTrPlanB extends HeroSpell{
 
@@ -33,19 +35,20 @@ public class AbTrPlanB extends HeroSpell{
     public void cast() {
         super.cast();
         Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
-        ArrayList<Mob> mobsmoconcur = new ArrayList<>();
-        for (Mob mob : Dungeon.level.mobs){
+        HashSet<Mob> mobsmoconcur = new HashSet<>(Level.mobs);
+        HashSet<Mob> mobsmoconcurfiltered = new HashSet<>();
+        for (Mob mob : mobsmoconcur){
             if (mob instanceof TowerTntLog && mob.alignment == Char.Alignment.ALLY){
-                mobsmoconcur.add(mob);
+                mobsmoconcurfiltered.add(mob);
             }
         }
-        for (Mob mob : mobsmoconcur){
+        for (Mob mob : mobsmoconcurfiltered){
             mob.die(this);
         }
     }
 
     @Override
     protected int castCooldown() {
-        return 100;
+        return 50;
     }
 }

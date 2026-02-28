@@ -14,6 +14,8 @@ import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.Tower;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCannon1;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCannonMissileLauncher;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCannonNuke;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerGrave1;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerGraveCrypt;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerWand1;
 import com.fixakathefix.towerpixeldungeon.effects.CellEmitter;
 import com.fixakathefix.towerpixeldungeon.effects.MagicMissile;
@@ -38,6 +40,7 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class AbTrOvercharge extends HeroSpell{
     private static final int TURNS_ADDED_PER_WAND = 40;
@@ -65,12 +68,13 @@ public class AbTrOvercharge extends HeroSpell{
     @Override
     protected int castCooldown() {
         int addturns = 0;
-        try {
-            for (Mob mob : Level.mobs) {
-                if (mob instanceof TowerWand1 && mob.alignment == Char.Alignment.ALLY)
+
+        HashSet<Mob> mobs = new HashSet<>(Level.mobs);
+        for (Mob mob : mobs) if (mob!= null && mob.isAlive() && mob.alignment != null) {
+            if (mob.alignment == Char.Alignment.ALLY) {
+                if (mob instanceof TowerWand1)
                     addturns += TURNS_ADDED_PER_WAND;
             }
-        } catch (NullPointerException ignored) {
         }
         return 100 + addturns;
     }

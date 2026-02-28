@@ -10,6 +10,8 @@ import com.fixakathefix.towerpixeldungeon.actors.buffs.Buff;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Paralysis;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.Mob;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.Tower;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerGrave1;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerGraveCrypt;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerLightning1;
 import com.fixakathefix.towerpixeldungeon.effects.Lightning;
 import com.fixakathefix.towerpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -79,10 +81,13 @@ public class AbTrLightningStrike extends HeroSpellTargeted {
     @Override
     protected int castCooldown() {
         int lightcost = 0;
-        HashSet<Mob> mobsInRange = new HashSet<>(Level.mobs);
-        for (Mob mob : mobsInRange){
-            if (mob instanceof TowerLightning1){
-                lightcost += ((Tower)mob).cost;
+
+
+        HashSet<Mob> mobs = new HashSet<>(Level.mobs);
+        for (Mob mob : mobs) if (mob!= null && mob.isAlive() && mob.alignment != null) {
+            if (mob.alignment == Char.Alignment.ALLY) {
+                if (mob instanceof TowerLightning1)
+                    lightcost += ((Tower)mob).cost;
             }
         }
         return (int)Math.max(100 - Math.sqrt(lightcost), 10);

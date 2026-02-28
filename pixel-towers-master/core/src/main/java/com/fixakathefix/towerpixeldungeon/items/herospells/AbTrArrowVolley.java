@@ -10,6 +10,7 @@ import com.fixakathefix.towerpixeldungeon.actors.Char;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.AbilityCooldown;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Buff;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.Mob;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCWall;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCrossbow1;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCrossbow2;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCrossbow3;
@@ -36,6 +37,7 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class AbTrArrowVolley extends HeroSpellTargeted {
     private static int arrowcount = 0;
@@ -161,13 +163,16 @@ public class AbTrArrowVolley extends HeroSpellTargeted {
 
     @Override
     protected int castCooldown() {
+
+
+
         int addturns = 0;
-        try {
-            for (Mob mob : Level.mobs) {
-                if (mob instanceof TowerCrossbow1 && mob.alignment == Char.Alignment.ALLY)
+        HashSet<Mob> mobs = new HashSet<>(Level.mobs);
+        for (Mob mob : mobs) if (mob!= null && mob.isAlive() && mob.alignment != null) {
+            if (mob.alignment == Char.Alignment.ALLY) {
+                if (mob instanceof TowerCrossbow1)
                     addturns += TURNS_ADDED_PER_CROSSBOW;
             }
-        } catch (NullPointerException ignored) {
         }
         return 40 + addturns;
     }

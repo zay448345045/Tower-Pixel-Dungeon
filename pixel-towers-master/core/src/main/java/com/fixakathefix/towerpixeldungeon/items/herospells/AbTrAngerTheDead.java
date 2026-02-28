@@ -4,6 +4,7 @@ import com.fixakathefix.towerpixeldungeon.Assets;
 import com.fixakathefix.towerpixeldungeon.Dungeon;
 import com.fixakathefix.towerpixeldungeon.actors.Char;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.Mob;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCWall;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCrossbow1;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerDisintegration1;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerGrave1;
@@ -70,9 +71,11 @@ public class AbTrAngerTheDead extends HeroSpell{
     protected int castCooldown() {
         int addturns = 0;
         HashSet<Mob> mobs = new HashSet<>(Level.mobs);
-        for (Mob mob : mobs) if (mob.isAlive() && mob.alignment != null){
-            if ((mob instanceof TowerGrave1 || mob instanceof TowerGraveCrypt) && mob.alignment == Char.Alignment.ALLY)
-                addturns += TURNS_ADDED_PER_GRAVE;
+        for (Mob mob : mobs) if (mob!= null && mob.isAlive() && mob.alignment != null) {
+            if (mob.alignment == Char.Alignment.ALLY) {
+                if (mob instanceof TowerGrave1 || mob instanceof TowerGraveCrypt)
+                    addturns += TURNS_ADDED_PER_GRAVE;
+            }
         }
 
         return 100 + addturns;

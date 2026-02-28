@@ -31,6 +31,7 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class AbTrBombVolley extends HeroSpellTargeted {
     private static int bombcount = 0;
@@ -150,15 +151,14 @@ public class AbTrBombVolley extends HeroSpellTargeted {
     @Override
     protected int castCooldown() {
         int addturns = 0;
-        try {
-            for (Mob mob : Level.mobs) {
-                if (mob instanceof TowerCannon1 || mob instanceof TowerCannonMissileLauncher && mob.alignment == Char.Alignment.ALLY)
-                    addturns += TURNS_ADDED_PER_CANNON;
-                if (mob instanceof TowerCannonNuke && mob.alignment == Char.Alignment.ALLY)
-                    addturns += TURNS_ADDED_PER_NUKE_ADDITIONAL;
 
+        HashSet<Mob> mobs = new HashSet<>(Level.mobs);
+        for (Mob mob : mobs) if (mob!= null && mob.isAlive() && mob.alignment != null) {
+            if (mob.alignment == Char.Alignment.ALLY) {
+                if (mob instanceof TowerCannon1 || mob instanceof TowerCannonMissileLauncher)
+                    addturns += TURNS_ADDED_PER_CANNON;
+                if (mob instanceof TowerCannonNuke) addturns += TURNS_ADDED_PER_NUKE_ADDITIONAL;
             }
-        } catch (NullPointerException ignored) {
         }
         return 150 + addturns;
     }

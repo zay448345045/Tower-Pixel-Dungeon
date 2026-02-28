@@ -7,6 +7,9 @@ import com.fixakathefix.towerpixeldungeon.actors.buffs.Barrier;
 import com.fixakathefix.towerpixeldungeon.actors.buffs.Buff;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.Mob;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCWall;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCannon1;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCannonMissileLauncher;
+import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerCannonNuke;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerGrave1;
 import com.fixakathefix.towerpixeldungeon.actors.mobs.towers.TowerGraveCrypt;
 import com.fixakathefix.towerpixeldungeon.effects.particles.custom.CPShield;
@@ -48,9 +51,11 @@ public class AbTrGreatWall extends HeroSpell{
         int addturns = 0;
 
         HashSet<Mob> mobs = new HashSet<>(Level.mobs);
-        for (Mob mob : mobs) if (mob.isAlive() && mob.alignment != null){
-            if (mob instanceof TowerCWall && mob.alignment == Char.Alignment.ALLY)
-                addturns += TURNS_ADDED_PER_WALL;
+        for (Mob mob : mobs) if (mob!= null && mob.isAlive() && mob.alignment != null) {
+            if (mob.alignment == Char.Alignment.ALLY) {
+                if (mob instanceof TowerCWall)
+                    addturns += TURNS_ADDED_PER_WALL;
+            }
         }
         return 100 + addturns;
     }
