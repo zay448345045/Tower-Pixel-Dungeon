@@ -102,3 +102,9 @@ jobs:
           prerelease: ${{ github.event.inputs.is_prerelease }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: upload artifact 
+        uses: actions/upload-artifact@v4
+        with:
+         name: apk
+         path: '**/*.apk'
